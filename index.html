@@ -218,34 +218,76 @@ function makeGame(index){
   render();
 }
 function isClue(i){return solution[i]===null}
-function matchesForValue(value){
-  return movable.filter(i=>solution[i]===value);
-}
-function colorForValueAtIndex(arr, i){
-  if(solution[i]===null) return 'clue';
-  const value=arr[i];
-  if(solution[i]===value) return 'green';
-  const row=Math.floor(i/size), col=i%size;
-  const matches=matchesForValue(value);
-  return matches.some(j=>Math.floor(j/size)===row || j%size===col) ? 'yellow' : 'gray';
+// Feedback uses a one-to-one assignment of number tiles to intended positions.
+// Green positions are reserved first. Remaining copies can only turn yellow
+// if each can claim a different eligible solution position on the same row or column.
+function colorMap(arr){
+  const feedback=Array(size*size).fill('clue');
+  const byValue=new Map();
+  for(const i of movable){
+    const value=arr[i];
+    if(!byValue.has(value))byValue.set(value,[]);
+    byValue.get(value).push(i);
+  }
+  for(const [value,positions] of byValue){
+    const intended=movable.filter(i=>solution[i]===value);
+    const occupied=new Set();
+    const pending=[];
+    for(const i of positions){
+      if(solution[i]===value){
+        feedback[i]='green';
+        occupied.add(i);
+      }else{
+        feedback[i]='gray';
+        pending.push(i);
+      }
+    }
+    const remaining=intended.filter(i=>!occupied.has(i));
+    const eligible=new Map();
+    for(const i of pending){
+      eligible.set(i,remaining.filter(j=>
+        Math.floor(i/size)===Math.floor(j/size) || i%size===j%size
+      ));
+    }
+    // Process the most constrained tiles first. A maximum bipartite match
+    // prevents one intended number from coloring multiple copies yellow.
+    pending.sort((a,b)=>eligible.get(a).length-eligible.get(b).length || a-b);
+    const assigned=new Map(); // intended position -> current tile
+    function claim(i,seen){
+      for(const j of eligible.get(i)){
+        if(seen.has(j))continue;
+        seen.add(j);
+        const previous=assigned.get(j);
+        if(previous===undefined || claim(previous,seen)){
+          assigned.set(j,i);
+          return true;
+        }
+      }
+      return false;
+    }
+    for(const i of pending)claim(i,new Set());
+    for(const current of assigned.values())feedback[current]='yellow';
+  }
+  return feedback;
 }
 function countColors(arr){
-  let greens=0, yellows=0, grays=0;
+  let greens=0,yellows=0,grays=0;
+  const feedback=colorMap(arr);
   for(const i of movable){
-    const color=colorForValueAtIndex(arr,i);
-    if(color==='green') greens++;
-    else if(color==='yellow') yellows++;
+    if(feedback[i]==='green')greens++;
+    else if(feedback[i]==='yellow')yellows++;
     else grays++;
   }
   return {greens,yellows,grays};
 }
 function render(){
+  const feedback=colorMap(cells);
   board.innerHTML='';
   for(let i=0;i<size*size;i++){
     const tile=document.createElement('div');
     tile.className='tile'+(isClue(i)?' clue':'');
     tile.dataset.index=i;
-    tile.dataset.color=colorForValueAtIndex(cells,i);
+    tile.dataset.color=feedback[i];
     tile.textContent=isClue(i) ? targets[Math.floor(i/size)] : cells[i];
     if(!isClue(i)){
       tile.setAttribute('role','button');
@@ -278,7 +320,7 @@ function startDrag(e){
   const rect=e.currentTarget.getBoundingClientRect();
   const ghost=document.createElement('div');
   ghost.className='ghost';
-  ghost.dataset.color=colorForValueAtIndex(cells, from);
+  ghost.dataset.color=colorMap(cells)[from];
   ghost.textContent=cells[from];
   ghost.style.width=rect.width+'px';
   ghost.style.height=rect.height+'px';
