@@ -1,71 +1,290 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>Neighbors — Numerum Prototype</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Neighbors — Prototype</title>
 <style>
-:root{--ink:#292e2b;--muted:#737c76;--paper:#fafbf8;--tile:#dce0dc;--green:#9accaa;--yellow:#f1d57d;--gold:#e7c58d;--line:#d7dcd5;--shadow:#272f291b;--size:min(calc((100vw - 105px)/4),78px)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper)}body{overscroll-behavior-y:contain}button{font:inherit;cursor:pointer} .app{max-width:510px;padding:16px 19px 30px;margin:0 auto}.header{display:flex;align-items:center;justify-content:space-between;min-height:46px}.brand{font-weight:800;font-size:25px;letter-spacing:-1.2px}.help{border:1px solid #dadfda;background:white;border-radius:50%;width:34px;height:34px;font-size:19px;font-weight:700;color:#606962}.eyebrow{text-align:center;margin:25px 0 5px;font-size:12px;letter-spacing:2.3px;font-weight:800;color:#8c978f;text-transform:uppercase}.heading{text-align:center;font-size:31px;letter-spacing:-1.2px;margin:0}.sub{text-align:center;font-size:14px;line-height:1.4;color:#737c76;margin:5px 0 24px}.stats{display:flex;justify-content:center;gap:12px;margin:0 auto 26px}.stat{background:#edf0eb;border-radius:12px;padding:9px 17px;text-align:center;min-width:115px}.stat strong{display:block;font-size:22px;font-variant-numeric:tabular-nums}.stat span{display:block;color:#717c73;font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:750;margin-top:1px}.board-wrap{display:flex;justify-content:center}.board{display:grid;grid-template-columns:repeat(4,var(--size)) 43px;grid-template-rows:repeat(4,var(--size)) 36px;gap:5px;touch-action:pan-y;user-select:none;-webkit-user-select:none}.tile{position:relative;border:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:clamp(21px,6vw,31px);font-weight:750;letter-spacing:-.8px;color:#354039;background:var(--tile);box-shadow:0 3px 0 #b7bdb7;transition:background .16s ease,transform .12s ease,box-shadow .12s ease;touch-action:none;-webkit-tap-highlight-color:transparent;cursor:grab}.tile[data-color="green"]{background:var(--green);box-shadow:0 3px 0 #75a587}.tile[data-color="yellow"]{background:var(--yellow);box-shadow:0 3px 0 #c7ab55}.tile.clue{background:var(--gold);box-shadow:0 3px 0 #c09f6e;cursor:default}.tile.clue small{position:absolute;bottom:6px;font-size:8px;letter-spacing:.5px;font-weight:800;opacity:.64}.tile.drag-source{opacity:.25}.tile.drop-target{outline:3px solid #606963;outline-offset:-3px;transform:scale(.95)}.axis{display:flex;align-items:center;justify-content:center;gap:2px;flex-direction:column;line-height:1.05;color:#879188;font-size:10px;font-weight:800}.axis .amount{white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums}.axis.good{color:#3c8d5e}.axis .mark{width:8px;height:8px;border-radius:50%;background:#cfd5cf;margin-bottom:3px}.axis.good .mark{background:#62aa7a}.corner-axis{color:#9da59d;text-align:center;font-size:9px}.legend{display:flex;align-items:center;justify-content:center;gap:15px;flex-wrap:wrap;margin:25px 0 15px}.legend-item{display:flex;gap:6px;align-items:center;font-size:11px;color:#5f6a62;font-weight:700}.dot{width:13px;height:13px;display:inline-block;border-radius:4px;background:var(--tile);border:1px solid #0000000a}.dot.green{background:var(--green)}.dot.yellow{background:var(--yellow)}.rule{font-size:12px;color:#7a847d;text-align:center;line-height:1.6;max-width:355px;margin:0 auto 23px}.actions{display:flex;gap:10px;justify-content:center}.action{padding:13px 19px;border-radius:13px;border:2px solid #303a33;color:#303a33;background:transparent;font-weight:800;font-size:14px;min-width:135px}.action.primary{background:#303a33;color:white}.action:disabled{opacity:.35;cursor:default}.status{text-align:center;min-height:22px;font-size:12px;color:#5b8667;margin:13px auto 0;font-weight:700}.ghost{position:fixed;z-index:1000;pointer-events:none;touch-action:none;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#354039;font-size:31px;font-weight:750;box-shadow:0 8px 19px #20282035,0 3px 0 #a2aea4;transform:translate(-50%,-50%) scale(1.08);will-change:left,top}.ghost[data-color="green"]{background:var(--green)}.ghost[data-color="yellow"]{background:var(--yellow)}.ghost[data-color="gray"]{background:var(--tile)}.modal-back{position:fixed;inset:0;background:#2632299c;display:flex;align-items:center;justify-content:center;z-index:2000;padding:20px}.modal{background:#fff;border-radius:19px;padding:25px 23px;width:min(100%,385px);box-shadow:0 20px 50px #19231932}.modal h2{margin:0 0 10px;font-size:25px}.modal p{font-size:14px;line-height:1.55;color:#5d675f}.modal button{width:100%;background:#303a33;color:white;border:0;padding:14px;border-radius:11px;font-weight:750;margin-top:10px}.hidden{display:none!important}.modal ul{font-size:14px;color:#5d675f;line-height:1.6;padding-left:19px}.win-title{font-size:30px!important;text-align:center}.win-summary{text-align:center}.fineprint{font-size:11px;text-align:center;color:#9aa29a;margin:22px auto 0}@media(max-width:370px){:root{--size:calc((100vw - 98px)/4)}.app{padding-left:12px;padding-right:12px}.board{gap:4px}.legend{gap:10px}.legend-item{font-size:10px}}
+:root{
+  --ink:#2d342f;
+  --paper:#fbfbf8;
+  --tile:#dfe3de;
+  --tile-shadow:#b5bcb6;
+  --green:#9ccfa8;
+  --green-shadow:#77a986;
+  --yellow:#efd37a;
+  --yellow-shadow:#c8ac57;
+  --cream:#d9cfb8;
+  --cream-shadow:#b8ad93;
+  --board-line:#d9ddd8;
+  --button:#ffffffee;
+  --button-border:#2d342f;
+  --size:min(calc((100vw - 64px) / 4), 82px);
+  --gap:6px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--paper);font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+body{overscroll-behavior-y:contain}
+button{font:inherit;cursor:pointer}
+.main{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px 16px 34px}
+.wrap{width:min(100%, 430px)}
+.board-shell{position:relative;display:flex;justify-content:center}
+.board{
+  display:grid;
+  grid-template-columns:repeat(4,var(--size));
+  grid-template-rows:repeat(4,var(--size));
+  gap:var(--gap);
+  touch-action:pan-y;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.tile{
+  position:relative;
+  border:0;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--tile);
+  color:#313832;
+  font-size:clamp(27px, 7.4vw, 38px);
+  font-weight:860;
+  letter-spacing:-1.2px;
+  box-shadow:0 4px 0 var(--tile-shadow);
+  transition:background .14s ease, transform .12s ease, box-shadow .12s ease;
+  touch-action:none;
+  -webkit-tap-highlight-color:transparent;
+  cursor:grab;
+}
+.tile[data-color="green"]{background:var(--green);box-shadow:0 4px 0 var(--green-shadow)}
+.tile[data-color="yellow"]{background:var(--yellow);box-shadow:0 4px 0 var(--yellow-shadow)}
+.tile[data-color="gray"]{background:var(--tile);box-shadow:0 4px 0 var(--tile-shadow)}
+.tile.clue{
+  background:var(--cream);
+  box-shadow:0 4px 0 var(--cream-shadow);
+  cursor:default;
+}
+.tile.drag-source{opacity:.23}
+.tile.drop-target{outline:3px solid #5c665f;outline-offset:-3px;transform:scale(.96)}
+.new-game{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border:2px solid var(--button-border);
+  background:var(--button);
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  font-weight:800;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  z-index:5;
+}
+.swapline{
+  text-align:center;
+  margin-top:18px;
+  font-size:21px;
+  font-weight:820;
+  letter-spacing:-.4px;
+  font-variant-numeric:tabular-nums;
+}
+.ghost{
+  position:fixed;
+  z-index:1000;
+  pointer-events:none;
+  touch-action:none;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#313832;
+  font-size:clamp(27px, 7.4vw, 38px);
+  font-weight:860;
+  box-shadow:0 10px 22px rgba(28,34,29,.18), 0 4px 0 rgba(0,0,0,.12);
+  transform:translate(-50%,-50%) scale(1.07);
+  will-change:left,top;
+}
+.ghost[data-color="green"]{background:var(--green)}
+.ghost[data-color="yellow"]{background:var(--yellow)}
+.ghost[data-color="gray"]{background:var(--tile)}
+@media (max-width:370px){
+  :root{--size:calc((100vw - 54px)/4);--gap:5px}
+  .swapline{font-size:19px}
+  .new-game{top:8px;right:8px;width:36px;height:36px}
+}
 </style>
 </head>
 <body>
-<main class="app">
-<div class="header"><div class="brand">neighbors<span style="color:#87b696">.</span></div><button class="help" id="helpButton" aria-label="How to play">?</button></div>
-<p class="eyebrow">Numerum · Prototype 01</p><h1 class="heading">Find their place.</h1><p class="sub">Four clues. Every number has a home.</p>
-<div class="stats"><div class="stat"><strong id="swaps">0</strong><span>Swaps</span></div><div class="stat"><strong id="correct">0/12</strong><span>In place</span></div></div>
-<div class="board-wrap"><div class="board" id="board" aria-label="Four by four number puzzle with row and column sum indicators"></div></div>
-<div class="legend"><div class="legend-item"><i class="dot green"></i> In place</div><div class="legend-item"><i class="dot yellow"></i> Right row or column</div><div class="legend-item"><i class="dot"></i> Neither</div></div>
-<p class="rule">Gold tiles are fixed clues. Each row and column must add up to its clue. Drag any number onto another to swap them.</p>
-<div class="actions"><button class="action" id="undo" disabled>Undo</button><button class="action primary" id="restart">Restart</button></div><p class="status" id="status" aria-live="polite"></p>
-<p class="fineprint">Hand-built sample puzzle · drag with finger or mouse · no timer</p>
+<main class="main">
+  <div class="wrap">
+    <div class="board-shell">
+      <div class="board" id="board" aria-label="Four by four number puzzle"></div>
+      <button class="new-game" id="newGame" aria-label="New game">↻</button>
+    </div>
+    <div class="swapline" id="swapline">Swaps 0</div>
+  </div>
 </main>
-<div class="modal-back hidden" id="helpModal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><h2 id="helpTitle">How to play</h2><p>Swap number tiles until every number is in its intended position.</p><ul><li>Each gold tile shows the sum required for <b>both</b> its row and its column.</li><li><b>Green:</b> correct spot.</li><li><b>Yellow:</b> correct row or correct column, but not both.</li><li><b>Gray:</b> neither the right row nor column.</li><li>Drag one number onto another to swap. Gold clue tiles cannot move.</li></ul><p>The small numbers along the right and bottom show your current sums compared with the targets.</p><button id="closeHelp">Play</button></div></div>
-<div class="modal-back hidden" id="winModal"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="winTitle"><h2 class="win-title" id="winTitle">Well played!</h2><p class="win-summary" id="winSummary"></p><button id="playAgain">Play again</button></div></div>
 <script>
 (()=>{
 'use strict';
-// A balanced numeric matrix ensures every clue is simultaneously a row and column sum.
-// The clue-column permutation is [1,3,0,2], yielding exactly one clue per row/column.
+
 const permutation=[1,3,0,2];
 const base=[[0,5,6,5],[9,0,7,12],[4,13,0,4],[3,10,8,0]];
 const targets=[16,28,21,21];
 const solution=Array(16).fill(null);
-for(let r=0;r<4;r++)for(let c=0;c<4;c++)solution[r*4+permutation[c]]=(r===c)?null:base[r][c];
-const clues=permutation.map((c,r)=>r*4+c);
-const initial=solution.slice();
-// Scramble values only (clues always remain fixed). Curated permutation = a reproducible puzzle.
+for(let r=0;r<4;r++){
+  for(let c=0;c<4;c++){
+    solution[r*4+permutation[c]]=(r===c)?null:base[r][c];
+  }
+}
+
 const movable=Array.from({length:16},(_,i)=>i).filter(i=>solution[i]!==null);
-const sourceValues=movable.map(i=>solution[i]);
-const shuffledOrder=[7,2,11,4,9,0,5,10,1,8,3,6];
-movable.forEach((pos,k)=>initial[pos]=sourceValues[shuffledOrder[k]]);
-let cells=initial.slice(),history=[],swaps=0,drag=null;
-const board=document.getElementById('board'),swapEl=document.getElementById('swaps'),correctEl=document.getElementById('correct'),undo=document.getElementById('undo'),status=document.getElementById('status');
+const shuffleSets=[
+  [7,2,11,4,9,0,5,10,1,8,3,6],
+  [4,9,0,7,10,2,11,1,8,5,6,3],
+  [1,6,9,0,11,3,8,4,5,10,7,2],
+  [10,5,2,8,3,11,6,0,9,4,1,7],
+  [6,0,8,3,1,10,4,11,7,2,9,5]
+];
+
+let cells=[];
+let swaps=0;
+let drag=null;
+let gameIndex=0;
+
+const board=document.getElementById('board');
+const swapline=document.getElementById('swapline');
+const newGameButton=document.getElementById('newGame');
+
 const isClue=i=>solution[i]===null;
 const expectedRowForValue=v=>movable.filter(i=>solution[i]===v).map(i=>Math.floor(i/4));
 const expectedColForValue=v=>movable.filter(i=>solution[i]===v).map(i=>i%4);
-function color(i){if(isClue(i))return 'clue';let v=cells[i];if(solution[i]===v)return 'green';return expectedRowForValue(v).includes(Math.floor(i/4))||expectedColForValue(v).includes(i%4)?'yellow':'gray'}
-function rowSum(r){let s=0;for(let c=0;c<4;c++)s+=cells[r*4+c]??0;return s}
-function colSum(c){let s=0;for(let r=0;r<4;r++)s+=cells[r*4+c]??0;return s}
-function render(){board.innerHTML='';for(let r=0;r<5;r++)for(let c=0;c<5;c++){
- if(r===4||c===4){const x=document.createElement('div');x.className='axis';if(r===4&&c===4){x.className='corner-axis';x.textContent='SUM';}else{const relevant=r===4?c:r, sum=r===4?colSum(c):rowSum(r), goal=r===4?targets[permutation.indexOf(c)]:targets[r];x.classList.toggle('good',sum===goal);x.innerHTML=`<span class="mark"></span><span class="amount">${sum}/${goal}</span>`;}board.appendChild(x);continue;}
- const i=r*4+c,el=document.createElement('div');el.className='tile'+(isClue(i)?' clue':'');el.dataset.index=i;el.dataset.color=color(i);el.textContent=isClue(i)?targets[r]:cells[i];if(isClue(i)){el.innerHTML=`<span>${targets[r]}</span><small>SUM</small>`;el.setAttribute('aria-label',`Fixed sum ${targets[r]}`);}else{el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label',`Number ${cells[i]}, ${color(i)}`);el.addEventListener('pointerdown',startDrag);el.addEventListener('keydown',keyboardSelection);}board.appendChild(el);
- }
- swapEl.textContent=swaps;let count=movable.filter(i=>cells[i]===solution[i]).length;correctEl.textContent=`${count}/12`;undo.disabled=history.length===0;
- if(count===12){status.textContent='All numbers are home.';document.getElementById('winSummary').textContent=`You placed all 12 numbers in ${swaps} swaps.`;setTimeout(()=>document.getElementById('winModal').classList.remove('hidden'),260);}else{let matchRows=targets.filter((s,r)=>rowSum(r)===s).length,matchCols=permutation.filter((c,r)=>colSum(c)===targets[r]).length;status.textContent=`${matchRows+matchCols} of 8 sums satisfied`;}
+
+function color(i){
+  if(isClue(i)) return 'clue';
+  const v=cells[i];
+  if(solution[i]===v) return 'green';
+  const row=Math.floor(i/4);
+  const col=i%4;
+  return (expectedRowForValue(v).includes(row) || expectedColForValue(v).includes(col)) ? 'yellow' : 'gray';
 }
+
+function buildGame(fromSet){
+  const sourceValues=movable.map(i=>solution[i]);
+  cells=solution.slice();
+  movable.forEach((pos,k)=>cells[pos]=sourceValues[fromSet[k]]);
+  swaps=0;
+  render();
+}
+
+function nextGame(){
+  gameIndex=(gameIndex+1)%shuffleSets.length;
+  buildGame(shuffleSets[gameIndex]);
+}
+
+function render(){
+  board.innerHTML='';
+  for(let i=0;i<16;i++){
+    const el=document.createElement('div');
+    el.className='tile'+(isClue(i)?' clue':'');
+    el.dataset.index=i;
+    el.dataset.color=color(i);
+    el.textContent=isClue(i) ? targets[Math.floor(i/4)] : cells[i];
+    if(!isClue(i)){
+      el.setAttribute('role','button');
+      el.setAttribute('tabindex','0');
+      el.setAttribute('aria-label',`Number ${cells[i]}`);
+      el.addEventListener('pointerdown', startDrag);
+      el.addEventListener('keydown', keyboardSelection);
+    }
+    board.appendChild(el);
+  }
+  swapline.textContent=`Swaps ${swaps}`;
+}
+
 let picked=null;
-function keyboardSelection(e){if(e.key!=='Enter'&&e.key!==' ')return;e.preventDefault();let i=Number(e.currentTarget.dataset.index);if(picked===null){picked=i;e.currentTarget.style.outline='3px solid #303a33';}else{const from=picked;picked=null;swap(from,i);}}
-function startDrag(e){if(e.button!==undefined&&e.button!==0)return;e.preventDefault();const from=Number(e.currentTarget.dataset.index);const rect=e.currentTarget.getBoundingClientRect();const ghost=document.createElement('div');ghost.className='ghost';ghost.dataset.color=color(from);ghost.textContent=cells[from];ghost.style.width=rect.width+'px';ghost.style.height=rect.height+'px';ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';document.body.appendChild(ghost);drag={from,id:e.pointerId,ghost,source:e.currentTarget,target:null};drag.source.classList.add('drag-source');window.addEventListener('pointermove',moveDrag,{passive:false});window.addEventListener('pointerup',endDrag);window.addEventListener('pointercancel',cancelDrag);}
-function moveDrag(e){if(!drag||e.pointerId!==drag.id)return;e.preventDefault();drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';if(drag.target)drag.target.classList.remove('drop-target');const hovered=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');drag.target=hovered&&!hovered.classList.contains('clue')&&Number(hovered.dataset.index)!==drag.from?hovered:null;if(drag.target)drag.target.classList.add('drop-target');}
-function clearDrag(){if(!drag)return;drag.ghost.remove();drag.source.classList.remove('drag-source');if(drag.target)drag.target.classList.remove('drop-target');drag=null;window.removeEventListener('pointermove',moveDrag);window.removeEventListener('pointerup',endDrag);window.removeEventListener('pointercancel',cancelDrag);}
-function endDrag(e){if(!drag||e.pointerId!==drag.id)return;let from=drag.from,to=drag.target?Number(drag.target.dataset.index):null;clearDrag();if(to!==null)swap(from,to)}
-function cancelDrag(){clearDrag()}
-function swap(a,b){if(a===b||isClue(a)||isClue(b))return;history.push(cells.slice());[cells[a],cells[b]]=[cells[b],cells[a]];swaps++;render()}
-undo.addEventListener('click',()=>{if(!history.length)return;cells=history.pop();swaps=Math.max(0,swaps-1);document.getElementById('winModal').classList.add('hidden');render()});
-document.getElementById('restart').addEventListener('click',restart);document.getElementById('playAgain').addEventListener('click',()=>{document.getElementById('winModal').classList.add('hidden');restart()});function restart(){cells=initial.slice();history=[];swaps=0;picked=null;render()}
-document.getElementById('helpButton').addEventListener('click',()=>document.getElementById('helpModal').classList.remove('hidden'));
-document.getElementById('closeHelp').addEventListener('click',()=>document.getElementById('helpModal').classList.add('hidden'));
-render();
+function keyboardSelection(e){
+  if(e.key!=='Enter'&&e.key!==' ') return;
+  e.preventDefault();
+  const i=Number(e.currentTarget.dataset.index);
+  if(picked===null){
+    picked=i;
+    e.currentTarget.style.outline='3px solid #2d342f';
+  }else{
+    const from=picked;
+    picked=null;
+    swap(from,i);
+  }
+}
+
+function startDrag(e){
+  if(e.button!==undefined && e.button!==0) return;
+  e.preventDefault();
+  const from=Number(e.currentTarget.dataset.index);
+  const rect=e.currentTarget.getBoundingClientRect();
+  const ghost=document.createElement('div');
+  ghost.className='ghost';
+  ghost.dataset.color=color(from);
+  ghost.textContent=cells[from];
+  ghost.style.width=rect.width+'px';
+  ghost.style.height=rect.height+'px';
+  ghost.style.left=e.clientX+'px';
+  ghost.style.top=e.clientY+'px';
+  document.body.appendChild(ghost);
+  drag={from,id:e.pointerId,ghost,source:e.currentTarget,target:null};
+  drag.source.classList.add('drag-source');
+  window.addEventListener('pointermove', moveDrag, {passive:false});
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', cancelDrag);
+}
+
+function moveDrag(e){
+  if(!drag || e.pointerId!==drag.id) return;
+  e.preventDefault();
+  drag.ghost.style.left=e.clientX+'px';
+  drag.ghost.style.top=e.clientY+'px';
+  if(drag.target) drag.target.classList.remove('drop-target');
+  const hovered=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');
+  drag.target=hovered && !hovered.classList.contains('clue') && Number(hovered.dataset.index)!==drag.from ? hovered : null;
+  if(drag.target) drag.target.classList.add('drop-target');
+}
+
+function clearDrag(){
+  if(!drag) return;
+  drag.ghost.remove();
+  drag.source.classList.remove('drag-source');
+  if(drag.target) drag.target.classList.remove('drop-target');
+  drag=null;
+  window.removeEventListener('pointermove', moveDrag);
+  window.removeEventListener('pointerup', endDrag);
+  window.removeEventListener('pointercancel', cancelDrag);
+}
+
+function endDrag(e){
+  if(!drag || e.pointerId!==drag.id) return;
+  const from=drag.from;
+  const to=drag.target ? Number(drag.target.dataset.index) : null;
+  clearDrag();
+  if(to!==null) swap(from,to);
+}
+
+function cancelDrag(){ clearDrag(); }
+
+function swap(a,b){
+  if(a===b || isClue(a) || isClue(b)) return;
+  [cells[a],cells[b]]=[cells[b],cells[a]];
+  swaps++;
+  render();
+}
+
+newGameButton.addEventListener('click', nextGame);
+
+buildGame(shuffleSets[gameIndex]);
 })();
 </script>
-</body></html>
+</body>
+</html>
