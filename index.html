@@ -6,223 +6,168 @@
 <title>Neighbors — Prototype</title>
 <style>
 :root{
-  --ink:#2d342f;
+  --ink:#303733;
   --paper:#fbfbf8;
-  --tile:#dfe3de;
-  --tile-shadow:#b5bcb6;
-  --green:#9ccfa8;
-  --green-shadow:#77a986;
-  --yellow:#efd37a;
-  --yellow-shadow:#c8ac57;
-  --cream:#d9cfb8;
-  --cream-shadow:#b8ad93;
-  --board-line:#d9ddd8;
-  --button:#ffffffee;
-  --button-border:#2d342f;
-  --size:min(calc((100vw - 64px) / 4), 82px);
-  --gap:6px;
+  --gray:#e4e6e2;
+  --green:#a9d2b0;
+  --yellow:#ecd486;
+  --cream:#f0e7d4;
+  --border:#343b36;
+  --size:min(calc((100vw - 48px) / 4 - 5px), 83px);
+  --gap:7px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--paper);font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
 body{overscroll-behavior-y:contain}
 button{font:inherit;cursor:pointer}
-.main{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:20px 16px 34px}
-.wrap{width:min(100%, 430px)}
-.board-shell{position:relative;display:flex;justify-content:center}
-.board{
-  display:grid;
-  grid-template-columns:repeat(4,var(--size));
-  grid-template-rows:repeat(4,var(--size));
-  gap:var(--gap);
-  touch-action:pan-y;
-  user-select:none;
-  -webkit-user-select:none;
-}
+.main{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:28px 16px 38px}
+.wrap{width:min(100%, 430px);display:flex;flex-direction:column;align-items:center}
+.brand{font-size:32px;font-weight:820;letter-spacing:-1.4px;line-height:1;margin-bottom:31px}
+.brand span{color:#89bd99}
+.board{display:grid;grid-template-columns:repeat(4,var(--size));grid-template-rows:repeat(4,var(--size));gap:var(--gap);touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .tile{
-  position:relative;
-  border:0;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--tile);
-  color:#313832;
-  font-size:clamp(27px, 7.4vw, 38px);
-  font-weight:860;
-  letter-spacing:-1.2px;
-  box-shadow:0 4px 0 var(--tile-shadow);
-  transition:background .14s ease, transform .12s ease, box-shadow .12s ease;
-  touch-action:none;
-  -webkit-tap-highlight-color:transparent;
-  cursor:grab;
+  position:relative;border:2px solid var(--border);border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--gray);color:#303733;
+  font-size:clamp(27px,7.6vw,38px);font-weight:820;letter-spacing:-.8px;
+  box-shadow:0 4px 0 #343b36;
+  transition:background .13s ease,transform .12s ease;
+  touch-action:none;-webkit-tap-highlight-color:transparent;cursor:grab;
 }
-.tile[data-color="green"]{background:var(--green);box-shadow:0 4px 0 var(--green-shadow)}
-.tile[data-color="yellow"]{background:var(--yellow);box-shadow:0 4px 0 var(--yellow-shadow)}
-.tile[data-color="gray"]{background:var(--tile);box-shadow:0 4px 0 var(--tile-shadow)}
-.tile.clue{
-  background:var(--cream);
-  box-shadow:0 4px 0 var(--cream-shadow);
-  cursor:default;
-}
-.tile.drag-source{opacity:.23}
-.tile.drop-target{outline:3px solid #5c665f;outline-offset:-3px;transform:scale(.96)}
+.tile[data-color="green"]{background:var(--green)}
+.tile[data-color="yellow"]{background:var(--yellow)}
+.tile.clue{background:var(--cream);cursor:default}
+.tile.drag-source{opacity:.2}
+.tile.drop-target{outline:3px solid #536b59;outline-offset:-6px;transform:scale(.96)}
+.swapline{margin-top:24px;font-size:18px;font-weight:750;letter-spacing:-.2px;font-variant-numeric:tabular-nums}
 .new-game{
-  position:absolute;
-  top:10px;
-  right:10px;
-  width:38px;
-  height:38px;
-  border-radius:999px;
-  border:2px solid var(--button-border);
-  background:var(--button);
-  color:var(--ink);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:19px;
-  font-weight:800;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
-  z-index:5;
+  margin-top:18px;width:43px;height:43px;border-radius:50%;
+  border:2px solid var(--border);background:white;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 0 var(--border);
+  -webkit-tap-highlight-color:transparent;
 }
-.swapline{
-  text-align:center;
-  margin-top:18px;
-  font-size:21px;
-  font-weight:820;
-  letter-spacing:-.4px;
-  font-variant-numeric:tabular-nums;
-}
+.new-game svg{width:21px;height:21px;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.new-game:active{transform:translateY(2px);box-shadow:0 1px 0 var(--border)}
 .ghost{
-  position:fixed;
-  z-index:1000;
-  pointer-events:none;
-  touch-action:none;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#313832;
-  font-size:clamp(27px, 7.4vw, 38px);
-  font-weight:860;
-  box-shadow:0 10px 22px rgba(28,34,29,.18), 0 4px 0 rgba(0,0,0,.12);
-  transform:translate(-50%,-50%) scale(1.07);
-  will-change:left,top;
+  position:fixed;z-index:1000;pointer-events:none;touch-action:none;
+  border:2px solid var(--border);border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  color:#303733;font-size:clamp(27px,7.6vw,38px);font-weight:820;
+  box-shadow:0 9px 18px #1c221d32,0 4px 0 #343b36;
+  transform:translate(-50%,-50%) scale(1.06);will-change:left,top;
 }
 .ghost[data-color="green"]{background:var(--green)}
 .ghost[data-color="yellow"]{background:var(--yellow)}
-.ghost[data-color="gray"]{background:var(--tile)}
-@media (max-width:370px){
-  :root{--size:calc((100vw - 54px)/4);--gap:5px}
-  .swapline{font-size:19px}
-  .new-game{top:8px;right:8px;width:36px;height:36px}
-}
+.ghost[data-color="gray"]{background:var(--gray)}
+@media(max-width:370px){:root{--size:calc((100vw - 47px)/4 - 4px);--gap:6px}.brand{margin-bottom:26px}}
 </style>
 </head>
 <body>
 <main class="main">
   <div class="wrap">
-    <div class="board-shell">
-      <div class="board" id="board" aria-label="Four by four number puzzle"></div>
-      <button class="new-game" id="newGame" aria-label="New game">↻</button>
-    </div>
+    <div class="brand">neighbors<span>.</span></div>
+    <div class="board" id="board" aria-label="Four by four number puzzle"></div>
     <div class="swapline" id="swapline">Swaps 0</div>
+    <button class="new-game" id="newGame" aria-label="New game" title="New game">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M20 12a8 8 0 1 0-2.35 5.65"/></svg>
+    </button>
   </div>
 </main>
 <script>
 (()=>{
 'use strict';
 
-const permutation=[1,3,0,2];
-const base=[[0,5,6,5],[9,0,7,12],[4,13,0,4],[3,10,8,0]];
-const targets=[16,28,21,21];
-const solution=Array(16).fill(null);
-for(let r=0;r<4;r++){
-  for(let c=0;c<4;c++){
-    solution[r*4+permutation[c]]=(r===c)?null:base[r][c];
-  }
-}
-
-const movable=Array.from({length:16},(_,i)=>i).filter(i=>solution[i]!==null);
-const shuffleSets=[
-  [7,2,11,4,9,0,5,10,1,8,3,6],
-  [4,9,0,7,10,2,11,1,8,5,6,3],
-  [1,6,9,0,11,3,8,4,5,10,7,2],
-  [10,5,2,8,3,11,6,0,9,4,1,7],
-  [6,0,8,3,1,10,4,11,7,2,9,5]
+// Each board has one clue in every row and column. Its value equals
+// the sum of both its row and its column. Mirrored pair values guarantee
+// the two sums agree, even when the clue locations are changed.
+const designs=[
+  {columns:[1,3,0,2], pairs:[5,8,4,6,11,3]},
+  {columns:[2,0,3,1], pairs:[7,3,12,5,4,8]},
+  {columns:[3,1,2,0], pairs:[4,9,6,11,2,7]},
+  {columns:[0,2,1,3], pairs:[6,5,10,3,9,4]},
+  {columns:[2,3,1,0], pairs:[3,12,5,8,6,7]},
+  {columns:[1,0,2,3], pairs:[9,4,7,5,13,2]},
+  {columns:[3,2,0,1], pairs:[5,11,3,7,4,9]},
+  {columns:[0,3,2,1], pairs:[8,4,6,3,10,5]}
 ];
-
-let cells=[];
-let swaps=0;
-let drag=null;
-let gameIndex=0;
-
+const edges=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
 const board=document.getElementById('board');
 const swapline=document.getElementById('swapline');
-const newGameButton=document.getElementById('newGame');
+let solution=[],cells=[],clues=[],targets=[],movable=[],swaps=0,drag=null,picked=null;
+let gameIndex=0;
 
-const isClue=i=>solution[i]===null;
-const expectedRowForValue=v=>movable.filter(i=>solution[i]===v).map(i=>Math.floor(i/4));
-const expectedColForValue=v=>movable.filter(i=>solution[i]===v).map(i=>i%4);
-
-function color(i){
-  if(isClue(i)) return 'clue';
-  const v=cells[i];
-  if(solution[i]===v) return 'green';
-  const row=Math.floor(i/4);
-  const col=i%4;
-  return (expectedRowForValue(v).includes(row) || expectedColForValue(v).includes(col)) ? 'yellow' : 'gray';
+function seededRandom(seed){
+  return ()=>{seed=(Math.imul(1664525,seed)+1013904223)|0;return (seed>>>0)/4294967296};
 }
-
-function buildGame(fromSet){
-  const sourceValues=movable.map(i=>solution[i]);
-  cells=solution.slice();
-  movable.forEach((pos,k)=>cells[pos]=sourceValues[fromSet[k]]);
+function shuffle(list,random){
+  for(let i=list.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[list[i],list[j]]=[list[j],list[i]];}
+  return list;
+}
+function makeGame(index){
+  const design=designs[index];
+  const matrix=Array.from({length:4},()=>[0,0,0,0]);
+  edges.forEach(([a,b],j)=>{matrix[a][b]=design.pairs[j];matrix[b][a]=design.pairs[j]});
+  targets=matrix.map(row=>row.reduce((a,b)=>a+b,0));
+  solution=Array(16).fill(null);
+  for(let r=0;r<4;r++)for(let c=0;c<4;c++){
+    solution[r*4+design.columns[c]]=r===c?null:matrix[r][c];
+  }
+  clues=design.columns.map((c,r)=>r*4+c);
+  movable=Array.from({length:16},(_,i)=>i).filter(i=>solution[i]!==null);
+  const random=seededRandom(91733+index*711);
+  const anchor=movable[(index*5+2)%movable.length];
+  let candidate;
+  for(let attempt=0;attempt<2000;attempt++){
+    const other=movable.filter(i=>i!==anchor);
+    const values=shuffle(other.map(i=>solution[i]),random);
+    candidate=solution.slice();
+    other.forEach((i,k)=>candidate[i]=values[k]);
+    const green=movable.filter(i=>candidate[i]===solution[i]).length;
+    if(green>=1&&green<=3)break;
+  }
+  cells=candidate;
   swaps=0;
+  picked=null;
   render();
 }
-
-function nextGame(){
-  gameIndex=(gameIndex+1)%shuffleSets.length;
-  buildGame(shuffleSets[gameIndex]);
+function isClue(i){return solution[i]===null}
+function color(i){
+  if(isClue(i))return 'clue';
+  const value=cells[i];
+  if(solution[i]===value)return 'green';
+  const row=Math.floor(i/4),col=i%4;
+  const matches=movable.filter(j=>solution[j]===value);
+  return matches.some(j=>Math.floor(j/4)===row||j%4===col)?'yellow':'gray';
 }
-
 function render(){
   board.innerHTML='';
   for(let i=0;i<16;i++){
-    const el=document.createElement('div');
-    el.className='tile'+(isClue(i)?' clue':'');
-    el.dataset.index=i;
-    el.dataset.color=color(i);
-    el.textContent=isClue(i) ? targets[Math.floor(i/4)] : cells[i];
+    const tile=document.createElement('div');
+    tile.className='tile'+(isClue(i)?' clue':'');
+    tile.dataset.index=i;
+    tile.dataset.color=color(i);
+    tile.textContent=isClue(i)?targets[Math.floor(i/4)]:cells[i];
     if(!isClue(i)){
-      el.setAttribute('role','button');
-      el.setAttribute('tabindex','0');
-      el.setAttribute('aria-label',`Number ${cells[i]}`);
-      el.addEventListener('pointerdown', startDrag);
-      el.addEventListener('keydown', keyboardSelection);
+      tile.setAttribute('role','button');
+      tile.tabIndex=0;
+      tile.setAttribute('aria-label',`Number ${cells[i]}, ${color(i)}`);
+      tile.addEventListener('pointerdown',startDrag);
+      tile.addEventListener('keydown',keyboardSelection);
     }
-    board.appendChild(el);
+    board.appendChild(tile);
   }
   swapline.textContent=`Swaps ${swaps}`;
 }
-
-let picked=null;
 function keyboardSelection(e){
-  if(e.key!=='Enter'&&e.key!==' ') return;
+  if(e.key!=='Enter'&&e.key!==' ')return;
   e.preventDefault();
   const i=Number(e.currentTarget.dataset.index);
-  if(picked===null){
-    picked=i;
-    e.currentTarget.style.outline='3px solid #2d342f';
-  }else{
-    const from=picked;
-    picked=null;
-    swap(from,i);
-  }
+  if(picked===null){picked=i;e.currentTarget.style.outline='3px solid #303733'}
+  else{const from=picked;picked=null;swap(from,i)}
 }
-
 function startDrag(e){
-  if(e.button!==undefined && e.button!==0) return;
+  if(drag || (e.button!==undefined&&e.button!==0))return;
   e.preventDefault();
   const from=Number(e.currentTarget.dataset.index);
   const rect=e.currentTarget.getBoundingClientRect();
@@ -237,53 +182,49 @@ function startDrag(e){
   document.body.appendChild(ghost);
   drag={from,id:e.pointerId,ghost,source:e.currentTarget,target:null};
   drag.source.classList.add('drag-source');
-  window.addEventListener('pointermove', moveDrag, {passive:false});
-  window.addEventListener('pointerup', endDrag);
-  window.addEventListener('pointercancel', cancelDrag);
+  window.addEventListener('pointermove',moveDrag,{passive:false});
+  window.addEventListener('pointerup',endDrag);
+  window.addEventListener('pointercancel',cancelDrag);
 }
-
 function moveDrag(e){
-  if(!drag || e.pointerId!==drag.id) return;
+  if(!drag||e.pointerId!==drag.id)return;
   e.preventDefault();
   drag.ghost.style.left=e.clientX+'px';
   drag.ghost.style.top=e.clientY+'px';
-  if(drag.target) drag.target.classList.remove('drop-target');
+  if(drag.target)drag.target.classList.remove('drop-target');
   const hovered=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');
-  drag.target=hovered && !hovered.classList.contains('clue') && Number(hovered.dataset.index)!==drag.from ? hovered : null;
-  if(drag.target) drag.target.classList.add('drop-target');
+  drag.target=hovered&&!hovered.classList.contains('clue')&&Number(hovered.dataset.index)!==drag.from?hovered:null;
+  if(drag.target)drag.target.classList.add('drop-target');
 }
-
 function clearDrag(){
-  if(!drag) return;
+  if(!drag)return;
   drag.ghost.remove();
   drag.source.classList.remove('drag-source');
-  if(drag.target) drag.target.classList.remove('drop-target');
+  if(drag.target)drag.target.classList.remove('drop-target');
   drag=null;
-  window.removeEventListener('pointermove', moveDrag);
-  window.removeEventListener('pointerup', endDrag);
-  window.removeEventListener('pointercancel', cancelDrag);
+  window.removeEventListener('pointermove',moveDrag);
+  window.removeEventListener('pointerup',endDrag);
+  window.removeEventListener('pointercancel',cancelDrag);
 }
-
 function endDrag(e){
-  if(!drag || e.pointerId!==drag.id) return;
-  const from=drag.from;
-  const to=drag.target ? Number(drag.target.dataset.index) : null;
+  if(!drag||e.pointerId!==drag.id)return;
+  const from=drag.from,to=drag.target?Number(drag.target.dataset.index):null;
   clearDrag();
-  if(to!==null) swap(from,to);
+  if(to!==null)swap(from,to);
 }
-
-function cancelDrag(){ clearDrag(); }
-
+function cancelDrag(){clearDrag()}
 function swap(a,b){
-  if(a===b || isClue(a) || isClue(b)) return;
+  if(a===b||isClue(a)||isClue(b))return;
   [cells[a],cells[b]]=[cells[b],cells[a]];
   swaps++;
   render();
 }
-
-newGameButton.addEventListener('click', nextGame);
-
-buildGame(shuffleSets[gameIndex]);
+document.getElementById('newGame').addEventListener('click',()=>{
+  if(drag)clearDrag();
+  gameIndex=(gameIndex+1)%designs.length;
+  makeGame(gameIndex);
+});
+makeGame(gameIndex);
 })();
 </script>
 </body>
