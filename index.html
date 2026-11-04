@@ -11,12 +11,12 @@
   --gray:#e4e6e2;
   --green:#a9d2b0;
   --yellow:#ecd486;
-  --cream:#f0e7d4;
+  --cream:#e8ddc8;
   --border:#343b36;
   --gray-shadow:#b9beb9;
   --green-shadow:#86b491;
   --yellow-shadow:#cbb76f;
-  --cream-shadow:#c5baa3;
+  --cream-shadow:#baad95;
   --size:min(calc((100vw - 48px) / 4 - 5px), 83px);
   --gap:7px;
   --tile-depth:3px;
@@ -41,7 +41,8 @@ button{font:inherit;cursor:pointer}
 }
 .tile[data-color="green"]{background:var(--green);box-shadow:0 var(--tile-depth) 0 var(--green-shadow)}
 .tile[data-color="yellow"]{background:var(--yellow);box-shadow:0 var(--tile-depth) 0 var(--yellow-shadow)}
-.tile.clue{background:var(--cream);box-shadow:0 var(--tile-depth) 0 var(--cream-shadow);cursor:default}
+.tile.clue{background:var(--cream);box-shadow:0 var(--tile-depth) 0 var(--cream-shadow);cursor:default;color:#443f35}
+.tile.clue::after{content:"Σ";position:absolute;right:8px;top:5px;font-size:11px;line-height:1;font-weight:750;opacity:.45;letter-spacing:0}
 .tile.drag-source{opacity:.2}
 .tile.drop-target{outline:3px solid #536b59;outline-offset:-6px;transform:scale(.96)}
 .swapline{margin-top:24px;font-size:18px;font-weight:750;letter-spacing:-.2px;font-variant-numeric:tabular-nums}
@@ -121,16 +122,30 @@ function makeGame(index){
   clues=design.columns.map((c,r)=>r*4+c);
   movable=Array.from({length:16},(_,i)=>i).filter(i=>solution[i]!==null);
   const random=seededRandom(91733+index*711);
-  const anchor=movable[(index*5+2)%movable.length];
-  let candidate;
-  for(let attempt=0;attempt<2000;attempt++){
-    const other=movable.filter(i=>i!==anchor);
-    const values=shuffle(other.map(i=>solution[i]),random);
-    candidate=solution.slice();
-    other.forEach((i,k)=>candidate[i]=values[k]);
-    const green=movable.filter(i=>candidate[i]===solution[i]).length;
-    if(green>=1&&green<=3)break;
+  // Curate a useful starting mix: 1–2 green, 5–6 yellow, others gray.
+  // Keep actual board arrangements different across all eight designs.
+  let candidate=null;
+  let best=null, bestScore=Infinity;
+  const values=movable.map(i=>solution[i]);
+  for(let attempt=0;attempt<12000;attempt++){
+    const shuffled=shuffle(values.slice(),random);
+    const trial=solution.slice();
+    movable.forEach((i,k)=>trial[i]=shuffled[k]);
+    let greens=0,yellows=0;
+    for(const i of movable){
+      const value=trial[i];
+      if(value===solution[i]){greens++;continue;}
+      const r=Math.floor(i/4),c=i%4;
+      if(movable.some(j=>solution[j]===value && (Math.floor(j/4)===r || j%4===c))) yellows++;
+    }
+    const score=Math.min(Math.abs(greens-1),Math.abs(greens-2))*10 + Math.min(Math.abs(yellows-5),Math.abs(yellows-6));
+    if(score<bestScore){bestScore=score;best=trial;}
+    if((greens===1||greens===2)&&(yellows===5||yellows===6)){
+      candidate=trial;
+      break;
+    }
   }
+  if(!candidate)candidate=best;
   cells=candidate;
   swaps=0;
   picked=null;
