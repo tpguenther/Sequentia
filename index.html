@@ -3,79 +3,142 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>Neighbors — Prototype</title>
+<title>Neighbors — 5×5 Prototype</title>
 <style>
 :root{
   --ink:#303733;
   --paper:#fbfbf8;
   --gray:#e4e6e2;
-  --green:#a9d2b0;
-  --yellow:#ecd486;
-  --cream:#e8ddc8;
-  --border:#343b36;
-  --gray-shadow:#b9beb9;
-  --green-shadow:#86b491;
-  --yellow-shadow:#cbb76f;
-  --cream-shadow:#baad95;
-  --size:min(calc((100vw - 48px) / 4 - 5px), 83px);
-  --gap:7px;
+  --green:#84d892;
+  --yellow:#f0c84d;
+  --cream:#e7ddc8;
+  --gray-shadow:#bcc1bc;
+  --green-shadow:#62b56f;
+  --yellow-shadow:#c8a63a;
+  --cream-shadow:#bdae93;
+  --size:min(calc((100vw - 46px) / 5 - 5px), 68px);
+  --gap:6px;
   --tile-depth:3px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--paper);font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:var(--paper);
+  font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+}
 body{overscroll-behavior-y:contain}
 button{font:inherit;cursor:pointer}
-.main{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:28px 16px 38px}
-.wrap{width:min(100%, 430px);display:flex;flex-direction:column;align-items:center}
-.brand{font-size:32px;font-weight:820;letter-spacing:-1.4px;line-height:1;margin-bottom:31px}
+.main{
+  min-height:100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px 16px 38px;
+}
+.wrap{
+  width:min(100%, 430px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.brand{
+  font-size:32px;
+  font-weight:820;
+  letter-spacing:-1.4px;
+  line-height:1;
+  margin-bottom:28px;
+}
 .brand span{color:#89bd99}
-.board{display:grid;grid-template-columns:repeat(4,var(--size));grid-template-rows:repeat(4,var(--size));column-gap:var(--gap);row-gap:calc(var(--gap) + var(--tile-depth));touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.board{
+  display:grid;
+  grid-template-columns:repeat(5,var(--size));
+  grid-template-rows:repeat(5,var(--size));
+  column-gap:var(--gap);
+  row-gap:calc(var(--gap) + var(--tile-depth));
+  touch-action:pan-y;
+  user-select:none;
+  -webkit-user-select:none;
+}
 .tile{
-  position:relative;border:0;border-radius:11px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--gray);color:#303733;
-  font-size:clamp(27px,7.6vw,38px);font-weight:820;letter-spacing:-.8px;
+  position:relative;
+  border:0;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--gray);
+  color:#303733;
+  font-size:clamp(24px,6.8vw,34px);
+  font-weight:830;
+  letter-spacing:-.8px;
   box-shadow:0 var(--tile-depth) 0 var(--gray-shadow);
   transition:background .13s ease,transform .12s ease,box-shadow .13s ease;
-  touch-action:none;-webkit-tap-highlight-color:transparent;cursor:grab;
+  touch-action:none;
+  -webkit-tap-highlight-color:transparent;
+  cursor:grab;
 }
 .tile[data-color="green"]{background:var(--green);box-shadow:0 var(--tile-depth) 0 var(--green-shadow)}
 .tile[data-color="yellow"]{background:var(--yellow);box-shadow:0 var(--tile-depth) 0 var(--yellow-shadow)}
-.tile.clue{background:var(--cream);box-shadow:0 var(--tile-depth) 0 var(--cream-shadow);cursor:default;color:#443f35}
-.tile.clue::after{content:"Σ";position:absolute;right:8px;top:5px;font-size:11px;line-height:1;font-weight:750;opacity:.45;letter-spacing:0}
+.tile.clue{background:var(--cream);box-shadow:0 var(--tile-depth) 0 var(--cream-shadow);cursor:default;color:#463f34}
 .tile.drag-source{opacity:.2}
-.tile.drop-target{outline:3px solid #536b59;outline-offset:-6px;transform:scale(.96)}
-.swapline{margin-top:24px;font-size:18px;font-weight:750;letter-spacing:-.2px;font-variant-numeric:tabular-nums}
+.tile.drop-target{outline:3px solid #56725f;outline-offset:-6px;transform:scale(.96)}
+.swapline{
+  margin-top:24px;
+  font-size:18px;
+  font-weight:760;
+  letter-spacing:-.2px;
+  font-variant-numeric:tabular-nums;
+}
 .new-game{
-  margin-top:18px;width:43px;height:43px;border-radius:50%;
-  border:2px solid var(--border);background:white;color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 3px 0 var(--border);
+  margin-top:18px;
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  border:0;
+  background:white;
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 3px 0 #c7cbc7, 0 1px 8px rgba(0,0,0,.06);
   -webkit-tap-highlight-color:transparent;
 }
 .new-game svg{width:21px;height:21px;stroke:currentColor;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;fill:none}
-.new-game:active{transform:translateY(2px);box-shadow:0 1px 0 var(--border)}
+.new-game:active{transform:translateY(2px);box-shadow:0 1px 0 #c7cbc7, 0 1px 5px rgba(0,0,0,.06)}
 .ghost{
-  position:fixed;z-index:1000;pointer-events:none;touch-action:none;
-  border:0;border-radius:11px;
-  display:flex;align-items:center;justify-content:center;
-  color:#303733;font-size:clamp(27px,7.6vw,38px);font-weight:820;
-  box-shadow:0 9px 18px #1c221d32,0 3px 0 #b9beb9;
-  transform:translate(-50%,-50%) scale(1.06);will-change:left,top;
+  position:fixed;
+  z-index:1000;
+  pointer-events:none;
+  touch-action:none;
+  border:0;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#303733;
+  font-size:clamp(24px,6.8vw,34px);
+  font-weight:830;
+  transform:translate(-50%,-50%) scale(1.06);
+  will-change:left,top;
 }
-.ghost[data-color="green"]{background:var(--green);box-shadow:0 9px 18px #1c221d32,0 var(--tile-depth) 0 var(--green-shadow)}
-.ghost[data-color="yellow"]{background:var(--yellow);box-shadow:0 9px 18px #1c221d32,0 var(--tile-depth) 0 var(--yellow-shadow)}
-.ghost[data-color="gray"]{background:var(--gray);box-shadow:0 9px 18px #1c221d32,0 var(--tile-depth) 0 var(--gray-shadow)}
-@media(max-width:370px){:root{--size:calc((100vw - 47px)/4 - 4px);--gap:6px}.brand{margin-bottom:26px}}
+.ghost[data-color="green"]{background:var(--green);box-shadow:0 9px 18px rgba(28,34,29,.18),0 var(--tile-depth) 0 var(--green-shadow)}
+.ghost[data-color="yellow"]{background:var(--yellow);box-shadow:0 9px 18px rgba(28,34,29,.18),0 var(--tile-depth) 0 var(--yellow-shadow)}
+.ghost[data-color="gray"]{background:var(--gray);box-shadow:0 9px 18px rgba(28,34,29,.18),0 var(--tile-depth) 0 var(--gray-shadow)}
+@media(max-width:370px){
+  :root{--size:calc((100vw - 44px)/5 - 4px);--gap:5px}
+  .brand{margin-bottom:24px}
+}
 </style>
 </head>
 <body>
 <main class="main">
   <div class="wrap">
     <div class="brand">neighbors<span>.</span></div>
-    <div class="board" id="board" aria-label="Four by four number puzzle"></div>
+    <div class="board" id="board" aria-label="Five by five number puzzle"></div>
     <div class="swapline" id="swapline">Swaps 0</div>
-    <button class="new-game" id="newGame" aria-label="New game" title="New game">
+    <button class="new-game" id="newGame" aria-label="Next board" title="Next board">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M20 12a8 8 0 1 0-2.35 5.65"/></svg>
     </button>
   </div>
@@ -84,116 +147,138 @@ button{font:inherit;cursor:pointer}
 (()=>{
 'use strict';
 
-// Each board has one clue in every row and column. Its value equals
-// the sum of both its row and its column. Mirrored pair values guarantee
-// the two sums agree, even when the clue locations are changed.
+const size=5;
 const designs=[
-  {columns:[1,3,0,2], pairs:[5,8,4,6,11,3]},
-  {columns:[2,0,3,1], pairs:[7,3,12,5,4,8]},
-  {columns:[3,1,2,0], pairs:[4,9,6,11,2,7]},
-  {columns:[0,2,1,3], pairs:[6,5,10,3,9,4]},
-  {columns:[2,3,1,0], pairs:[3,12,5,8,6,7]},
-  {columns:[1,0,2,3], pairs:[9,4,7,5,13,2]},
-  {columns:[3,2,0,1], pairs:[5,11,3,7,4,9]},
-  {columns:[0,3,2,1], pairs:[8,4,6,3,10,5]}
+  {columns:[1,4,0,3,2], pairs:[7,12,5,9,4,11,6,8,10,13]},
+  {columns:[2,0,4,1,3], pairs:[6,9,14,5,8,4,12,7,11,10]},
+  {columns:[3,1,4,0,2], pairs:[10,4,8,13,6,9,5,12,7,11]}
 ];
-const edges=[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]];
+const edges=[];
+for(let a=0;a<size;a++) for(let b=a+1;b<size;b++) edges.push([a,b]);
+
 const board=document.getElementById('board');
 const swapline=document.getElementById('swapline');
-let solution=[],cells=[],clues=[],targets=[],movable=[],swaps=0,drag=null,picked=null;
+const newGameButton=document.getElementById('newGame');
+
+let solution=[], cells=[], targets=[], movable=[], swaps=0, drag=null, picked=null;
 let gameIndex=0;
 
 function seededRandom(seed){
   return ()=>{seed=(Math.imul(1664525,seed)+1013904223)|0;return (seed>>>0)/4294967296};
 }
-function shuffle(list,random){
-  for(let i=list.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[list[i],list[j]]=[list[j],list[i]];}
+function shuffle(list, random){
+  for(let i=list.length-1;i>0;i--){
+    const j=Math.floor(random()*(i+1));
+    [list[i],list[j]]=[list[j],list[i]];
+  }
   return list;
 }
 function makeGame(index){
   const design=designs[index];
-  const matrix=Array.from({length:4},()=>[0,0,0,0]);
+  const matrix=Array.from({length:size},()=>Array(size).fill(0));
   edges.forEach(([a,b],j)=>{matrix[a][b]=design.pairs[j];matrix[b][a]=design.pairs[j]});
-  targets=matrix.map(row=>row.reduce((a,b)=>a+b,0));
-  solution=Array(16).fill(null);
-  for(let r=0;r<4;r++)for(let c=0;c<4;c++){
-    solution[r*4+design.columns[c]]=r===c?null:matrix[r][c];
-  }
-  clues=design.columns.map((c,r)=>r*4+c);
-  movable=Array.from({length:16},(_,i)=>i).filter(i=>solution[i]!==null);
-  const random=seededRandom(91733+index*711);
-  // Curate a useful starting mix: 1–2 green, 5–6 yellow, others gray.
-  // Keep actual board arrangements different across all eight designs.
-  let candidate=null;
-  let best=null, bestScore=Infinity;
-  const values=movable.map(i=>solution[i]);
-  for(let attempt=0;attempt<12000;attempt++){
-    const shuffled=shuffle(values.slice(),random);
-    const trial=solution.slice();
-    movable.forEach((i,k)=>trial[i]=shuffled[k]);
-    let greens=0,yellows=0;
-    for(const i of movable){
-      const value=trial[i];
-      if(value===solution[i]){greens++;continue;}
-      const r=Math.floor(i/4),c=i%4;
-      if(movable.some(j=>solution[j]===value && (Math.floor(j/4)===r || j%4===c))) yellows++;
+  targets=matrix.map(row=>row.reduce((sum,v)=>sum+v,0));
+  solution=Array(size*size).fill(null);
+  for(let r=0;r<size;r++){
+    for(let c=0;c<size;c++){
+      solution[r*size + design.columns[c]] = (r===c) ? null : matrix[r][c];
     }
-    const score=Math.min(Math.abs(greens-1),Math.abs(greens-2))*10 + Math.min(Math.abs(yellows-5),Math.abs(yellows-6));
-    if(score<bestScore){bestScore=score;best=trial;}
-    if((greens===1||greens===2)&&(yellows===5||yellows===6)){
+  }
+  movable=Array.from({length:size*size},(_,i)=>i).filter(i=>solution[i]!==null);
+
+  const random=seededRandom(13891 + index*941);
+  const values=movable.map(i=>solution[i]);
+  let candidate=null;
+  let bestCandidate=null;
+  let bestScore=Infinity;
+
+  for(let attempt=0;attempt<18000;attempt++){
+    const shuffled=shuffle(values.slice(), random);
+    const trial=solution.slice();
+    movable.forEach((pos,k)=>trial[pos]=shuffled[k]);
+    const info=countColors(trial);
+    const score =
+      Math.min(Math.abs(info.greens-3), Math.abs(info.greens-4)) * 20 +
+      Math.min(Math.abs(info.yellows-8), Math.abs(info.yellows-9)) * 6 +
+      Math.abs(info.grays - (20 - info.greens - info.yellows));
+
+    if(score<bestScore){
+      bestScore=score;
+      bestCandidate=trial;
+    }
+    if((info.greens===3 || info.greens===4) && (info.yellows===8 || info.yellows===9)){
       candidate=trial;
       break;
     }
   }
-  if(!candidate)candidate=best;
-  cells=candidate;
+
+  cells=(candidate || bestCandidate).slice();
   swaps=0;
   picked=null;
   render();
 }
 function isClue(i){return solution[i]===null}
-function color(i){
-  if(isClue(i))return 'clue';
-  const value=cells[i];
-  if(solution[i]===value)return 'green';
-  const row=Math.floor(i/4),col=i%4;
-  const matches=movable.filter(j=>solution[j]===value);
-  return matches.some(j=>Math.floor(j/4)===row||j%4===col)?'yellow':'gray';
+function matchesForValue(value){
+  return movable.filter(i=>solution[i]===value);
+}
+function colorForValueAtIndex(arr, i){
+  if(solution[i]===null) return 'clue';
+  const value=arr[i];
+  if(solution[i]===value) return 'green';
+  const row=Math.floor(i/size), col=i%size;
+  const matches=matchesForValue(value);
+  return matches.some(j=>Math.floor(j/size)===row || j%size===col) ? 'yellow' : 'gray';
+}
+function countColors(arr){
+  let greens=0, yellows=0, grays=0;
+  for(const i of movable){
+    const color=colorForValueAtIndex(arr,i);
+    if(color==='green') greens++;
+    else if(color==='yellow') yellows++;
+    else grays++;
+  }
+  return {greens,yellows,grays};
 }
 function render(){
   board.innerHTML='';
-  for(let i=0;i<16;i++){
+  for(let i=0;i<size*size;i++){
     const tile=document.createElement('div');
     tile.className='tile'+(isClue(i)?' clue':'');
     tile.dataset.index=i;
-    tile.dataset.color=color(i);
-    tile.textContent=isClue(i)?targets[Math.floor(i/4)]:cells[i];
+    tile.dataset.color=colorForValueAtIndex(cells,i);
+    tile.textContent=isClue(i) ? targets[Math.floor(i/size)] : cells[i];
     if(!isClue(i)){
       tile.setAttribute('role','button');
       tile.tabIndex=0;
-      tile.setAttribute('aria-label',`Number ${cells[i]}, ${color(i)}`);
-      tile.addEventListener('pointerdown',startDrag);
-      tile.addEventListener('keydown',keyboardSelection);
+      tile.setAttribute('aria-label',`Number ${cells[i]}, ${tile.dataset.color}`);
+      tile.addEventListener('pointerdown', startDrag);
+      tile.addEventListener('keydown', keyboardSelection);
     }
     board.appendChild(tile);
   }
   swapline.textContent=`Swaps ${swaps}`;
 }
 function keyboardSelection(e){
-  if(e.key!=='Enter'&&e.key!==' ')return;
+  if(e.key!=='Enter' && e.key!==' ') return;
   e.preventDefault();
   const i=Number(e.currentTarget.dataset.index);
-  if(picked===null){picked=i;e.currentTarget.style.outline='3px solid #303733'}
-  else{const from=picked;picked=null;swap(from,i)}
+  if(picked===null){
+    picked=i;
+    e.currentTarget.style.outline='3px solid #303733';
+  }else{
+    const from=picked;
+    picked=null;
+    swap(from,i);
+  }
 }
 function startDrag(e){
-  if(drag || (e.button!==undefined&&e.button!==0))return;
+  if(drag || (e.button!==undefined && e.button!==0)) return;
   e.preventDefault();
   const from=Number(e.currentTarget.dataset.index);
   const rect=e.currentTarget.getBoundingClientRect();
   const ghost=document.createElement('div');
   ghost.className='ghost';
-  ghost.dataset.color=color(from);
+  ghost.dataset.color=colorForValueAtIndex(cells, from);
   ghost.textContent=cells[from];
   ghost.style.width=rect.width+'px';
   ghost.style.height=rect.height+'px';
@@ -202,45 +287,46 @@ function startDrag(e){
   document.body.appendChild(ghost);
   drag={from,id:e.pointerId,ghost,source:e.currentTarget,target:null};
   drag.source.classList.add('drag-source');
-  window.addEventListener('pointermove',moveDrag,{passive:false});
-  window.addEventListener('pointerup',endDrag);
-  window.addEventListener('pointercancel',cancelDrag);
+  window.addEventListener('pointermove', moveDrag, {passive:false});
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', cancelDrag);
 }
 function moveDrag(e){
-  if(!drag||e.pointerId!==drag.id)return;
+  if(!drag || e.pointerId!==drag.id) return;
   e.preventDefault();
   drag.ghost.style.left=e.clientX+'px';
   drag.ghost.style.top=e.clientY+'px';
-  if(drag.target)drag.target.classList.remove('drop-target');
+  if(drag.target) drag.target.classList.remove('drop-target');
   const hovered=document.elementFromPoint(e.clientX,e.clientY)?.closest('.tile');
-  drag.target=hovered&&!hovered.classList.contains('clue')&&Number(hovered.dataset.index)!==drag.from?hovered:null;
-  if(drag.target)drag.target.classList.add('drop-target');
+  drag.target = hovered && !hovered.classList.contains('clue') && Number(hovered.dataset.index)!==drag.from ? hovered : null;
+  if(drag.target) drag.target.classList.add('drop-target');
 }
 function clearDrag(){
-  if(!drag)return;
+  if(!drag) return;
   drag.ghost.remove();
   drag.source.classList.remove('drag-source');
-  if(drag.target)drag.target.classList.remove('drop-target');
+  if(drag.target) drag.target.classList.remove('drop-target');
   drag=null;
-  window.removeEventListener('pointermove',moveDrag);
-  window.removeEventListener('pointerup',endDrag);
-  window.removeEventListener('pointercancel',cancelDrag);
+  window.removeEventListener('pointermove', moveDrag);
+  window.removeEventListener('pointerup', endDrag);
+  window.removeEventListener('pointercancel', cancelDrag);
 }
 function endDrag(e){
-  if(!drag||e.pointerId!==drag.id)return;
-  const from=drag.from,to=drag.target?Number(drag.target.dataset.index):null;
+  if(!drag || e.pointerId!==drag.id) return;
+  const from=drag.from;
+  const to=drag.target ? Number(drag.target.dataset.index) : null;
   clearDrag();
-  if(to!==null)swap(from,to);
+  if(to!==null) swap(from,to);
 }
-function cancelDrag(){clearDrag()}
+function cancelDrag(){ clearDrag(); }
 function swap(a,b){
-  if(a===b||isClue(a)||isClue(b))return;
+  if(a===b || isClue(a) || isClue(b)) return;
   [cells[a],cells[b]]=[cells[b],cells[a]];
   swaps++;
   render();
 }
-document.getElementById('newGame').addEventListener('click',()=>{
-  if(drag)clearDrag();
+newGameButton.addEventListener('click', ()=>{
+  if(drag) clearDrag();
   gameIndex=(gameIndex+1)%designs.length;
   makeGame(gameIndex);
 });
