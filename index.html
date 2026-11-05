@@ -897,6 +897,15 @@ html,body{background:#FAFAF8!important;color:#303A40!important;}
   margin-bottom:0!important;
 }
 </style>
+
+<style id="neighbors-dotsoku-review">
+/* Identical chevron shape, round button and spacing to Dotsoku. */
+#game-screen .review-controls{display:flex;align-items:center;justify-content:center;gap:52px!important;margin:16px auto 4px;padding:0!important;}
+#game-screen .review-controls[hidden]{display:none!important;}
+#game-screen .review-controls .review-arrow.NUM_REVIEW{display:grid!important;place-items:center!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;padding:0!important;border:1px solid #c7c9c6!important;border-radius:50%!important;background:#FAFAF8!important;color:#46545A!important;box-shadow:0 2px 5px rgba(47,58,64,.06)!important;cursor:pointer;}
+#game-screen .review-controls .review-arrow svg{display:block!important;width:26px!important;height:26px!important;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important;}
+#game-screen .review-controls .review-arrow:disabled{opacity:.27!important;box-shadow:none!important;cursor:default;}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #1</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
@@ -907,7 +916,7 @@ html,body{background:#FAFAF8!important;color:#303A40!important;}
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #1</div>
 <div class="inline-result" hidden="" id="result"><div class="completion-panel"><h2>Well played!</h2><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button class="inline-review-link" id="review">Review puzzle</button></div>
-<div class="review-controls" hidden="" id="review-controls"><button aria-label="Previous step" id="review-prev">‹</button><span id="review-position">0 / 0</span><button aria-label="Next step" id="review-next">›</button></div>
+<div class="review-controls" hidden="" id="review-controls"><button aria-label="Previous move" class="review-arrow NUM_REVIEW" id="review-prev" title="Previous move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></button><button aria-label="Next move" class="review-arrow NUM_REVIEW" id="review-next" title="Next move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button></div>
 <button class="plain-reset review-exit" hidden="" id="review-exit">Exit Review</button>
 <div class="reset-row"><button class="plain-reset" id="reset">↻ Reset board</button></div>
 <div class="key" id="key"><span><i class="mini circle"></i>Swipe up</span><span><i class="mini square"></i>Swipe down</span><span>Tap to clear</span></div>
@@ -922,7 +931,7 @@ const clueCounts=Object.fromEntries(clues.map(i=>[i,neighbors(i).filter(j=>solut
 const $=id=>document.getElementById(id),board=$('board');
 const STORAGE='neighbors_demo_v4';
 let cells=Array(36).fill(null),complete=false,started=false,reviewing=false;
-let clockMs=0,clockStart=0,clockRunning=false,history=[],reviewIndex=0,doneTime='',waveTimers=[];
+let clockMs=0,clockStart=0,clockRunning=false,history=[],reviewIndex=0,reviewFrames=[],doneTime='',waveTimers=[];
 let soundEnabled=true,audioCtx=null;
 function initial(){cells=Array(36).fill(null);for(const i of clues)cells[i]=solution[i]}
 function isGood(){if(cells.some(v=>v===null))return false;for(let r=0;r<6;r++){if(Array.from({length:6},(_,c)=>cells[r*6+c]).filter(v=>v===1).length!==3)return false;if(Array.from({length:6},(_,c)=>cells[c*6+r]).filter(v=>v===1).length!==3)return false}return clues.every(i=>neighbors(i).filter(j=>cells[j]===cells[i]).length===clueCounts[i])}
@@ -964,20 +973,40 @@ function completeGame(){clearPending();pauseClock();complete=true;doneTime=forma
 function showResult(){if(!complete||reviewing)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('result').hidden=false;$('key').hidden=true;$('reset').hidden=true}
 function renderUI(){paint();$('start-overlay').hidden=started;$('result').hidden=true;$('review-controls').hidden=!reviewing;$('review-exit').hidden=!reviewing;$('key').hidden=complete||reviewing;$('reset').hidden=complete||reviewing;if(complete&&!reviewing)showResult();if(reviewing)$('puzzle-label').textContent='Review · Puzzle #1';else $('puzzle-label').textContent='Puzzle #1'}
 function play(){started=true;$('start-overlay').hidden=true;startClock();save()}
-function reset(){if(!window.confirm('Reset this puzzle? Your progress and timer will be cleared.'))return;clearPending();clearWave();pauseClock();clockMs=0;complete=false;reviewing=false;started=false;doneTime='';initial();history=[cells.slice()];renderUI();save()}
-function review(){if(!complete)return;clearWave();reviewing=true;reviewIndex=history.length-1;updateReview()}
-function updateReview(){let saved=history[reviewIndex];if(saved)cells=saved.slice();paint();$('result').hidden=true;$('review-controls').hidden=false;$('review-exit').hidden=false;$('key').hidden=true;$('reset').hidden=true;$('puzzle-label').textContent='Review · Puzzle #1';$('review-position').textContent=`${reviewIndex+1} / ${history.length}`;$('review-prev').disabled=reviewIndex<=0;$('review-next').disabled=reviewIndex>=history.length-1}
-function exitReview(){reviewing=false;cells=history[history.length-1].slice();renderUI()}
+function reset(){if(!window.confirm('Reset this puzzle? Your progress and timer will be cleared.'))return;clearPending();clearWave();pauseClock();clockMs=0;complete=false;reviewing=false;started=false;doneTime='';reviewFrames=[];initial();history=[cells.slice()];renderUI();save()}
+// Replay only the last, correct placement of each non-clue cell, in its
+// original chronological order. Corrections, clears and wrong guesses are omitted.
+function makeReviewFrames(){
+ const initialFrame=Array(36).fill(null);
+ for(const i of clues)initialFrame[i]=solution[i];
+ const placements=[];
+ for(let i=0;i<36;i++){
+  if(clues.includes(i))continue;
+  let last=-1;
+  for(let t=1;t<history.length;t++){
+   if(history[t][i]===solution[i]&&history[t-1][i]!==solution[i])last=t;
+  }
+  // Older or incomplete histories still show the full solution.
+  placements.push({i,order:last<0?Number.MAX_SAFE_INTEGER+i:last});
+ }
+ placements.sort((a,b)=>a.order-b.order||a.i-b.i);
+ const frames=[initialFrame];
+ for(const {i} of placements){const next=frames[frames.length-1].slice();next[i]=solution[i];frames.push(next)}
+ return frames;
+}
+function review(){if(!complete)return;clearWave();reviewing=true;reviewFrames=makeReviewFrames();reviewIndex=reviewFrames.length-1;updateReview()}
+function updateReview(){const saved=reviewFrames[reviewIndex];if(saved)cells=saved.slice();paint();$('result').hidden=true;$('review-controls').hidden=false;$('review-exit').hidden=false;$('key').hidden=true;$('reset').hidden=true;$('puzzle-label').textContent='Review · Puzzle #1';$('review-prev').disabled=reviewIndex<=0;$('review-next').disabled=reviewIndex>=reviewFrames.length-1}
+function exitReview(){reviewing=false;cells=solution.slice();renderUI();playWave()}
 async function share(){let msg=`Neighbors #1\nSolved in ${doneTime}\nYour turn`;try{if(navigator.share){await navigator.share({text:msg});return}if(navigator.clipboard){await navigator.clipboard.writeText(msg);$('share').querySelector('span:last-child').textContent='Copied!';setTimeout(()=>$('share').querySelector('span:last-child').textContent='Share',1400)}}catch{}}
 const dialog=$('rules-screen'),help=$('help'),closeHelp=$('rules-back');let shouldResume=false;
 function openHelp(){shouldResume=clockRunning;pauseClock();dialog.hidden=false;document.body.style.overflow='hidden';closeHelp.focus()}
-function hideHelp(){dialog.hidden=true;document.body.style.overflow='';help.focus();if(shouldResume)startClock();shouldResume=false;save()}
+function hideHelp(){dialog.hidden=true;document.body.style.overflow='';help.focus();if(shouldResume)startClock();shouldResume=false;save();if(complete&&!reviewing)playWave()}
 help.addEventListener('click',openHelp);$('start-help').addEventListener('click',openHelp);closeHelp.addEventListener('click',hideHelp);
-const stats=$('stats-modal');$('stats').addEventListener('click',()=>{pauseClock();$('stats-summary').textContent='Puzzles Solved: '+(complete?'1':'0');stats.classList.add('open');stats.setAttribute('aria-hidden','false')});function closeStats(){stats.classList.remove('open');stats.setAttribute('aria-hidden','true');startClock();save()}$('close-stats').addEventListener('click',closeStats);stats.addEventListener('click',e=>{if(e.target===stats)closeStats()});
+const stats=$('stats-modal');$('stats').addEventListener('click',()=>{pauseClock();$('stats-summary').textContent='Puzzles Solved: '+(complete?'1':'0');stats.classList.add('open');stats.setAttribute('aria-hidden','false')});function closeStats(){stats.classList.remove('open');stats.setAttribute('aria-hidden','true');startClock();save();if(complete&&!reviewing)playWave()}$('close-stats').addEventListener('click',closeStats);stats.addEventListener('click',e=>{if(e.target===stats)closeStats()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!dialog.hidden)hideHelp();if(stats.classList.contains('open'))closeStats()}});
-$('play').addEventListener('click',play);$('reset').addEventListener('click',reset);$('share').addEventListener('click',share);$('review').addEventListener('click',review);$('review-prev').addEventListener('click',()=>{if(reviewIndex>0){reviewIndex--;updateReview()}});$('review-next').addEventListener('click',()=>{if(reviewIndex<history.length-1){reviewIndex++;updateReview()}});$('review-exit').addEventListener('click',exitReview);
+$('play').addEventListener('click',play);$('reset').addEventListener('click',reset);$('share').addEventListener('click',share);$('review').addEventListener('click',review);$('review-prev').addEventListener('click',()=>{if(reviewIndex>0){reviewIndex--;updateReview()}});$('review-next').addEventListener('click',()=>{if(reviewIndex<reviewFrames.length-1){reviewIndex++;updateReview()}});$('review-exit').addEventListener('click',exitReview);
 $('sound').addEventListener('click',()=>{soundEnabled=!soundEnabled;$('sound').setAttribute('aria-pressed',String(soundEnabled));$('sound').setAttribute('aria-label',soundEnabled?'Mute sound':'Unmute sound');});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(dialog.hidden&&!stats.classList.contains('open'))startClock()});window.addEventListener('pagehide',()=>{pauseClock();save()});
-load();renderUI();if(started&&!complete)startClock();
+document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(dialog.hidden&&!stats.classList.contains('open')){if(complete&&!reviewing)playWave();else startClock()}});window.addEventListener('pagehide',()=>{pauseClock();save()});
+load();renderUI();if(started&&!complete)startClock();else if(complete)requestAnimationFrame(()=>playWave());
 })();
 </script></body></html>
