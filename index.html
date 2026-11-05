@@ -796,10 +796,12 @@ html,body{background:#FAFAF8!important;color:#303A40!important;}
    interaction remain the same. */
 #game-screen .board-stage {
   box-sizing: border-box;
-  width: min(calc(100vw - 24px), 420px);
+  width: min(100%, calc(100vw - 24px), 420px);
   max-width: 420px;
-  margin-inline: auto;
-  flex: 0 0 auto;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  align-self: center !important;
+  flex: 0 1 auto;
 }
 #game-screen .board-stage .board {
   box-sizing: border-box;
@@ -825,24 +827,24 @@ html,body{background:#FAFAF8!important;color:#303A40!important;}
 .board .piece.yellow,.board .clue-ring.yellow{
   box-shadow:inset 0 1.5px 0 rgba(255,255,255,.17),inset 0 -3px 0 rgba(124,94,25,.17);
 }
-/* A short directional settle follows each successful swipe. */
+/* A clear but restrained directional settle follows each successful swipe. */
 .board:not(.wave) .piece.just-placed{
-  animation:neighbor-piece-settle .15s cubic-bezier(.2,.75,.25,1) both;
+  animation:neighbor-piece-settle .23s cubic-bezier(.19,.74,.24,1) both;
 }
 @keyframes neighbor-piece-settle{
-  0%{transform:translateY(var(--placement-from,0px)) scale(.94);opacity:.83}
-  72%{transform:translateY(1px) scale(1.025);opacity:1}
+  0%{transform:translateY(var(--placement-from,0px)) scale(.84);opacity:.65}
+  65%{transform:translateY(1px) scale(1.065);opacity:1}
   100%{transform:translateY(0) scale(1);opacity:1}
 }
-/* Completion: one left-to-right pulse, with no return pass or vertical lift. */
+/* Completion: one left-to-right ripple of enlargement, then contraction. */
 .board.wave .piece,.board.wave .clue-ring{
-  animation:neighbor-complete-ripple .46s ease-in-out both;
-  animation-delay:calc(var(--wave-order,0)*94ms);
+  animation:neighbor-complete-ripple .52s cubic-bezier(.33,0,.3,1) both;
+  animation-delay:calc(var(--wave-order,0)*105ms);
   will-change:transform;
 }
 @keyframes neighbor-complete-ripple{
   0%,100%{transform:scale(1);filter:brightness(1)}
-  48%{transform:scale(1.045);filter:brightness(1.035)}
+  44%{transform:scale(1.105);filter:brightness(1.045)}
 }
 @media (prefers-reduced-motion:reduce){
   .board:not(.wave) .piece.just-placed,.board.wave .piece,.board.wave .clue-ring{animation:none!important}
@@ -885,7 +887,7 @@ function save(){try{localStorage.setItem(STORAGE,JSON.stringify({cells,started,c
 function load(){initial();try{let v=JSON.parse(localStorage.getItem(STORAGE)||'null');if(!v||!Array.isArray(v.cells)||v.cells.length!==36)return;for(let i=0;i<36;i++)if(clues.includes(i)&&v.cells[i]!==solution[i])return;cells=v.cells.map((x,i)=>clues.includes(i)?solution[i]:(x===0||x===1?x:null));started=!!v.started;complete=!!v.complete&&isGood();clockMs=Number.isFinite(v.clockMs)?Math.max(0,v.clockMs):0;doneTime=typeof v.doneTime==='string'?v.doneTime:'';history=Array.isArray(v.history)?v.history.filter(s=>Array.isArray(s)&&s.length===36):[];if(!history.length)history=[cells.slice()];}catch{initial()}}
 function tone(){if(!soundEnabled)return;try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();const t=audioCtx.currentTime;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(330,t);o.frequency.exponentialRampToValueAtTime(180,t+.065);g.gain.setValueAtTime(.035,t);g.gain.exponentialRampToValueAtTime(.001,t+.085);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+.09)}catch{}}
 let freshPlacement=-1;
-function paint(){board.replaceChildren();for(let i=0;i<36;i++){let b=document.createElement('button');b.className='cell'+(clues.includes(i)?' clue':'');b.type='button';let value=cells[i];let p;if(clues.includes(i)){p=document.createElement('span');p.className='clue-ring '+(value===1?'blue':'yellow');p.textContent=clueCounts[i];b.append(p);b.setAttribute('aria-label',`${value===1?'Blue':'Yellow'} fixed clue ${clueCounts[i]}`);const n=neighbors(i),count=n.filter(j=>cells[j]===value).length,blank=n.filter(j=>cells[j]===null).length;if(!reviewing&&(count>clueCounts[i]||count+blank<clueCounts[i]))b.classList.add('bad')}else{if(value!==null){p=document.createElement('span');p.className='piece '+(value===1?'blue':'yellow');if(i===freshPlacement){p.classList.add('just-placed');p.style.setProperty('--placement-from',value===1?'8px':'-8px')}b.append(p)}b.setAttribute('aria-label',`Row ${1+(i/6|0)}, column ${1+i%6}: ${value===null?'blank':value===1?'blue circle':'yellow square'}`);let gesture=null;
+function paint(){board.replaceChildren();for(let i=0;i<36;i++){let b=document.createElement('button');b.className='cell'+(clues.includes(i)?' clue':'');b.type='button';let value=cells[i];let p;if(clues.includes(i)){p=document.createElement('span');p.className='clue-ring '+(value===1?'blue':'yellow');p.textContent=clueCounts[i];b.append(p);b.setAttribute('aria-label',`${value===1?'Blue':'Yellow'} fixed clue ${clueCounts[i]}`);const n=neighbors(i),count=n.filter(j=>cells[j]===value).length,blank=n.filter(j=>cells[j]===null).length;if(!reviewing&&(count>clueCounts[i]||count+blank<clueCounts[i]))b.classList.add('bad')}else{if(value!==null){p=document.createElement('span');p.className='piece '+(value===1?'blue':'yellow');if(i===freshPlacement){p.classList.add('just-placed');p.style.setProperty('--placement-from',value===1?'13px':'-13px')}b.append(p)}b.setAttribute('aria-label',`Row ${1+(i/6|0)}, column ${1+i%6}: ${value===null?'blank':value===1?'blue circle':'yellow square'}`);let gesture=null;
 b.addEventListener('pointerdown',e=>{
  if(!started||complete||reviewing||(e.pointerType==='mouse'&&e.button!==0))return;
  e.preventDefault();gesture={id:e.pointerId,x:e.clientX,y:e.clientY};
@@ -910,7 +912,7 @@ function clearPending(){}
 function set(i,v){if(!started||complete||reviewing)return;if(cells[i]===v)return;cells[i]=v;freshPlacement=v===null?-1:i;history.push(cells.slice());tone();paint();if(isGood()){completeGame()}else save()}
 
 function clearWave(){for(let t of waveTimers)clearTimeout(t);waveTimers=[];board.classList.remove('wave')}
-function playWave(){clearWave();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult();return}void board.offsetWidth;board.classList.add('wave');waveTimers.push(setTimeout(()=>{board.classList.remove('wave');showResult()},1010))}
+function playWave(){clearWave();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult();return}void board.offsetWidth;board.classList.add('wave');waveTimers.push(setTimeout(()=>{board.classList.remove('wave');showResult()},1120))}
 function completeGame(){clearPending();pauseClock();complete=true;doneTime=formatTime(elapsed());save();playWave()}
 function showResult(){if(!complete||reviewing)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('result').hidden=false;$('key').hidden=true;$('reset').hidden=true}
 function renderUI(){paint();$('start-overlay').hidden=started;$('result').hidden=true;$('review-controls').hidden=!reviewing;$('review-exit').hidden=!reviewing;$('key').hidden=complete||reviewing;$('reset').hidden=complete||reviewing;if(complete&&!reviewing)showResult();if(reviewing)$('puzzle-label').textContent='Review · Puzzle #1';else $('puzzle-label').textContent='Puzzle #1'}
