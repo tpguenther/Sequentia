@@ -1276,26 +1276,26 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
 
 
 <style id="neighbors-start-blur-faded">
-/* White wash sits below the crisp modal. There is no blur. */
-#game-screen .wrap{position:relative;}
-#game-screen .start-overlay{position:absolute;z-index:30;overflow:visible!important;pointer-events:none;}
-#game-screen .start-overlay::before{
+/* The wash belongs to the board layer only; never wash the start card. */
+#game-screen .board-stage{position:relative;isolation:isolate;}
+#game-screen .start-overlay{position:absolute;z-index:30!important;overflow:visible!important;pointer-events:none;}
+#game-screen .start-overlay::before{display:none!important;content:none!important;}
+#game-screen .board-stage .board{position:relative;z-index:0;}
+body:not(.neighbors-started) #game-screen .board-stage::after{
   content:"";
-  display:block!important;
   position:absolute;
-  top:-22px; right:-18px; bottom:-87px; left:-18px;
-  z-index:0;pointer-events:none;
-  background:rgba(250,250,248,.75);
-  backdrop-filter:none;
-  -webkit-backdrop-filter:none;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 84%,transparent 100%);
-  mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 84%,transparent 100%);
+  inset:-16px -12px -18px;
+  z-index:4;
+  pointer-events:none;
+  background:rgba(250,250,248,.56);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 88%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 88%,transparent 100%);
 }
 #game-screen .start-actions{position:relative;z-index:2;filter:none!important;opacity:1!important;}
-/* No gesture legend until Play. Preserve its space to prevent the board from jumping. */
+/* Legend remains visible but understated before play, without touching the modal. */
 #game-screen #key{transition:opacity .24s ease,visibility .24s;}
-body:not(.neighbors-started) #game-screen #key{opacity:0;visibility:hidden;pointer-events:none;filter:none;}
-body.neighbors-started #game-screen #key{opacity:1;visibility:visible;filter:none;}
+body:not(.neighbors-started) #game-screen #key{opacity:.54!important;visibility:visible!important;pointer-events:none;filter:none!important;}
+body.neighbors-started #game-screen #key{opacity:1!important;visibility:visible!important;filter:none!important;}
 </style>
 </head><body>
 <main id="game-screen">
