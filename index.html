@@ -1318,6 +1318,15 @@ body.neighbors-started #game-screen #key{opacity:1!important;visibility:visible!
   #game-screen .key { gap:10px !important; }
 }
 </style>
+
+<style id="neighbors-refined-start-card-border">
+/* Align the start card's edge treatment with the simplified board.
+   Preserve panel geometry, color, interior spacing, and existing shadow. */
+#game-screen .start-actions {
+  border:1px solid #A8AEAA !important;
+  border-radius:14px !important;
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #6</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
