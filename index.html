@@ -1274,6 +1274,30 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
 }
 </style>
 
+
+<style id="neighbors-start-blur-faded">
+/* The backdrop sits INSIDE the start overlay, underneath the crisp modal.
+   The board and legend are softened without blurring their parent container. */
+#game-screen .wrap{position:relative;}
+#game-screen .start-overlay{position:absolute;z-index:30;overflow:visible!important;pointer-events:none;}
+#game-screen .start-overlay::before{
+  content:"";
+  display:block!important;
+  position:absolute;
+  top:-22px; right:-18px; bottom:-87px; left:-18px;
+  z-index:0;pointer-events:none;
+  background:rgba(255,253,248,.09);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 84%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 84%,transparent 100%);
+}
+#game-screen .start-actions{position:relative;z-index:2;filter:none!important;opacity:1!important;}
+/* Matching soft treatment for the below-board move legend. */
+#game-screen #key{transition:filter .28s ease,opacity .28s ease;}
+body:not(.neighbors-started) #game-screen #key{filter:blur(2.5px);opacity:.72;}
+body.neighbors-started #game-screen #key{filter:none;opacity:1;}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #6</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
