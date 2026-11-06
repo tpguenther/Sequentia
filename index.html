@@ -1287,15 +1287,15 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
   top:-22px; right:-18px; bottom:-87px; left:-18px;
   z-index:0;pointer-events:none;
   background:rgba(255,253,248,.09);
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
   -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 84%,transparent 100%);
   mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 84%,transparent 100%);
 }
 #game-screen .start-actions{position:relative;z-index:2;filter:none!important;opacity:1!important;}
 /* Matching soft treatment for the below-board move legend. */
 #game-screen #key{transition:filter .28s ease,opacity .28s ease;}
-body:not(.neighbors-started) #game-screen #key{filter:blur(2.5px);opacity:.72;}
+body:not(.neighbors-started) #game-screen #key{filter:blur(1.75px);opacity:.72;}
 body.neighbors-started #game-screen #key{filter:none;opacity:1;}
 </style>
 </head><body>
