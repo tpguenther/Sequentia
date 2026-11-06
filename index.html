@@ -1128,7 +1128,19 @@ function clearPending(){}
 function set(i,v){if(!started||complete||reviewing)return;if(cells[i]===v)return;cells[i]=v;freshPlacement=v===null?-1:i;history.push(cells.slice());tone();paint();if(isGood()){completeGame()}else save()}
 
 function clearWave(){for(let t of waveTimers)clearTimeout(t);waveTimers=[];board.classList.remove('wave')}
-function playWave(){clearWave();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult();return}void board.offsetWidth;board.classList.add('wave');waveTimers.push(setTimeout(()=>{board.classList.remove('wave');showResult()},1430))}
+function playWave(){
+ clearWave();
+ // The final piece's placement animation must not resume after the ripple ends.
+ // Remove its trigger before applying the wave animation to the board.
+ for(const piece of board.querySelectorAll('.piece.just-placed')){
+  piece.classList.remove('just-placed');
+  piece.style.removeProperty('--placement-from');
+ }
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult();return}
+ void board.offsetWidth;
+ board.classList.add('wave');
+ waveTimers.push(setTimeout(()=>{board.classList.remove('wave');showResult()},1430));
+}
 function completeGame(){clearPending();pauseClock();complete=true;doneTime=formatTime(elapsed());save();playWave()}
 function showResult(){if(!complete||reviewing)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('result').hidden=false;$('key').hidden=true}
 function renderUI(){document.body.classList.toggle('neighbors-started',started);paint();$('start-overlay').hidden=started;$('result').hidden=true;$('review-controls').hidden=!reviewing;$('review-exit').hidden=!reviewing;$('key').hidden=complete||reviewing;if(complete&&!reviewing)showResult();if(reviewing)$('puzzle-label').textContent='Review · Puzzle #6';else $('puzzle-label').textContent='Puzzle #6'}
