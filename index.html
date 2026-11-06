@@ -1215,6 +1215,47 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
   font-weight:550 !important;
 }
 </style>
+
+<style id="neighbors-compact-finish-and-legend-spacing">
+/* Keep the swipe guide visually separate from the board while playing. */
+#game-screen .key{margin-top:28px!important;}
+
+/* Completion lives on the same page surface, not in a full-width gray band. */
+#game-screen .inline-result{
+  width:100%!important;
+  padding:18px 0 8px!important;
+  gap:12px!important;
+  background:transparent!important;
+}
+#game-screen .inline-result .completion-panel{
+  box-sizing:border-box!important;
+  width:auto!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  padding:0!important;
+  position:static!important;
+  left:auto!important;right:auto!important;transform:none!important;
+  background:transparent!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  gap:4px!important;
+}
+#game-screen .inline-result .completion-panel .inline-time-label{
+  margin:0!important;
+  color:#697873!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  line-height:1.3!important;
+}
+#game-screen .inline-result .completion-panel #finish-time{
+  margin:0!important;
+  font-size:25px!important;
+  font-weight:550!important;
+  line-height:1.2!important;
+  color:#2F3A40!important;
+  font-variant-numeric:tabular-nums!important;
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #6</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
@@ -1224,7 +1265,7 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
 <div class="start-overlay" id="start-overlay"><div class="start-actions"><h2 class="start-panel-brand">neighbors</h2><div class="start-panel-number" id="start-panel-number">Puzzle #6</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #6</div>
-<div class="inline-result" hidden="" id="result"><div class="completion-panel"><h2>Well played!</h2><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button class="inline-review-link" id="review">Review puzzle</button></div>
+<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button class="inline-review-link" id="review">Review puzzle</button></div>
 <div class="review-controls" hidden="" id="review-controls"><button aria-label="Previous move" class="review-arrow NUM_REVIEW" id="review-prev" title="Previous move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></button><button aria-label="Next move" class="review-arrow NUM_REVIEW" id="review-next" title="Next move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button></div>
 <button class="plain-reset review-exit" hidden="" id="review-exit">Exit Review</button>
 
