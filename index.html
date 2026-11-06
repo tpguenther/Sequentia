@@ -1068,7 +1068,7 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
 </style>
 
 <style id="neighbors-simplified-grid-override">
-  :root{--board-line:#ddd9cd;--board-outline:#ddd9cd;--board-corner:8px;}
+  :root{--board-line:#d2cec4;--board-outline:#d2cec4;--board-corner:8px;}
   /* Simplified board treatment: one continuous surface with thin dividers */
   .board-stage{margin-inline:auto;}
   .board{
@@ -1101,6 +1101,26 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
   /* Keep the legend aligned with the actual pieces */
   .mini.circle{box-shadow:inset 0 -1.5px 0 rgba(38,66,85,.10) !important;}
   .mini.square{box-shadow:inset 0 -1.5px 0 rgba(99,76,14,.10) !important;border-radius:4px !important;}
+</style>
+
+<style id="neighbors-flat-tops-retained-bottom-depth">
+/* Single-tone tops with the original restrained bottom depth. All game and help pieces match. */
+:root {
+ --neighbor-blue-highlight:none;
+ --neighbor-yellow-highlight:none;
+}
+#game-screen .board :is(.piece,.clue-ring).blue,
+#rules-screen :is(.symbol,.sample-piece,.example-piece).blue {
+ box-shadow:inset 0 -3px 0 rgba(45,76,99,.16) !important;
+ background-image:none !important;
+}
+#game-screen .board :is(.piece,.clue-ring).yellow,
+#rules-screen :is(.symbol,.sample-piece,.example-piece).yellow {
+ box-shadow:inset 0 -3px 0 rgba(124,94,25,.17) !important;
+ background-image:none !important;
+}
+#game-screen .key .mini.circle{box-shadow:inset 0 -2.5px 0 rgba(45,76,99,.16) !important;}
+#game-screen .key .mini.square{box-shadow:inset 0 -2.5px 0 rgba(124,94,25,.17) !important;}
 </style>
 </head><body>
 <main id="game-screen">
