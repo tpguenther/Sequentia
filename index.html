@@ -1122,6 +1122,72 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
 #game-screen .key .mini.circle{box-shadow:inset 0 -2.5px 0 rgba(45,76,99,.16) !important;}
 #game-screen .key .mini.square{box-shadow:inset 0 -2.5px 0 rgba(124,94,25,.17) !important;}
 </style>
+
+<style id="neighbors-rule-grid-and-clue-centering">
+  /* Optically center clue numbers on the main face of the pieces, excluding the bottom shadow */
+  #game-screen .clue-ring,
+  #rules-screen .example-piece{position:relative;}
+  #game-screen .clue-ring .clue-label,
+  #rules-screen .example-piece .clue-label{
+    position:relative;
+    top:-1px;
+    display:block;
+    line-height:1;
+  }
+
+  /* Match How to Play sample grids to the simplified board styling */
+  #rules-screen .sample-row,
+  #rules-screen .neighbors-example-grid{
+    gap:0 !important;
+    background:#fff !important;
+    border:1px solid var(--line) !important;
+    border-radius:6px !important;
+    overflow:hidden !important;
+  }
+  #rules-screen .sample-row{
+    max-width:300px !important;
+  }
+  #rules-screen .neighbors-example-grid{
+    grid-template-columns:repeat(3,33px) !important;
+    grid-template-rows:repeat(3,33px) !important;
+  }
+  #rules-screen .sample-cell,
+  #rules-screen .example-cell{
+    background:#fff !important;
+    border-radius:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  #rules-screen .sample-cell{border-right:1px solid var(--line) !important;}
+  #rules-screen .sample-cell:last-child{border-right:0 !important;}
+  #rules-screen .example-cell{
+    border-right:1px solid var(--line) !important;
+    border-bottom:1px solid var(--line) !important;
+  }
+  #rules-screen .neighbors-example-grid .example-cell:nth-child(3n){border-right:0 !important;}
+  #rules-screen .neighbors-example-grid .example-cell:nth-last-child(-n + 3){border-bottom:0 !important;}
+
+  /* Keep miniature pieces visually consistent with the actual board */
+  #rules-screen .sample-piece,
+  #rules-screen .example-piece{
+    width:64% !important;
+    height:64% !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    color:#fff !important;
+    font-family:Outfit,ui-sans-serif,system-ui,sans-serif !important;
+    font-weight:750 !important;
+    line-height:1 !important;
+  }
+  @media(max-width:350px){
+    #rules-screen .neighbors-example-grid{
+      grid-template-columns:repeat(3,27px) !important;
+      grid-template-rows:repeat(3,27px) !important;
+    }
+  }
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #6</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
@@ -1138,7 +1204,7 @@ body:not(.neighbors-started) #game-screen .game-header .game-header-brand {
 <div class="key" id="key" aria-label="Controls: swipe up for a blue circle, swipe down for a yellow square, tap to clear"><span class="key-item"><i class="mini circle" aria-hidden="true"></i><span>Swipe up</span></span><span class="key-item"><i class="mini square" aria-hidden="true"></i><span>Swipe down</span></span><span class="key-item key-clear">Tap to clear</span></div>
 </div></main>
 <div aria-hidden="true" class="modal-backdrop" id="stats-modal"><div aria-labelledby="stats-title" aria-modal="true" class="modal" role="dialog"><button aria-label="Close stats" class="modal-close" id="close-stats">×</button><h2 id="stats-title">Your Stats</h2><p id="stats-summary" style="margin:0;font-size:16px">Puzzles Solved: 0</p></div></div>
-<section class="rules-screen" hidden="" id="rules-screen"><header class="rules-fixed-header"><h2 class="dotsoku-secondary-heading">How to Play</h2><button aria-label="Close How to Play" class="rules-close" id="rules-back" title="Close" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"></path></svg></button></header><div class="rules-scroll-content"><div class="rules-copy"><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">1</span><div><strong>Fill each cell with a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span> or a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</strong></div></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">2</span><div><strong>Each row and column must contain three of each shape.</strong></div></div><div aria-label="Three blue circles and three yellow squares in a row" class="sample-row"><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">3</span><div><strong>Numbered shapes are fixed clues. The number tells you how many adjacent cells (up, down, left, or right) contain the same shape.</strong></div></div><div aria-label="A blue 2 clue has two blue circle neighbors and two yellow square neighbors" class="neighbors-rule-example"><div aria-hidden="true" class="neighbors-example-grid"><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"><span class="example-piece blue">2</span></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div></div><span class="example-caption">This blue 2 has exactly two blue neighbors.</span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">4</span><div><span class="gesture-list"><span class="gesture-instruction"><strong class="gesture-action">Swipe ↑</strong> to place a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Swipe ↓</strong> to place a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Tap</strong> to clear a cell.</span></span></div></div></div><p class="dotsoku-deduction-promise">Every puzzle has a unique solution and can be solved through logic alone. <strong>No guessing required.</strong></p></div></div></section><script>
+<section class="rules-screen" hidden="" id="rules-screen"><header class="rules-fixed-header"><h2 class="dotsoku-secondary-heading">How to Play</h2><button aria-label="Close How to Play" class="rules-close" id="rules-back" title="Close" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"></path></svg></button></header><div class="rules-scroll-content"><div class="rules-copy"><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">1</span><div><strong>Fill each cell with a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span> or a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</strong></div></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">2</span><div><strong>Each row and column must contain three of each shape.</strong></div></div><div aria-label="Three blue circles and three yellow squares in a row" class="sample-row"><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">3</span><div><strong>Numbered shapes are fixed clues. The number tells you how many adjacent cells (up, down, left, or right) contain the same shape.</strong></div></div><div aria-label="A blue 2 clue has two blue circle neighbors and two yellow square neighbors" class="neighbors-rule-example"><div aria-hidden="true" class="neighbors-example-grid"><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"><span class="example-piece blue"><span class="clue-label">2</span></span></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div></div><span class="example-caption">This blue 2 has exactly two blue neighbors.</span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">4</span><div><span class="gesture-list"><span class="gesture-instruction"><strong class="gesture-action">Swipe ↑</strong> to place a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Swipe ↓</strong> to place a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Tap</strong> to clear a cell.</span></span></div></div></div><p class="dotsoku-deduction-promise">Every puzzle has a unique solution and can be solved through logic alone. <strong>No guessing required.</strong></p></div></div></section><script>
 (()=>{'use strict';
 const solution=["001101","010110","010110","110010","101001","101001"].join('').split('').map(Number);
 const clues=[0,3,7,12,13,18,23,27,29,32];
@@ -1159,7 +1225,7 @@ function save(){try{localStorage.setItem(STORAGE,JSON.stringify({cells,started,c
 function load(){initial();try{let v=JSON.parse(localStorage.getItem(STORAGE)||'null');if(!v||!Array.isArray(v.cells)||v.cells.length!==36)return;for(let i=0;i<36;i++)if(clues.includes(i)&&v.cells[i]!==solution[i])return;cells=v.cells.map((x,i)=>clues.includes(i)?solution[i]:(x===0||x===1?x:null));started=!!v.started;complete=!!v.complete&&isGood();clockMs=Number.isFinite(v.clockMs)?Math.max(0,v.clockMs):0;doneTime=typeof v.doneTime==='string'?v.doneTime:'';history=Array.isArray(v.history)?v.history.filter(s=>Array.isArray(s)&&s.length===36):[];if(!history.length)history=[cells.slice()];}catch{initial()}}
 function tone(){if(!soundEnabled)return;try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();const t=audioCtx.currentTime;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(330,t);o.frequency.exponentialRampToValueAtTime(180,t+.065);g.gain.setValueAtTime(.035,t);g.gain.exponentialRampToValueAtTime(.001,t+.085);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+.09)}catch{}}
 let freshPlacement=-1;
-function paint(){board.replaceChildren();for(let i=0;i<36;i++){let b=document.createElement('button');b.className='cell'+(clues.includes(i)?' clue':'');b.type='button';let value=cells[i];let p;if(clues.includes(i)){p=document.createElement('span');p.className='clue-ring '+(value===1?'blue':'yellow');p.textContent=clueCounts[i];b.append(p);b.setAttribute('aria-label',`${value===1?'Blue':'Yellow'} fixed clue ${clueCounts[i]}`);const n=neighbors(i),count=n.filter(j=>cells[j]===value).length,blank=n.filter(j=>cells[j]===null).length;if(!reviewing&&(count>clueCounts[i]||count+blank<clueCounts[i]))b.classList.add('bad')}else{if(value!==null){p=document.createElement('span');p.className='piece '+(value===1?'blue':'yellow');if(i===freshPlacement){p.classList.add('just-placed');p.style.setProperty('--placement-from',value===1?'13px':'-13px')}b.append(p)}b.setAttribute('aria-label',`Row ${1+(i/6|0)}, column ${1+i%6}: ${value===null?'blank':value===1?'blue circle':'yellow square'}`);let gesture=null;
+function paint(){board.replaceChildren();for(let i=0;i<36;i++){let b=document.createElement('button');b.className='cell'+(clues.includes(i)?' clue':'');b.type='button';let value=cells[i];let p;if(clues.includes(i)){p=document.createElement('span');p.className='clue-ring '+(value===1?'blue':'yellow');const label=document.createElement('span');label.className='clue-label';label.textContent=clueCounts[i];p.append(label);b.append(p);b.setAttribute('aria-label',`${value===1?'Blue':'Yellow'} fixed clue ${clueCounts[i]}`);const n=neighbors(i),count=n.filter(j=>cells[j]===value).length,blank=n.filter(j=>cells[j]===null).length;if(!reviewing&&(count>clueCounts[i]||count+blank<clueCounts[i]))b.classList.add('bad')}else{if(value!==null){p=document.createElement('span');p.className='piece '+(value===1?'blue':'yellow');if(i===freshPlacement){p.classList.add('just-placed');p.style.setProperty('--placement-from',value===1?'13px':'-13px')}b.append(p)}b.setAttribute('aria-label',`Row ${1+(i/6|0)}, column ${1+i%6}: ${value===null?'blank':value===1?'blue circle':'yellow square'}`);let gesture=null;
 b.addEventListener('pointerdown',e=>{
  if(!started||complete||reviewing||(e.pointerType==='mouse'&&e.button!==0))return;
  e.preventDefault();gesture={id:e.pointerId,x:e.clientX,y:e.clientY};
