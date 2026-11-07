@@ -1380,16 +1380,16 @@ body:not(.neighbors-started) #game-screen .game-header > .header-tools {
 #game-screen .board.wave .piece,
 #game-screen .board.wave .clue-ring{
   animation-name:neighbors-ripple-out !important;
-  animation-duration:380ms !important;
-  animation-delay:calc(var(--wave-order,0) * 80ms) !important;
+  animation-duration:520ms !important;
+  animation-delay:calc(var(--wave-order,0) * 120ms) !important;
   animation-timing-function:cubic-bezier(.33,0,.3,1) !important;
   animation-fill-mode:none !important;
 }
 /* Return sweep: right to left, with gentler movement and less brightness. */
 #game-screen .board.wave-return .piece,
 #game-screen .board.wave-return .clue-ring{
-  animation:neighbors-ripple-back 290ms cubic-bezier(.33,0,.3,1) none !important;
-  animation-delay:calc((5 - var(--wave-order,0)) * 70ms) !important;
+  animation:neighbors-ripple-back 470ms cubic-bezier(.33,0,.3,1) none !important;
+  animation-delay:calc((5 - var(--wave-order,0)) * 115ms) !important;
 }
 @keyframes neighbors-ripple-out{
   0%,100%{transform:translateY(0) scale(1);filter:brightness(1)}
@@ -1529,11 +1529,11 @@ function playWave(){
   board.classList.remove('wave');
   void board.offsetWidth;
   board.classList.add('wave-return');
- },790));
+ },1135));
  waveTimers.push(setTimeout(()=>{
   clearWave();
   showResult();
- },1460));
+ },2220));
 }
 function completeGame(){clearPending();pauseClock();complete=true;doneTime=formatTime(elapsed());recordResult();save();playWave()}
 function showResult(){if(!complete||reviewing)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('achievement').textContent=achievementNote;$('achievement').hidden=!achievementNote;$('result').hidden=false;$('key').hidden=true}
