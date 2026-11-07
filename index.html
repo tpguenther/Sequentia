@@ -1374,6 +1374,38 @@ body:not(.neighbors-started) #game-screen .game-header > .header-tools {
 #game-screen .game-header .game-header-brand > h1.NUM_TITLE { font-weight:600 !important; }
 #game-screen .inline-result .completion-panel #finish-time { font-weight:500 !important; }
 </style>
+
+<style id="neighbors-two-direction-victory-ripple">
+/* First sweep: left to right, preserving the playful rise of the pieces. */
+#game-screen .board.wave .piece,
+#game-screen .board.wave .clue-ring{
+  animation-name:neighbors-ripple-out !important;
+  animation-duration:380ms !important;
+  animation-delay:calc(var(--wave-order,0) * 80ms) !important;
+  animation-timing-function:cubic-bezier(.33,0,.3,1) !important;
+  animation-fill-mode:none !important;
+}
+/* Return sweep: right to left, with gentler movement and less brightness. */
+#game-screen .board.wave-return .piece,
+#game-screen .board.wave-return .clue-ring{
+  animation:neighbors-ripple-back 290ms cubic-bezier(.33,0,.3,1) none !important;
+  animation-delay:calc((5 - var(--wave-order,0)) * 70ms) !important;
+}
+@keyframes neighbors-ripple-out{
+  0%,100%{transform:translateY(0) scale(1);filter:brightness(1)}
+  46%{transform:translateY(-3px) scale(1.10);filter:brightness(1.06)}
+}
+@keyframes neighbors-ripple-back{
+  0%,100%{transform:translateY(0) scale(1);filter:brightness(1)}
+  46%{transform:translateY(-2px) scale(1.07);filter:brightness(1.035)}
+}
+@media(prefers-reduced-motion:reduce){
+  #game-screen .board.wave .piece,#game-screen .board.wave .clue-ring,
+  #game-screen .board.wave-return .piece,#game-screen .board.wave-return .clue-ring{
+    animation:none!important;
+  }
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><button aria-label="The Past Week" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Past Week" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3M14 14h3"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #6</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
@@ -1477,11 +1509,14 @@ b.addEventListener('keydown',e=>{
 function clearPending(){}
 function set(i,v){if(!started||complete||reviewing)return;if(cells[i]===v)return;cells[i]=v;freshPlacement=v===null?-1:i;history.push(cells.slice());tone();paint();if(isGood()){completeGame()}else save()}
 
-function clearWave(){for(let t of waveTimers)clearTimeout(t);waveTimers=[];board.classList.remove('wave')}
+function clearWave(){
+ for(const t of waveTimers)clearTimeout(t);
+ waveTimers=[];
+ board.classList.remove('wave','wave-return');
+}
 function playWave(){
  clearWave();
- // The final piece's placement animation must not resume after the ripple ends.
- // Remove its trigger before applying the wave animation to the board.
+ // Prevent the final placement animation from reappearing after either pass.
  for(const piece of board.querySelectorAll('.piece.just-placed')){
   piece.classList.remove('just-placed');
   piece.style.removeProperty('--placement-from');
@@ -1489,7 +1524,16 @@ function playWave(){
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult();return}
  void board.offsetWidth;
  board.classList.add('wave');
- waveTimers.push(setTimeout(()=>{board.classList.remove('wave');showResult()},1430));
+ // Two connected passes: a full left-to-right ripple, followed by a softer return.
+ waveTimers.push(setTimeout(()=>{
+  board.classList.remove('wave');
+  void board.offsetWidth;
+  board.classList.add('wave-return');
+ },790));
+ waveTimers.push(setTimeout(()=>{
+  clearWave();
+  showResult();
+ },1460));
 }
 function completeGame(){clearPending();pauseClock();complete=true;doneTime=formatTime(elapsed());recordResult();save();playWave()}
 function showResult(){if(!complete||reviewing)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('achievement').textContent=achievementNote;$('achievement').hidden=!achievementNote;$('result').hidden=false;$('key').hidden=true}
