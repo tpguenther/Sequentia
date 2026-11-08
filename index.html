@@ -1406,6 +1406,21 @@ body:not(.neighbors-started) #game-screen .game-header > .header-tools {
   }
 }
 </style>
+
+<style id="neighbors-richer-piece-colors">
+/* Only the two game-piece body colors are changed. Retain the existing
+   tactile shadows, background, grid, header and action button colors. */
+#game-screen .board :is(.piece,.clue-ring).blue,
+#rules-screen :is(.symbol,.sample-piece,.example-piece).blue,
+#game-screen .key .mini.circle {
+  background-color:#719BB8 !important;
+}
+#game-screen .board :is(.piece,.clue-ring).yellow,
+#rules-screen :is(.symbol,.sample-piece,.example-piece).yellow,
+#game-screen .key .mini.square {
+  background-color:#E2BE53 !important;
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><button aria-label="The Past Week" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Past Week" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3M14 14h3"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #7</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
