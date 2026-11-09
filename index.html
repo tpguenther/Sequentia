@@ -1452,13 +1452,13 @@ body:not(.neighbors-started) #game-screen .game-header > .header-tools {
 </style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><button aria-label="The Past Week" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Past Week" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3M14 14h3"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #8</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
+<header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M4 20V13M10 20V9M16 20V4M22 20V11"></path></svg></button><button aria-label="The Past Week" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Past Week" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h3M14 14h3"></path></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #9</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"></path><path class="sound-slash" d="M16 9l5 6m0-6-5 6"></path></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play">?</button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
-<div class="start-overlay" id="start-overlay"><div class="start-actions"><h2 class="start-panel-brand">neighbors</h2><div class="start-panel-number" id="start-panel-number">Puzzle #8</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
+<div class="start-overlay" id="start-overlay"><div class="start-actions"><h2 class="start-panel-brand">neighbors</h2><div class="start-panel-number" id="start-panel-number">Puzzle #9</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
-<div class="puzzle-label" id="puzzle-label">Puzzle #8</div>
+<div class="puzzle-label" id="puzzle-label">Puzzle #9</div>
 <div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button class="inline-review-link" id="review">Review puzzle</button></div>
 <div class="review-controls" hidden="" id="review-controls"><button aria-label="Previous move" class="review-arrow NUM_REVIEW" id="review-prev" title="Previous move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></button><button aria-label="Next move" class="review-arrow NUM_REVIEW" id="review-next" title="Next move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button></div>
 <button class="plain-reset review-exit" hidden="" id="review-exit">Exit Review</button>
@@ -1478,11 +1478,16 @@ const medium7Clues=[1, 3, 4, 12, 13, 18, 21, 26, 30, 35];
 // row/column balance and clue-neighbor deduction without branching.
 const medium8Solution=["011100", "100101", "101010", "110001", "001011", "010110"].join('').split('').map(Number);
 const medium8Clues=[0, 2, 10, 17, 19, 20, 22, 26, 27, 29];
-const TODAY_PUZZLE=8, ARCHIVE_DAYS=7;
+// New independently generated Medium playtest #9; validated unique and
+// fully resolved by iterative row/column and neighbor-clue deductions.
+const medium9Solution=["001110", "100011", "110100", "101010", "010101", "011001"].join('').split('').map(Number);
+const medium9Clues=[2, 4, 6, 7, 9, 14, 16, 18, 27, 29, 31];
+const TODAY_PUZZLE=9, ARCHIVE_DAYS=7;
 let puzzleNumber=TODAY_PUZZLE;
-let solution=medium8Solution.slice(), clues=medium8Clues.slice();
+let solution=medium9Solution.slice(), clues=medium9Clues.slice();
 // Puzzles #2–#5 remain demo transformations of #6, not production puzzles.
 function puzzleLayout(n){
+ if(n===9)return {solution:medium9Solution.slice(),clues:medium9Clues.slice()};
  if(n===8)return {solution:medium8Solution.slice(),clues:medium8Clues.slice()};
  if(n===7)return {solution:medium7Solution.slice(),clues:medium7Clues.slice()};
  if(n===6)return {solution:baseSolution.slice(),clues:baseClues.slice()};
