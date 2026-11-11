@@ -1612,9 +1612,50 @@ html,body,button,a,[role="button"] {
   -webkit-touch-callout:none;
 }
 </style>
+<style id="neighbors-replay-and-compact-undo-nov11">
+/* Slightly smaller secondary action, without disrupting the legend position. */
+#game-screen #undo.neighbors-undo{
+  width:86px!important;
+  height:35px!important;
+  min-height:35px!important;
+  padding:0 9px!important;
+  font-size:13px!important;
+  margin-top:16px!important;
+}
+/* The same left-hand 44px touch target holds Calendar or Back. */
+#game-screen .game-header button#archive-back.header-icon{
+  position:absolute!important;
+  left:5px!important;
+  right:auto!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  max-width:44px!important;
+  display:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  color:#303A40!important;
+}
+#game-screen .game-header button#archive-back svg{
+  width:24px!important;height:24px!important;
+  fill:none!important;stroke:currentColor!important;
+  stroke-width:1.75px!important;
+  stroke-linecap:round!important;stroke-linejoin:round!important;
+}
+body.neighbors-archived #game-screen .game-header button#archive-toggle.dotsoku-archive-trigger{display:none!important;}
+body.neighbors-archived #game-screen .game-header button#archive-back.header-icon{display:flex!important;}
+/* Old return button is not needed: archived Back navigates to Collection. */
+#game-screen #return-today{display:none!important;}
+</style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to The Collection" title="The Collection"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
@@ -1626,7 +1667,7 @@ html,body,button,a,[role="button"] {
 
 
 <button class="neighbors-undo" type="button" id="undo" disabled aria-label="Undo last placement">Undo</button>
-<div class="key" id="key" aria-label="Controls: swipe up for a blue circle, swipe down for a yellow square, tap to clear"><span class="key-item"><i class="mini circle" aria-hidden="true"></i><span>Swipe up</span></span><span class="key-item"><i class="mini square" aria-hidden="true"></i><span>Swipe down</span></span><span class="key-item key-clear">Tap to clear</span></div><button type="button" id="return-today" hidden>Back to today</button>
+<div class="key" id="key" aria-label="Controls: swipe up for a blue circle, swipe down for a yellow square, tap to clear"><span class="key-item"><i class="mini circle" aria-hidden="true"></i><span>Swipe up</span></span><span class="key-item"><i class="mini square" aria-hidden="true"></i><span>Swipe down</span></span><span class="key-item key-clear">Tap to clear</span></div>
 </div></main>
 </div>
 <section aria-hidden="true" class="neighbors-collection-screen" id="archive-modal" role="dialog" aria-modal="true" aria-labelledby="archive-title">
@@ -1713,6 +1754,7 @@ function recordResult(){if(statsData.completed[puzzleNumber])return;
 
 let cells=Array(36).fill(null),complete=false,started=false;
 let placementOrder=[];
+let replayMode=false; // Completed-archive replays are ephemeral; the first result stays archived.
 let clockMs=0,clockStart=0,clockRunning=false,doneTime='',waveTimers=[];
 let soundEnabled=true,audioCtx=null;
 function initial(){cells=Array(36).fill(null);for(const i of clues)cells[i]=solution[i]}
@@ -1721,7 +1763,7 @@ function elapsed(){return clockMs+(clockRunning?performance.now()-clockStart:0)}
 function formatTime(ms){let s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function startClock(){if(started&&!complete&&!clockRunning&&!document.hidden){clockStart=performance.now();clockRunning=true}}
 function pauseClock(){if(clockRunning){clockMs+=performance.now()-clockStart;clockRunning=false}}
-function save(){try{localStorage.setItem(STORAGE(),JSON.stringify({cells,started,complete,clockMs:elapsed(),placementOrder,doneTime,achievementNote}))}catch{}}
+function save(){if(replayMode)return;try{localStorage.setItem(STORAGE(),JSON.stringify({cells,started,complete,clockMs:elapsed(),placementOrder,doneTime,achievementNote}))}catch{}}
 function load(){initial();try{let v=JSON.parse(localStorage.getItem(STORAGE())||(puzzleNumber===6?localStorage.getItem(LEGACY_STORAGE):null)||'null');if(!v||!Array.isArray(v.cells)||v.cells.length!==36)return;for(let i=0;i<36;i++)if(clues.includes(i)&&v.cells[i]!==solution[i])return;cells=v.cells.map((x,i)=>clues.includes(i)?solution[i]:(x===0||x===1?x:null));started=!!v.started;complete=!!v.complete&&isGood();clockMs=Number.isFinite(v.clockMs)?Math.max(0,v.clockMs):0;doneTime=typeof v.doneTime==='string'?v.doneTime:'';achievementNote=typeof v.achievementNote==='string'?v.achievementNote:'';placementOrder=Array.isArray(v.placementOrder)?v.placementOrder.filter((i,p,a)=>Number.isInteger(i)&&i>=0&&i<36&&!clues.includes(i)&&cells[i]!==null&&a.lastIndexOf(i)===p):[];
   // Migrate previously saved games by recovering the last-changed order from historical snapshots.
   if(!placementOrder.length && Array.isArray(v.history)){
@@ -1801,13 +1843,13 @@ function completeGame(){clearPending();pauseClock();complete=true;updateUndo();d
 function showResult(){if(!complete)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('achievement').textContent=achievementNote;$('achievement').hidden=!achievementNote;$('result').hidden=false;$('key').hidden=true;$('undo').hidden=true}
 function renderUI(){
  document.body.classList.toggle('neighbors-started',started);
+ document.body.classList.toggle('neighbors-archived',puzzleNumber!==TODAY_PUZZLE);
  paint();$('start-overlay').hidden=started;$('result').hidden=true;
  $('key').hidden=complete;$('undo').hidden=complete;
  if(complete)showResult();
  $('puzzle-label').textContent=`Puzzle #${puzzleNumber}`;
  $('game-puzzle-number').textContent=`Puzzle #${puzzleNumber}`;
  $('start-panel-number').textContent=`Puzzle #${puzzleNumber}`;
- $('return-today').hidden=puzzleNumber===TODAY_PUZZLE;
  updateUndo();
 }
 function play(){started=true;document.body.classList.add('neighbors-started');$('start-overlay').hidden=true;startClock();save()}
@@ -1844,24 +1886,40 @@ function renderArchive(){
    const layout=puzzleLayout(n),placed=solved?layout.solution:(underway?saved.cells:null);
    for(let i=0;i<36;i++){const cell=document.createElement('i');if(placed&&placed[i]!==null&&(placed[i]===1||placed[i]===0))cell.className=placed[i]===1?'mini-blue':'mini-yellow';icon.append(cell)}
    b.setAttribute('aria-label',`Puzzle ${n}, ${solved?'completed':underway?'in progress':'not completed'}`);
-   b.addEventListener('click',()=>{closePanel();switchPuzzle(n)});
+   b.addEventListener('click',()=>{closePanel();switchPuzzle(n,{fromCollection:true})});
    list.append(b);
  }
  $('collection-empty').hidden=count>0;
 }
 function readPuzzleState(n){try{return JSON.parse(localStorage.getItem(STORE_PREFIX+n)||'null')}catch{return null}}
-function switchPuzzle(n){
+function switchPuzzle(n,{fromCollection=false}={}){
  if(n<1||n>TODAY_PUZZLE)return;
  pauseClock();save();clearWave();
  selectLayout(n);cells=Array(36).fill(null);complete=false;started=false;placementOrder=[];
  clockMs=0;clockRunning=false;doneTime='';achievementNote='';
- load();renderUI();if(started&&!complete)startClock();else if(complete)requestAnimationFrame(playWave);
+ replayMode=false;
+ // The original saved solution and first completion time must survive a replay.
+ // Every tap on a completed Collection card starts a fresh, unsolved run.
+ const replay=fromCollection&&!!statsData.completed[n];
+ if(replay){
+   replayMode=true;
+   initial();
+   started=true;
+ }else{
+   load();
+   // Selecting an archive entry goes straight into play, bypassing the start card.
+   // An unfinished game is resumed rather than erased.
+   if(fromCollection)started=true;
+ }
+ renderUI();
+ if(started&&!complete){startClock();save()}
+ else if(complete)requestAnimationFrame(playWave);
 }
 $('archive-toggle').addEventListener('click',openArchive);
+$('archive-back').addEventListener('click',openArchive);
 $('close-archive').addEventListener('click',closePanel);
 $('collection-prev').addEventListener('click',()=>{collectionMonth=new Date(collectionMonth.getFullYear(),collectionMonth.getMonth()-1,1);renderArchive()});
 $('collection-next').addEventListener('click',()=>{collectionMonth=new Date(collectionMonth.getFullYear(),collectionMonth.getMonth()+1,1);renderArchive()});
-$('return-today').addEventListener('click',()=>switchPuzzle(TODAY_PUZZLE));
 archive.addEventListener('click',e=>{if(e.target===archive)closePanel()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!dialog.hidden)hideHelp();else closePanel()}});
 $('play').addEventListener('click',play);
