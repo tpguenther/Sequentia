@@ -1491,23 +1491,84 @@ body:not(.neighbors-started) #game-screen .game-header > .header-tools {
 #game-screen .game-header #sound svg {transform:translateX(2px)!important;}
 #game-screen .game-header #help svg {transform:translateX(-2px)!important;}
 </style>
+
+<style id="neighbors-interface-update-nov11">
+/* Three controls in the header; archive occupies the old stats position. */
+#game-screen .game-header #stats {display:none!important}
+#game-screen .game-header #archive-toggle {left:5px!important;transform:translateY(-50%)!important}
+#game-screen .game-header #archive-toggle svg {transform:none!important}
+#game-screen .neighbors-undo {
+ display:flex;align-items:center;justify-content:center;gap:7px;
+ width:102px;height:39px;margin:16px auto 0;padding:0 10px;
+ background:#E9ECE9;border:1px solid #D9DDD8;border-radius:999px;
+ color:#303A40;font:600 14px Outfit,system-ui,sans-serif;
+ cursor:pointer;transition:color .15s,background .15s,opacity .15s;
+}
+#game-screen .neighbors-undo svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round;stroke-linecap:round}
+#game-screen .neighbors-undo:disabled{background:#F4F5F2;border-color:#EBEEEA;color:#B4B9B5;cursor:default;opacity:.85}
+#game-screen .neighbors-undo:focus-visible{outline:2px solid #719BB8;outline-offset:2px}
+#game-screen .neighbors-undo[hidden]{display:none!important}
+#game-screen #key{margin-top:16px!important}
+body:not(.neighbors-started) #game-screen #undo{visibility:hidden!important}
+/* Reserve full width for the Dotsoku-style archive rather than a carousel modal. */
+.neighbors-collection-screen{position:fixed;inset:0;z-index:30000;display:none;flex-direction:column;background:#FAFAF8;color:#303A40;font-family:Outfit,system-ui,sans-serif;}
+.neighbors-collection-screen.open{display:flex}
+.neighbors-collection-header{height:58px;min-height:58px;position:relative;display:flex;align-items:center;justify-content:center;padding:7px 18px;}
+.neighbors-collection-header h2{font:600 26px/1.1 Outfit,system-ui,sans-serif;letter-spacing:-.035em;margin:0;}
+.neighbors-collection-header button{position:absolute;right:14px;top:7px;width:44px;height:44px;border:0;background:transparent;color:#303A40;display:grid;place-items:center;cursor:pointer;}
+.neighbors-collection-header button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.neighbors-collection-content{width:min(100%,510px);margin:0 auto;padding:12px 18px calc(32px + env(safe-area-inset-bottom));overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;flex:1}
+.collection-progress{padding:12px 15px;border-radius:8px;background:#F1F2EF;margin-bottom:12px;}
+.collection-progress-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font:500 15px Outfit,system-ui,sans-serif}
+.collection-progress-top strong{font-weight:600;font-variant-numeric:tabular-nums}
+.collection-track{height:6px;margin-top:10px;border-radius:99px;background:#D9DFDA;overflow:hidden}
+#collection-progress-fill{height:100%;width:0;background:#8BC6A4;border-radius:99px}
+.collection-month{display:flex;align-items:center;justify-content:center;gap:10px;margin:9px auto 10px}
+.collection-month h3{margin:0;text-align:center;min-width:166px;font:600 19px Outfit,system-ui,sans-serif;}
+.collection-month button{border:0;background:transparent;width:40px;height:40px;color:#303A40;display:grid;place-items:center;cursor:pointer}
+.collection-month button:disabled{opacity:.25;cursor:default}
+.collection-month svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.collection-list{display:flex;flex-direction:column;gap:8px}
+.collection-item{display:flex;align-items:center;width:100%;gap:14px;min-height:70px;text-align:left;border:1px solid #DDE1DC;border-radius:9px;background:#FFF;padding:9px 13px;color:#303A40;cursor:pointer;font-family:Outfit,system-ui,sans-serif}
+.collection-item:focus-visible{outline:2px solid #719BB8;outline-offset:2px}
+.collection-item-label{display:flex;flex:1;flex-direction:column;gap:2px;min-width:0}
+.collection-item-label strong{font:600 19px/1.1 Outfit,system-ui,sans-serif}
+.collection-item-label small{font:450 12px Outfit,system-ui,sans-serif;color:#67746F}
+.collection-status{font:550 12px Outfit,system-ui,sans-serif;color:#6A7772;white-space:nowrap}
+.collection-item>svg{width:18px;height:18px;fill:none;stroke:#8B9791;stroke-width:2;flex-shrink:0}
+.collection-mini{display:grid;grid-template-columns:repeat(6,5px);grid-template-rows:repeat(6,5px);gap:1px;padding:5px;background:#F2F3F0;border:1px solid #D6DAD5;border-radius:4px;flex:none}
+.collection-mini i{display:block;width:5px;height:5px;background:#E3E7E3;border-radius:1px}
+.collection-mini i.mini-blue{background:#7DA4C0;border-radius:50%}
+.collection-mini i.mini-yellow{background:#EDC563;border-radius:1px}
+.collection-empty{text-align:center;color:#77827A;padding:25px}
+@media(max-width:370px){.collection-item{gap:10px;padding:8px 10px}.collection-status{font-size:11px}.collection-mini{padding:4px}}
+</style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button aria-label="Your Stats" class="header-icon dotsoku-stats-trigger" id="stats" title="Your Stats" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="13" width="4" height="7" rx="0.5"/><rect x="10" y="9" width="4" height="11" rx="0.5"/><rect x="17" y="4" width="4" height="16" rx="0.5"/></svg></button><button aria-label="The Past Week" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Past Week" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+<header class="game-header"><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
 <div class="start-overlay" id="start-overlay"><div class="start-actions"><h2 class="start-panel-brand">neighbors</h2><div class="start-panel-number" id="start-panel-number">Puzzle #11</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #11</div>
-<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button class="inline-review-link" id="review">Review puzzle</button></div>
-<div class="review-controls" hidden="" id="review-controls"><button aria-label="Previous move" class="review-arrow NUM_REVIEW" id="review-prev" title="Previous move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"></path></svg></button><button aria-label="Next move" class="review-arrow NUM_REVIEW" id="review-next" title="Next move" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></svg></button></div>
-<button class="plain-reset review-exit" hidden="" id="review-exit">Exit Review</button>
+<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button></div>
 
+
+
+<button class="neighbors-undo" type="button" id="undo" disabled aria-label="Undo last placement"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h9a7 7 0 0 1 0 14h-2"/></svg><span>Undo</span></button>
 <div class="key" id="key" aria-label="Controls: swipe up for a blue circle, swipe down for a yellow square, tap to clear"><span class="key-item"><i class="mini circle" aria-hidden="true"></i><span>Swipe up</span></span><span class="key-item"><i class="mini square" aria-hidden="true"></i><span>Swipe down</span></span><span class="key-item key-clear">Tap to clear</span></div><button type="button" id="return-today" hidden>Back to today</button>
 </div></main>
-<div aria-hidden="true" class="modal-backdrop" id="stats-modal"><div class="modal neighbors-compact-modal" role="dialog" aria-modal="true" aria-labelledby="stats-title"><header class="neighbors-modal-heading"><h2 id="stats-title">Quick Stats</h2><button aria-label="Close Quick Stats" class="neighbors-modal-close" id="close-stats" type="button">×</button></header><div class="neighbors-stats-grid"><div class="neighbors-stat"><strong id="stat-solved">0</strong><span>Puzzles Solved</span></div><div class="neighbors-stat"><strong id="stat-best">—</strong><span>Best Time</span></div></div></div></div>
-<div aria-hidden="true" class="modal-backdrop" id="archive-modal"><div class="modal neighbors-compact-modal neighbors-archive-modal" role="dialog" aria-modal="true" aria-labelledby="archive-title"><header class="neighbors-modal-heading"><h2 id="archive-title">The Past Week</h2><button aria-label="Close archive" class="neighbors-modal-close" id="close-archive" type="button">×</button></header><p class="neighbors-archive-caption">Catch up whenever you like.</p><div class="neighbors-card-track" id="archive-cards" aria-label="Recent seven days" tabindex="0"></div></div></div>
+</div>
+<section aria-hidden="true" class="neighbors-collection-screen" id="archive-modal" role="dialog" aria-modal="true" aria-labelledby="archive-title">
+  <header class="neighbors-collection-header"><h2 id="archive-title">The Collection</h2><button type="button" id="close-archive" aria-label="Close The Collection"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg></button></header>
+  <div class="neighbors-collection-content">
+    <div class="collection-progress"><div class="collection-progress-top"><span id="collection-progress-count">0 of 11 completed</span><strong id="collection-progress-percent">0%</strong></div><div class="collection-track"><div id="collection-progress-fill"></div></div></div>
+    <div class="collection-month"><button id="collection-prev" type="button" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h3 id="collection-month-label"></h3><button id="collection-next" type="button" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button></div>
+    <div id="archive-cards" class="collection-list" aria-label="Puzzles in selected month"></div>
+    <p id="collection-empty" class="collection-empty" hidden>No puzzles available this month.</p>
+  </div>
+</section>
 <section class="rules-screen" hidden="" id="rules-screen"><header class="rules-fixed-header"><h2 class="dotsoku-secondary-heading">How to Play</h2><button aria-label="Close How to Play" class="rules-close" id="rules-back" title="Close" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"></path></svg></button></header><div class="rules-scroll-content"><div class="rules-copy"><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">1</span><div><strong>Fill each cell with a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span> or a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</strong></div></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">2</span><div><strong>Each row and column must contain three of each shape.</strong></div></div><div aria-label="Three blue circles and three yellow squares in a row" class="sample-row"><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">3</span><div><strong>Numbered shapes are fixed clues. The number tells you how many adjacent cells (up, down, left, or right) contain the same shape.</strong></div></div><div aria-label="A blue 2 clue has two blue circle neighbors and two yellow square neighbors" class="neighbors-rule-example"><div aria-hidden="true" class="neighbors-example-grid"><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"><span class="example-piece blue"><span class="clue-label">2</span></span></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div></div><span class="example-caption">This blue 2 has exactly two blue neighbors.</span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">4</span><div><span class="gesture-list"><span class="gesture-instruction"><strong class="gesture-action">Swipe ↑</strong> to place a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Swipe ↓</strong> to place a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Tap</strong> to clear a cell.</span></span></div></div></div><p class="dotsoku-deduction-promise">Every puzzle has a unique solution and can be solved through logic alone. <strong>No guessing required.</strong></p></div></div></section><script>
 (()=>{'use strict';
 const baseSolution=["001101","010110","010110","110010","101001","101001"].join('').split('').map(Number);
@@ -1557,7 +1618,7 @@ function puzzleLayout(n){
  return {solution:result,clues:baseClues.map(toIndex).sort((a,b)=>a-b)};
 }
 function selectLayout(n){puzzleNumber=n;const p=puzzleLayout(n);solution=p.solution;clues=p.clues;clueCounts=Object.fromEntries(clues.map(i=>[i,neighbors(i).filter(j=>solution[j]===solution[i]).length]));}
-function dayFor(n){let date=new Date();date.setHours(12,0,0,0);date.setDate(date.getDate()-(TODAY_PUZZLE-n));return date;}
+function dayFor(n){return new Date(2026,10,n,12,0,0,0);}
 
 const neighbors=i=>[i-6,i+6,i-1,i+1].filter(j=>j>=0&&j<36&&Math.abs((j/6|0)-(i/6|0))+Math.abs(j%6-i%6)===1);
 let clueCounts=Object.fromEntries(clues.map(i=>[i,neighbors(i).filter(j=>solution[j]===solution[i]).length]));
@@ -1581,22 +1642,33 @@ function recordResult(){if(statsData.completed[puzzleNumber])return;
  saveStats();
 }
 
-let cells=Array(36).fill(null),complete=false,started=false,reviewing=false;
-let clockMs=0,clockStart=0,clockRunning=false,history=[],reviewIndex=0,reviewFrames=[],doneTime='',waveTimers=[];
+let cells=Array(36).fill(null),complete=false,started=false;
+let placementOrder=[];
+let clockMs=0,clockStart=0,clockRunning=false,doneTime='',waveTimers=[];
 let soundEnabled=true,audioCtx=null;
 function initial(){cells=Array(36).fill(null);for(const i of clues)cells[i]=solution[i]}
 function isGood(){if(cells.some(v=>v===null))return false;for(let r=0;r<6;r++){if(Array.from({length:6},(_,c)=>cells[r*6+c]).filter(v=>v===1).length!==3)return false;if(Array.from({length:6},(_,c)=>cells[c*6+r]).filter(v=>v===1).length!==3)return false}return clues.every(i=>neighbors(i).filter(j=>cells[j]===cells[i]).length===clueCounts[i])}
 function elapsed(){return clockMs+(clockRunning?performance.now()-clockStart:0)}
 function formatTime(ms){let s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
-function startClock(){if(started&&!complete&&!reviewing&&!clockRunning&&!document.hidden){clockStart=performance.now();clockRunning=true}}
+function startClock(){if(started&&!complete&&!clockRunning&&!document.hidden){clockStart=performance.now();clockRunning=true}}
 function pauseClock(){if(clockRunning){clockMs+=performance.now()-clockStart;clockRunning=false}}
-function save(){try{localStorage.setItem(STORAGE(),JSON.stringify({cells,started,complete,clockMs:elapsed(),history,doneTime,achievementNote}))}catch{}}
-function load(){initial();try{let v=JSON.parse(localStorage.getItem(STORAGE())||(puzzleNumber===6?localStorage.getItem(LEGACY_STORAGE):null)||'null');if(!v||!Array.isArray(v.cells)||v.cells.length!==36)return;for(let i=0;i<36;i++)if(clues.includes(i)&&v.cells[i]!==solution[i])return;cells=v.cells.map((x,i)=>clues.includes(i)?solution[i]:(x===0||x===1?x:null));started=!!v.started;complete=!!v.complete&&isGood();clockMs=Number.isFinite(v.clockMs)?Math.max(0,v.clockMs):0;doneTime=typeof v.doneTime==='string'?v.doneTime:'';achievementNote=typeof v.achievementNote==='string'?v.achievementNote:'';history=Array.isArray(v.history)?v.history.filter(s=>Array.isArray(s)&&s.length===36):[];if(!history.length)history=[cells.slice()];}catch{initial()}}
+function save(){try{localStorage.setItem(STORAGE(),JSON.stringify({cells,started,complete,clockMs:elapsed(),placementOrder,doneTime,achievementNote}))}catch{}}
+function load(){initial();try{let v=JSON.parse(localStorage.getItem(STORAGE())||(puzzleNumber===6?localStorage.getItem(LEGACY_STORAGE):null)||'null');if(!v||!Array.isArray(v.cells)||v.cells.length!==36)return;for(let i=0;i<36;i++)if(clues.includes(i)&&v.cells[i]!==solution[i])return;cells=v.cells.map((x,i)=>clues.includes(i)?solution[i]:(x===0||x===1?x:null));started=!!v.started;complete=!!v.complete&&isGood();clockMs=Number.isFinite(v.clockMs)?Math.max(0,v.clockMs):0;doneTime=typeof v.doneTime==='string'?v.doneTime:'';achievementNote=typeof v.achievementNote==='string'?v.achievementNote:'';placementOrder=Array.isArray(v.placementOrder)?v.placementOrder.filter((i,p,a)=>Number.isInteger(i)&&i>=0&&i<36&&!clues.includes(i)&&cells[i]!==null&&a.lastIndexOf(i)===p):[];
+  // Migrate previously saved games by recovering the last-changed order from historical snapshots.
+  if(!placementOrder.length && Array.isArray(v.history)){
+    const ordered=[];
+    for(let t=1;t<v.history.length;t++){
+      const a=v.history[t-1],b=v.history[t];if(!Array.isArray(a)||!Array.isArray(b))continue;
+      for(let i=0;i<36;i++)if(!clues.includes(i)&&a[i]!==b[i]){const p=ordered.indexOf(i);if(p!==-1)ordered.splice(p,1);if(b[i]!==null)ordered.push(i)}
+    }
+    placementOrder=ordered.filter(i=>cells[i]!==null);
+  }
+  for(let i=0;i<36;i++)if(!clues.includes(i)&&cells[i]!==null&&!placementOrder.includes(i))placementOrder.unshift(i);}catch{initial()}}
 function tone(){if(!soundEnabled)return;try{audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();const t=audioCtx.currentTime;let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.setValueAtTime(330,t);o.frequency.exponentialRampToValueAtTime(180,t+.065);g.gain.setValueAtTime(.035,t);g.gain.exponentialRampToValueAtTime(.001,t+.085);o.connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+.09)}catch{}}
 let freshPlacement=-1;
-function paint(){board.replaceChildren();for(let i=0;i<36;i++){let b=document.createElement('button');b.className='cell'+(clues.includes(i)?' clue':'');b.type='button';let value=cells[i];let p;if(clues.includes(i)){p=document.createElement('span');p.className='clue-ring '+(value===1?'blue':'yellow');const label=document.createElement('span');label.className='clue-label';label.textContent=clueCounts[i];p.append(label);b.append(p);b.setAttribute('aria-label',`${value===1?'Blue':'Yellow'} fixed clue ${clueCounts[i]}`);const n=neighbors(i),count=n.filter(j=>cells[j]===value).length,blank=n.filter(j=>cells[j]===null).length;if(!reviewing&&(count>clueCounts[i]||count+blank<clueCounts[i]))b.classList.add('bad')}else{if(value!==null){p=document.createElement('span');p.className='piece '+(value===1?'blue':'yellow');if(i===freshPlacement){p.classList.add('just-placed');p.style.setProperty('--placement-from',value===1?'13px':'-13px')}b.append(p)}b.setAttribute('aria-label',`Row ${1+(i/6|0)}, column ${1+i%6}: ${value===null?'blank':value===1?'blue circle':'yellow square'}`);let gesture=null;
+function paint(){board.replaceChildren();for(let i=0;i<36;i++){let b=document.createElement('button');b.className='cell'+(clues.includes(i)?' clue':'');b.type='button';let value=cells[i];let p;if(clues.includes(i)){p=document.createElement('span');p.className='clue-ring '+(value===1?'blue':'yellow');const label=document.createElement('span');label.className='clue-label';label.textContent=clueCounts[i];p.append(label);b.append(p);b.setAttribute('aria-label',`${value===1?'Blue':'Yellow'} fixed clue ${clueCounts[i]}`);const n=neighbors(i),count=n.filter(j=>cells[j]===value).length,blank=n.filter(j=>cells[j]===null).length;if((count>clueCounts[i]||count+blank<clueCounts[i]))b.classList.add('bad')}else{if(value!==null){p=document.createElement('span');p.className='piece '+(value===1?'blue':'yellow');if(i===freshPlacement){p.classList.add('just-placed');p.style.setProperty('--placement-from',value===1?'13px':'-13px')}b.append(p)}b.setAttribute('aria-label',`Row ${1+(i/6|0)}, column ${1+i%6}: ${value===null?'blank':value===1?'blue circle':'yellow square'}`);let gesture=null;
 b.addEventListener('pointerdown',e=>{
- if(!started||complete||reviewing||(e.pointerType==='mouse'&&e.button!==0))return;
+ if(!started||complete||(e.pointerType==='mouse'&&e.button!==0))return;
  e.preventDefault();gesture={id:e.pointerId,x:e.clientX,y:e.clientY};
  try{b.setPointerCapture(e.pointerId)}catch{}
 });
@@ -1614,9 +1686,21 @@ b.addEventListener('keydown',e=>{
  if(e.key==='ArrowUp'){e.preventDefault();set(i,1)}
  else if(e.key==='ArrowDown'){e.preventDefault();set(i,0)}
  else if(e.key==='Delete'||e.key==='Backspace'||e.key==='Enter'||e.key===' '){e.preventDefault();set(i,null)}
-})}if(p)p.style.setProperty('--wave-order',i%6);board.append(b)}freshPlacement=-1; }
+})}if(p)p.style.setProperty('--wave-order',i%6);board.append(b)}freshPlacement=-1; updateUndo(); }
 function clearPending(){}
-function set(i,v){if(!started||complete||reviewing)return;if(cells[i]===v)return;cells[i]=v;freshPlacement=v===null?-1:i;history.push(cells.slice());tone();paint();if(isGood()){completeGame()}else save()}
+function updateUndo(){const btn=$('undo');btn.disabled=!started||complete||placementOrder.length===0;}
+function set(i,v){
+ if(!started||complete||clues.includes(i)||cells[i]===v)return;
+ const oldPos=placementOrder.indexOf(i);if(oldPos!==-1)placementOrder.splice(oldPos,1);
+ cells[i]=v;
+ if(v!==null)placementOrder.push(i); // Changing a shape counts as a new placement.
+ freshPlacement=v===null?-1:i;
+ tone();paint();if(isGood())completeGame();else save();
+}
+function undoPlacement(){
+ if(!started||complete||placementOrder.length===0)return;
+ const i=placementOrder.pop();cells[i]=null;freshPlacement=-1;paint();save();
+}
 
 function clearWave(){
  for(const t of waveTimers)clearTimeout(t);
@@ -1644,79 +1728,76 @@ function playWave(){
   showResult();
  },2220));
 }
-function completeGame(){clearPending();pauseClock();complete=true;doneTime=formatTime(elapsed());recordResult();save();playWave()}
-function showResult(){if(!complete||reviewing)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('achievement').textContent=achievementNote;$('achievement').hidden=!achievementNote;$('result').hidden=false;$('key').hidden=true}
-function renderUI(){document.body.classList.toggle('neighbors-started',started);paint();$('start-overlay').hidden=started;$('result').hidden=true;$('review-controls').hidden=!reviewing;$('review-exit').hidden=!reviewing;$('key').hidden=complete||reviewing;if(complete&&!reviewing)showResult();if(reviewing)$('puzzle-label').textContent=`Review · Puzzle #${puzzleNumber}`;else $('puzzle-label').textContent=`Puzzle #${puzzleNumber}`;$('game-puzzle-number').textContent=`Puzzle #${puzzleNumber}`;$('start-panel-number').textContent=`Puzzle #${puzzleNumber}`;$('return-today').hidden=puzzleNumber===TODAY_PUZZLE}
-function play(){started=true;document.body.classList.add('neighbors-started');$('start-overlay').hidden=true;startClock();save()}
-// Replay only the last, correct placement of each non-clue cell, in its
-// original chronological order. Corrections, clears and wrong guesses are omitted.
-function makeReviewFrames(){
- const initialFrame=Array(36).fill(null);
- for(const i of clues)initialFrame[i]=solution[i];
- const placements=[];
- for(let i=0;i<36;i++){
-  if(clues.includes(i))continue;
-  let last=-1;
-  for(let t=1;t<history.length;t++){
-   if(history[t][i]===solution[i]&&history[t-1][i]!==solution[i])last=t;
-  }
-  // Older or incomplete histories still show the full solution.
-  placements.push({i,order:last<0?Number.MAX_SAFE_INTEGER+i:last});
- }
- placements.sort((a,b)=>a.order-b.order||a.i-b.i);
- const frames=[initialFrame];
- for(const {i} of placements){const next=frames[frames.length-1].slice();next[i]=solution[i];frames.push(next)}
- return frames;
+function completeGame(){clearPending();pauseClock();complete=true;updateUndo();doneTime=formatTime(elapsed());recordResult();save();playWave()}
+function showResult(){if(!complete)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('achievement').textContent=achievementNote;$('achievement').hidden=!achievementNote;$('result').hidden=false;$('key').hidden=true;$('undo').hidden=true}
+function renderUI(){
+ document.body.classList.toggle('neighbors-started',started);
+ paint();$('start-overlay').hidden=started;$('result').hidden=true;
+ $('key').hidden=complete;$('undo').hidden=complete;
+ if(complete)showResult();
+ $('puzzle-label').textContent=`Puzzle #${puzzleNumber}`;
+ $('game-puzzle-number').textContent=`Puzzle #${puzzleNumber}`;
+ $('start-panel-number').textContent=`Puzzle #${puzzleNumber}`;
+ $('return-today').hidden=puzzleNumber===TODAY_PUZZLE;
+ updateUndo();
 }
-function review(){if(!complete)return;clearWave();reviewing=true;reviewFrames=makeReviewFrames();reviewIndex=reviewFrames.length-1;updateReview()}
-function updateReview(){const saved=reviewFrames[reviewIndex];if(saved)cells=saved.slice();paint();$('result').hidden=true;$('review-controls').hidden=false;$('review-exit').hidden=false;$('key').hidden=true;$('puzzle-label').textContent=`Review · Puzzle #${puzzleNumber}`;$('review-prev').disabled=reviewIndex<=0;$('review-next').disabled=reviewIndex>=reviewFrames.length-1}
-function exitReview(){reviewing=false;cells=solution.slice();renderUI();playWave()}
+function play(){started=true;document.body.classList.add('neighbors-started');$('start-overlay').hidden=true;startClock();save()}
 async function share(){let msg=`Neighbors #${puzzleNumber}\nSolved in ${doneTime}\nYour turn, neighbor.\n${location.origin&&location.protocol.startsWith('http')?location.origin:''}`;try{if(navigator.share){await navigator.share({text:msg});return}if(navigator.clipboard){await navigator.clipboard.writeText(msg);$('share').querySelector('span:last-child').textContent='Copied!';setTimeout(()=>$('share').querySelector('span:last-child').textContent='Share',1400)}}catch{}}
 const dialog=$('rules-screen'),help=$('help'),closeHelp=$('rules-back');let shouldResume=false;
 function openHelp(){shouldResume=clockRunning;pauseClock();dialog.hidden=false;document.body.style.overflow='hidden';closeHelp.focus()}
-function hideHelp(){dialog.hidden=true;document.body.style.overflow='';help.focus();if(shouldResume)startClock();shouldResume=false;save();if(complete&&!reviewing)playWave()}
+function hideHelp(){dialog.hidden=true;document.body.style.overflow='';help.focus();if(shouldResume)startClock();shouldResume=false;save();if(complete)playWave()}
 help.addEventListener('click',openHelp);$('start-help').addEventListener('click',openHelp);closeHelp.addEventListener('click',hideHelp);
-const stats=$('stats-modal'),archive=$('archive-modal');
-let currentModal=null;
-function openPanel(element){pauseClock();if(currentModal)closePanel();currentModal=element;element.classList.add('open');element.setAttribute('aria-hidden','false');}
-function closePanel(){if(!currentModal)return;currentModal.classList.remove('open');currentModal.setAttribute('aria-hidden','true');currentModal=null;startClock();save();}
-function showStats(){const count=Object.keys(statsData.completed).length;$('stat-solved').textContent=count;$('stat-best').textContent=statsData.bestMs===null?'—':formatTime(statsData.bestMs);openPanel(stats)}
-function openArchive(){renderArchive();openPanel(archive)}
+const archive=$('archive-modal');
+let collectionMonth=new Date(2026,10,1);
+const firstArchiveDate=new Date(2026,10,1);
+function openArchive(){pauseClock();collectionMonth=new Date(2026,10,1);renderArchive();archive.classList.add('open');archive.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+function closePanel(){if(!archive.classList.contains('open'))return;archive.classList.remove('open');archive.setAttribute('aria-hidden','true');document.body.style.overflow='';startClock();save();}
 function renderArchive(){
- const track=$('archive-cards');track.replaceChildren();
- for(let offset=0;offset<ARCHIVE_DAYS;offset++){
-   const n=TODAY_PUZZLE-offset,d=dayFor(n),available=n>=1;
-   const completeFlag=!!statsData.completed[n];
-   const b=document.createElement('button');b.type='button';
-   b.className='neighbors-archive-card'+(n===puzzleNumber?' arc-active':'');
-   b.disabled=!available;
-   const day=offset===0?'Today':d.toLocaleDateString('en-US',{weekday:'short'});
-   const date=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-   const status=!available?'Not available':completeFlag?'✓ Solved':n===puzzleNumber?'Current':'Play';
-   b.innerHTML=`<span class="arc-day">${day} · ${date}</span><strong class="arc-number">${available?'#'+n:'—'}</strong><span class="arc-status">${status}</span>`;
-   b.setAttribute('aria-label',`${day}, ${date}, ${available?'puzzle '+n+', '+status:'no puzzle available'}`);
-   if(available)b.addEventListener('click',()=>{closePanel();switchPuzzle(n)});
-   track.append(b);
+ const total=TODAY_PUZZLE,done=Array.from({length:total},(_,i)=>i+1).filter(n=>!!statsData.completed[n]).length;
+ $('collection-progress-count').textContent=`${done} of ${total} completed`;
+ $('collection-progress-percent').textContent=`${Math.round(100*done/total)}%`;
+ $('collection-progress-fill').style.width=`${100*done/total}%`;
+ $('collection-month-label').textContent=collectionMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+ $('collection-prev').disabled=collectionMonth<=firstArchiveDate;
+ $('collection-next').disabled=collectionMonth>=new Date(2026,10,1);
+ const list=$('archive-cards');list.replaceChildren();let count=0;
+ for(let n=TODAY_PUZZLE;n>=1;n--){
+   const d=dayFor(n);if(d.getMonth()!==collectionMonth.getMonth()||d.getFullYear()!==collectionMonth.getFullYear())continue;
+   count++;
+   const solved=!!statsData.completed[n];const current=n===puzzleNumber;
+   const saved=readPuzzleState(n);const underway=!solved&&saved&&saved.started;
+   const b=document.createElement('button');b.type='button';b.className='collection-item';
+   b.innerHTML=`<span class="collection-mini" aria-hidden="true"></span><span class="collection-item-label"><strong>Puzzle #${n}</strong><small>${d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</small></span><span class="collection-status">${solved?'✓ Completed':underway?'In progress':current?'Today':'Play'}</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>`;
+   const icon=b.querySelector('.collection-mini');
+   // Miniature six-by-six preview, with colored circles/squares only for finished puzzles.
+   const layout=puzzleLayout(n),placed=solved?layout.solution:(underway?saved.cells:null);
+   for(let i=0;i<36;i++){const cell=document.createElement('i');if(placed&&placed[i]!==null&&(placed[i]===1||placed[i]===0))cell.className=placed[i]===1?'mini-blue':'mini-yellow';icon.append(cell)}
+   b.setAttribute('aria-label',`Puzzle ${n}, ${solved?'completed':underway?'in progress':'not completed'}`);
+   b.addEventListener('click',()=>{closePanel();switchPuzzle(n)});
+   list.append(b);
  }
+ $('collection-empty').hidden=count>0;
 }
+function readPuzzleState(n){try{return JSON.parse(localStorage.getItem(STORE_PREFIX+n)||'null')}catch{return null}}
 function switchPuzzle(n){
  if(n<1||n>TODAY_PUZZLE)return;
- if(reviewing){reviewing=false;clearWave();}
  pauseClock();save();clearWave();
- selectLayout(n);cells=Array(36).fill(null);complete=false;started=false;reviewing=false;
- clockMs=0;clockRunning=false;history=[];doneTime='';achievementNote='';
+ selectLayout(n);cells=Array(36).fill(null);complete=false;started=false;placementOrder=[];
+ clockMs=0;clockRunning=false;doneTime='';achievementNote='';
  load();renderUI();if(started&&!complete)startClock();else if(complete)requestAnimationFrame(playWave);
 }
-$('stats').addEventListener('click',showStats);
 $('archive-toggle').addEventListener('click',openArchive);
-$('close-stats').addEventListener('click',closePanel);
 $('close-archive').addEventListener('click',closePanel);
+$('collection-prev').addEventListener('click',()=>{collectionMonth=new Date(collectionMonth.getFullYear(),collectionMonth.getMonth()-1,1);renderArchive()});
+$('collection-next').addEventListener('click',()=>{collectionMonth=new Date(collectionMonth.getFullYear(),collectionMonth.getMonth()+1,1);renderArchive()});
 $('return-today').addEventListener('click',()=>switchPuzzle(TODAY_PUZZLE));
-[stats,archive].forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closePanel()}));
+archive.addEventListener('click',e=>{if(e.target===archive)closePanel()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!dialog.hidden)hideHelp();else closePanel()}});
-$('play').addEventListener('click',play);$('share').addEventListener('click',share);$('review').addEventListener('click',review);$('review-prev').addEventListener('click',()=>{if(reviewIndex>0){reviewIndex--;updateReview()}});$('review-next').addEventListener('click',()=>{if(reviewIndex<reviewFrames.length-1){reviewIndex++;updateReview()}});$('review-exit').addEventListener('click',exitReview);
+$('play').addEventListener('click',play);
+$('share').addEventListener('click',share);
+$('undo').addEventListener('click',undoPlacement);
 $('sound').addEventListener('click',()=>{soundEnabled=!soundEnabled;$('sound').setAttribute('aria-pressed',String(soundEnabled));$('sound').setAttribute('aria-label',soundEnabled?'Mute sound':'Unmute sound');});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(dialog.hidden&&!currentModal){if(complete&&!reviewing)playWave();else startClock()}});window.addEventListener('pagehide',()=>{pauseClock();save()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(dialog.hidden&&!archive.classList.contains('open')){if(complete)playWave();else startClock()}});window.addEventListener('pagehide',()=>{pauseClock();save()});
 readStats();selectLayout(TODAY_PUZZLE);load();renderUI();if(started&&!complete)startClock();else if(complete)requestAnimationFrame(()=>playWave());
 })();
 </script></body></html>
