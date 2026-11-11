@@ -1653,9 +1653,33 @@ body.neighbors-archived #game-screen .game-header button#archive-back.header-ico
 /* Old return button is not needed: archived Back navigates to Collection. */
 #game-screen #return-today{display:none!important;}
 </style>
+
+<style id="neighbors-collection-header-spacing-polish">
+/* Compact the archive's information hierarchy without adding containers. */
+.neighbors-collection-content{padding-top:2px!important;}
+.collection-progress{
+  padding:0!important;
+  margin:0 0 12px!important;
+}
+.collection-progress-top{
+  font-size:13.5px!important;
+  font-weight:500!important;
+  color:#697873!important;
+  line-height:1.35!important;
+}
+.collection-progress-top strong{
+  font-size:13.5px!important;
+  font-weight:500!important;
+  color:#697873!important;
+}
+.collection-track{margin-top:10px!important;}
+.collection-month{margin:0 auto 8px!important;gap:10px!important;}
+.collection-month h3{font-weight:600!important;}
+/* Preserve existing card typography, outlines, miniatures and saved states. */
+</style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to The Collection" title="The Collection"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to The Collection" title="The Collection"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
