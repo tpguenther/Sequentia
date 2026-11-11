@@ -1677,6 +1677,34 @@ body.neighbors-archived #game-screen .game-header button#archive-back.header-ico
 .collection-month h3{font-weight:600!important;}
 /* Preserve existing card typography, outlines, miniatures and saved states. */
 </style>
+
+<style id="neighbors-archived-finish-navigation">
+/* The original Share action belongs only to today's puzzle. A completed
+   archive replay instead offers a neutral return to The Collection. */
+#game-screen #archive-finish-return { display:none !important; }
+body.neighbors-archived #game-screen #result #share { display:none !important; }
+body.neighbors-archived #game-screen #result #archive-finish-return {
+  appearance:none;-webkit-appearance:none;
+  display:inline-flex !important;
+  justify-content:center;align-items:center;
+  width:min(290px,82vw);min-height:48px;
+  padding:10px 22px;
+  margin:4px auto 0;
+  background:#E9ECE9;
+  color:#303A40;
+  border:0;
+  border-radius:999px;
+  font:600 17px Outfit,ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:-.015em;
+  box-shadow:none;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+body.neighbors-archived #game-screen #result #archive-finish-return:active { background:#DCE2DD; }
+body.neighbors-archived #game-screen #result #archive-finish-return:focus-visible {
+  outline:2px solid #7DA4C0;outline-offset:3px;
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to The Collection" title="The Collection"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
@@ -1686,7 +1714,7 @@ body.neighbors-archived #game-screen .game-header button#archive-back.header-ico
 <div class="start-overlay" id="start-overlay"><div class="start-actions"><h2 class="start-panel-brand">neighbors</h2><div class="start-panel-number" id="start-panel-number">Puzzle #11</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #11</div>
-<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button></div>
+<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button type="button" id="archive-finish-return">Back to Collection</button></div>
 
 
 
@@ -1948,6 +1976,7 @@ archive.addEventListener('click',e=>{if(e.target===archive)closePanel()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!dialog.hidden)hideHelp();else closePanel()}});
 $('play').addEventListener('click',play);
 $('share').addEventListener('click',share);
+$('archive-finish-return').addEventListener('click',openArchive);
 $('undo').addEventListener('click',undoPlacement);
 $('sound').addEventListener('click',()=>{soundEnabled=!soundEnabled;$('sound').setAttribute('aria-pressed',String(soundEnabled));$('sound').setAttribute('aria-label',soundEnabled?'Mute sound':'Unmute sound');});
 document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(dialog.hidden&&!archive.classList.contains('open')){if(complete)playWave();else startClock()}});window.addEventListener('pagehide',()=>{pauseClock();save()});
