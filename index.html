@@ -1705,6 +1705,35 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
   outline:2px solid #7DA4C0;outline-offset:3px;
 }
 </style>
+<style id="neighbors-matching-header-close-buttons">
+/* How to Play close control uses exactly the Collection close icon treatment. */
+#rules-screen .rules-fixed-header button#rules-back.rules-close {
+  right:14px!important;
+  top:7px!important;
+  transform:none!important;
+  width:44px!important;
+  height:44px!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  color:#303A40!important;
+  padding:0!important;
+}
+#rules-screen .rules-fixed-header button#rules-back.rules-close::before {
+  content:none!important;
+  display:none!important;
+  background:none!important;
+}
+#rules-screen .rules-fixed-header button#rules-back.rules-close svg {
+  width:22px!important;
+  height:22px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to The Collection" title="The Collection"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
@@ -1914,7 +1943,20 @@ const archive=$('archive-modal');
 let collectionMonth=new Date(2026,10,1);
 const firstArchiveDate=new Date(2026,10,1);
 function openArchive(){pauseClock();collectionMonth=new Date(2026,10,1);renderArchive();archive.classList.add('open');archive.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
-function closePanel(){if(!archive.classList.contains('open'))return;archive.classList.remove('open');archive.setAttribute('aria-hidden','true');document.body.style.overflow='';startClock();save();}
+function closePanel({returnToday=true}={}){
+ if(!archive.classList.contains('open'))return;
+ archive.classList.remove('open');
+ archive.setAttribute('aria-hidden','true');
+ document.body.style.overflow='';
+ // Closing The Collection always restores today's puzzle, even when the
+ // archive was opened from an older puzzle. Save that puzzle before leaving.
+ if(returnToday && puzzleNumber!==TODAY_PUZZLE){
+   switchPuzzle(TODAY_PUZZLE);
+ }else{
+   startClock();
+   save();
+ }
+}
 function renderArchive(){
  const total=TODAY_PUZZLE,done=Array.from({length:total},(_,i)=>i+1).filter(n=>!!statsData.completed[n]).length;
  $('collection-progress-count').textContent=`${done} of ${total} completed`;
@@ -1938,7 +1980,7 @@ function renderArchive(){
    const layout=puzzleLayout(n),placed=solved?layout.solution:(underway?saved.cells:null);
    for(let i=0;i<36;i++){const cell=document.createElement('i');if(placed&&placed[i]!==null&&(placed[i]===1||placed[i]===0))cell.className=placed[i]===1?'mini-blue':'mini-yellow';icon.append(cell)}
    b.setAttribute('aria-label',`Puzzle ${n}, ${solved?'completed':underway?'in progress':'not completed'}`);
-   b.addEventListener('click',()=>{closePanel();switchPuzzle(n,{fromCollection:true})});
+   b.addEventListener('click',()=>{closePanel({returnToday:false});switchPuzzle(n,{fromCollection:true})});
    list.append(b);
  }
  $('collection-empty').hidden=count>0;
