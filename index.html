@@ -1680,7 +1680,7 @@ body.neighbors-archived #game-screen .game-header button#archive-back.header-ico
 
 <style id="neighbors-archived-finish-navigation">
 /* The original Share action belongs only to today's puzzle. A completed
-   archive replay instead offers a neutral return to The Collection. */
+   archive replay instead offers a neutral return to Archive. */
 #game-screen #archive-finish-return { display:none !important; }
 body.neighbors-archived #game-screen #result #share { display:none !important; }
 body.neighbors-archived #game-screen #result #archive-finish-return {
@@ -1690,13 +1690,13 @@ body.neighbors-archived #game-screen #result #archive-finish-return {
   width:min(290px,82vw);min-height:48px;
   padding:10px 22px;
   margin:4px auto 0;
-  background:#E9ECE9;
+  background:#E5E9E5;
   color:#303A40;
   border:0;
   border-radius:999px;
   font:600 17px Outfit,ui-sans-serif,system-ui,sans-serif;
   letter-spacing:-.015em;
-  box-shadow:none;
+  box-shadow:inset 0 -4px 0 #CBD3CC;
   cursor:pointer;
   touch-action:manipulation;
 }
@@ -1736,7 +1736,7 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
 </style>
 
 <style id="neighbors-close-icons-exact-1-75">
-/* Matched How to Play and The Collection close controls: 22px SVG and 1.75px stroke. */
+/* Matched How to Play and Archive close controls: 22px SVG and 1.75px stroke. */
 #rules-screen .rules-fixed-header button#rules-back.rules-close svg,
 #archive-screen .neighbors-collection-header button#close-archive svg,
 .neighbors-collection-header button#close-archive svg {
@@ -1751,14 +1751,14 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
 </style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to The Collection" title="The Collection"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="The Collection" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="The Collection" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #11</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
 <div class="start-overlay" id="start-overlay"><div class="start-actions"><h2 class="start-panel-brand">neighbors</h2><div class="start-panel-number" id="start-panel-number">Puzzle #11</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #11</div>
-<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button type="button" id="archive-finish-return">Back to Collection</button></div>
+<div class="inline-result" hidden="" id="result"><div class="completion-panel"><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong><span class="neighbors-achievement" id="achievement" hidden></span></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button type="button" id="archive-finish-return">Back to Archive</button></div>
 
 
 
@@ -1767,7 +1767,7 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
 </div></main>
 </div>
 <section aria-hidden="true" class="neighbors-collection-screen" id="archive-modal" role="dialog" aria-modal="true" aria-labelledby="archive-title">
-  <header class="neighbors-collection-header"><h2 id="archive-title">The Collection</h2><button type="button" id="close-archive" aria-label="Close The Collection"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg></button></header>
+  <header class="neighbors-collection-header"><h2 id="archive-title">Archive</h2><button type="button" id="close-archive" aria-label="Close Archive"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19"/></svg></button></header>
   <div class="neighbors-collection-content">
     <div class="collection-progress"><div class="collection-progress-top"><span id="collection-progress-count">0 of 11 completed</span><strong id="collection-progress-percent">0%</strong></div><div class="collection-track"><div id="collection-progress-fill"></div></div></div>
     <div class="collection-month"><button id="collection-prev" type="button" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h3 id="collection-month-label"></h3><button id="collection-next" type="button" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button></div>
@@ -1963,7 +1963,7 @@ function closePanel({returnToday=true}={}){
  archive.classList.remove('open');
  archive.setAttribute('aria-hidden','true');
  document.body.style.overflow='';
- // Closing The Collection always restores today's puzzle, even when the
+ // Closing Archive always restores today's puzzle, even when the
  // archive was opened from an older puzzle. Save that puzzle before leaving.
  if(returnToday && puzzleNumber!==TODAY_PUZZLE){
    switchPuzzle(TODAY_PUZZLE);
