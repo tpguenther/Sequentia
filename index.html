@@ -1864,10 +1864,10 @@ body.neighbors-started #game-screen.controls-fading #key {
 <style id="neighbors-dotsoku-identity-parity-20261112">
 /* Match Neighbors start overlay panel geometry and spacing to the approved Dotsoku layout. */
 #game-screen .start-actions{
-  /* Explicit panel dimensions: Dotsoku renders at 290 × 340 CSS px on iPhone. 
-     Previously 84% of each board produced different panel dimensions. */
-  width:min(290px,calc(100vw - 30px))!important;
-  min-width:0!important;
+  /* Fixed 290 × 340 CSS pixel panel at every screen height; no compact breakpoint. */
+  width:290px!important;
+  max-width:none!important;
+  min-width:290px!important;
   min-height:340px!important;
   height:340px!important;
   padding:26px 20px 20px!important;
@@ -1953,25 +1953,7 @@ body.neighbors-started #game-screen.controls-fading #key {
   letter-spacing:-.035em!important;
   color:#303A40!important;
 }
-@media(max-height:680px){
-  #game-screen .start-actions{
-    width:min(290px,calc(100vw - 30px))!important;
-    min-height:322px!important;
-    height:322px!important;
-    padding:22px 18px 18px!important;
-  }
-  #game-screen .start-actions .neighbors-start-icon-wrap{
-    flex-basis:84px!important;
-    width:84px!important;
-    height:84px!important;
-    margin-bottom:12px!important;
-  }
-  #game-screen .start-actions .neighbors-start-icon{width:84px!important;height:84px!important;}
-  #game-screen .start-actions h2.start-panel-brand{font-size:31px!important;margin-bottom:10px!important;}
-  #game-screen .start-actions .start-panel-number{font-size:12.5px!important;margin-top:8px!important;}
-  #game-screen .start-actions #play{margin-top:22px!important;}
-  #game-screen .start-actions #start-help{margin-top:4px!important;}
-}
+
 </style>
 </head><body>
 <main id="game-screen">
