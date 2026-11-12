@@ -1862,8 +1862,7 @@ body.neighbors-started #game-screen.controls-fading #key {
 #game-screen .start-panel-brand .wordmark-yellow{color:#E8C75E!important;}
 </style>
 <style id="neighbors-dotsoku-identity-parity-20261112">
-/* Exact approved Neighbors fuller icon; match the Dotsoku start hierarchy.
-   Preserve the two-direction ripple, finish, undo/legend fade and board styling. */
+/* Match Neighbors start overlay panel geometry and spacing to the approved Dotsoku layout. */
 #game-screen .start-actions{
   width:min(84%,300px)!important;
   min-height:340px!important;
@@ -1877,15 +1876,24 @@ body.neighbors-started #game-screen.controls-fading #key {
   box-sizing:border-box!important;
 }
 #game-screen .start-actions .neighbors-start-icon-wrap{
-  display:flex!important;align-items:center!important;justify-content:center!important;
+  order:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
   flex:0 0 92px!important;
-  width:92px!important;height:92px!important;
+  width:92px!important;
+  height:92px!important;
   margin:2px 0 14px!important;
 }
 #game-screen .start-actions .neighbors-start-icon{
-  display:block;width:92px;height:92px;max-width:100%;max-height:100%;
+  display:block;
+  width:92px!important;
+  height:92px!important;
+  max-width:100%;
+  max-height:100%;
 }
 #game-screen .start-actions h2.start-panel-brand{
+  order:2!important;
   font:600 34px/1.04 Outfit,system-ui,sans-serif!important;
   letter-spacing:-.045em!important;
   color:#303A40!important;
@@ -1895,7 +1903,9 @@ body.neighbors-started #game-screen.controls-fading #key {
   white-space:nowrap!important;
 }
 #game-screen .start-actions p.start-panel-tagline{
-  margin:0!important;padding:0!important;
+  order:3!important;
+  margin:0!important;
+  padding:0!important;
   font:500 13px/1.35 Outfit,system-ui,sans-serif!important;
   letter-spacing:0!important;
   color:#697873!important;
@@ -1903,7 +1913,9 @@ body.neighbors-started #game-screen.controls-fading #key {
   white-space:nowrap!important;
 }
 #game-screen .start-actions .start-panel-number{
-  margin:10px 0 0!important;padding:0!important;
+  order:4!important;
+  margin:10px 0 0!important;
+  padding:0!important;
   font:500 13px/1.15 Outfit,system-ui,sans-serif!important;
   letter-spacing:.02em!important;
   text-transform:none!important;
@@ -1911,16 +1923,19 @@ body.neighbors-started #game-screen.controls-fading #key {
   text-align:center!important;
 }
 #game-screen .start-actions #play{
+  order:5!important;
   margin-top:28px!important;
   margin-bottom:0!important;
   flex:none!important;
 }
 #game-screen .start-actions #start-help{
+  order:7!important;
   margin-top:4px!important;
   margin-bottom:0!important;
+  padding:9px 16px!important;
   flex:none!important;
 }
-/* Same calm solid-charcoal gameplay header as Dotsoku. */
+/* Keep gameplay header parity with Dotsoku. */
 #game-screen .game-header .game-header-brand > h1.NUM_TITLE{
   font:600 28px/1 Outfit,system-ui,sans-serif!important;
   letter-spacing:-.045em!important;
@@ -1928,7 +1943,7 @@ body.neighbors-started #game-screen.controls-fading #key {
   margin:0!important;
   text-transform:lowercase!important;
 }
-/* Same secondary screen typography; retains existing 58px header geometry. */
+/* Secondary screen heading parity. */
 #archive-modal .neighbors-collection-header h2,
 #rules-screen .rules-fixed-header .dotsoku-secondary-heading{
   font:600 26px/1.1 Outfit,system-ui,sans-serif!important;
@@ -1936,14 +1951,22 @@ body.neighbors-started #game-screen.controls-fading #key {
   color:#303A40!important;
 }
 @media(max-height:680px){
- #game-screen .start-actions{width:min(84%,292px)!important;min-height:322px!important;padding:22px 18px 18px!important;}
- #game-screen .start-actions .neighbors-start-icon-wrap{
-   flex-basis:84px!important;width:84px!important;height:84px!important;margin-bottom:12px!important;
- }
- #game-screen .start-actions .neighbors-start-icon{width:84px;height:84px;}
- #game-screen .start-actions h2.start-panel-brand{font-size:31px!important;margin-bottom:10px!important;}
- #game-screen .start-actions .start-panel-number{font-size:12.5px!important;margin-top:8px!important;}
- #game-screen .start-actions #play{margin-top:22px!important;}
+  #game-screen .start-actions{
+    width:min(84%,292px)!important;
+    min-height:322px!important;
+    padding:22px 18px 18px!important;
+  }
+  #game-screen .start-actions .neighbors-start-icon-wrap{
+    flex-basis:84px!important;
+    width:84px!important;
+    height:84px!important;
+    margin-bottom:12px!important;
+  }
+  #game-screen .start-actions .neighbors-start-icon{width:84px!important;height:84px!important;}
+  #game-screen .start-actions h2.start-panel-brand{font-size:31px!important;margin-bottom:10px!important;}
+  #game-screen .start-actions .start-panel-number{font-size:12.5px!important;margin-top:8px!important;}
+  #game-screen .start-actions #play{margin-top:22px!important;}
+  #game-screen .start-actions #start-help{margin-top:4px!important;}
 }
 </style>
 </head><body>
