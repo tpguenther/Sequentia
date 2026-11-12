@@ -1796,6 +1796,47 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
   margin:0!important;
 }
 </style>
+<style id="neighbors-unified-finish-20261112">
+/* Match Dotsoku's final completion typography, spacing and one-piece reveal. */
+#game-screen #result.inline-result:not(.reviewing){
+  gap:0!important;padding:0 0 20px!important;background:transparent!important;
+  animation:none!important;
+}
+#game-screen #result.inline-result:not(.reviewing) .completion-panel{
+  position:relative!important;box-sizing:border-box!important;
+  width:100%!important;max-width:100%!important;
+  margin:0!important;padding:12px 16px 0!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  border-radius:0!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;gap:0!important;transform:none!important;
+}
+#game-screen #result.inline-result:not(.reviewing) .completion-panel h2.neighbors-finish-heading{
+  font-size:24px!important;font-weight:500!important;line-height:1.12!important;
+  letter-spacing:-.035em!important;margin:0 0 6px!important;
+}
+#game-screen #result.inline-result:not(.reviewing) .completion-panel .inline-time-label{
+  font-size:12px!important;font-weight:500!important;line-height:1.3!important;
+  margin:0 0 4px!important;
+}
+#game-screen #result.inline-result:not(.reviewing) .completion-panel #finish-time{
+  font-size:20.7px!important;font-weight:500!important;line-height:1.15!important;
+  margin:0!important;
+}
+#game-screen #result.inline-result:not(.reviewing) #share,
+#game-screen #result.inline-result:not(.reviewing) #archive-finish-return{
+  margin-top:10px!important;
+}
+@keyframes neighbors-unified-finish-reveal{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:translateY(0)}
+}
+#game-screen #result.inline-result.finish-reveal:not(.reviewing){
+  animation:neighbors-unified-finish-reveal .75s cubic-bezier(.4,0,.2,1) both!important;
+}
+@media(prefers-reduced-motion:reduce){
+  #game-screen #result.inline-result.finish-reveal:not(.reviewing){animation:none!important;}
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #12</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
@@ -1969,33 +2010,43 @@ function clearWave(){
 }
 function playWave(){
  clearWave();
- // Prevent the final placement animation from reappearing after either pass.
+ if(!complete)return;
+ // Reset the result before each replay so its unified fade plays exactly once.
+ $('result').hidden=true;
+ $('result').classList.remove('finish-reveal');
+ // The placement feedback should not reappear after the victory ripple.
  for(const piece of board.querySelectorAll('.piece.just-placed')){
   piece.classList.remove('just-placed');
   piece.style.removeProperty('--placement-from');
  }
- if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult();return}
- void board.offsetWidth;
- board.classList.add('wave');
- // Two connected passes: a full left-to-right ripple, followed by a softer return.
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult(false);return}
+ // Dotsoku timing: 150 ms settle, one left-to-right wave,
+ // unified 750 ms results fade beginning 1020 ms into the wave.
  waveTimers.push(setTimeout(()=>{
-  board.classList.remove('wave');
+  if(!complete||document.hidden)return;
   void board.offsetWidth;
-  board.classList.add('wave-return');
- },1135));
- waveTimers.push(setTimeout(()=>{
-  clearWave();
-  showResult();
- },2220));
+  board.classList.add('wave');
+  waveTimers.push(setTimeout(()=>{
+   board.classList.remove('wave');
+  },1190));
+  waveTimers.push(setTimeout(()=>{
+   if(complete&&!document.hidden)showResult(true);
+  },1020));
+ },150));
 }
 function completeGame(){clearPending();pauseClock();complete=true;updateUndo();doneTime=formatTime(elapsed());recordResult();save();playWave()}
-function showResult(){if(!complete)return;$('finish-time').textContent=doneTime||formatTime(elapsed());$('result').hidden=false;$('key').hidden=true;$('undo').hidden=true}
+function showResult(animated=false){
+ if(!complete)return;
+ $('finish-time').textContent=doneTime||formatTime(elapsed());
+ $('result').classList.toggle('finish-reveal',animated);
+ $('result').hidden=false;$('key').hidden=true;$('undo').hidden=true;
+}
 function renderUI(){
  document.body.classList.toggle('neighbors-started',started);
  document.body.classList.toggle('neighbors-archived',puzzleNumber!==TODAY_PUZZLE);
  paint();$('start-overlay').hidden=started;$('result').hidden=true;
  $('key').hidden=complete;$('undo').hidden=complete;
- if(complete)showResult();
+ if(complete){$('result').hidden=true;$('result').classList.remove('finish-reveal');}
  $('puzzle-label').textContent=`Puzzle #${puzzleNumber}`;
  $('game-puzzle-number').textContent=`Puzzle #${puzzleNumber}`;
  $('start-panel-number').textContent=`Puzzle #${puzzleNumber}`;
