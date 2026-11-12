@@ -1837,6 +1837,22 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
   #game-screen #result.inline-result.finish-reveal:not(.reviewing){animation:none!important;}
 }
 </style>
+<style id="neighbors-finish-controls-fade">
+/* Fade gameplay-only controls as the first ripple begins; retain their layout
+   until the finish view is revealed, so the board does not shift mid-wave. */
+#game-screen #undo,
+#game-screen #key {
+  transition:opacity 380ms ease-out !important;
+}
+#game-screen.controls-fading #undo,
+#game-screen.controls-fading #key {
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+@media (prefers-reduced-motion:reduce) {
+  #game-screen #undo,#game-screen #key { transition:none !important; }
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #12</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
@@ -2011,6 +2027,8 @@ function clearWave(){
 function playWave(){
  clearWave();
  if(!complete)return;
+ // Dismiss gameplay controls as the ripple starts, without removing their space.
+ $('game-screen').classList.add('controls-fading');
  // Replay the results together only after both original Neighbors ripples finish.
  $('result').hidden=true;
  $('result').classList.remove('finish-reveal');
@@ -2042,6 +2060,7 @@ function showResult(animated=false){
  $('result').hidden=false;$('key').hidden=true;$('undo').hidden=true;
 }
 function renderUI(){
+ $('game-screen').classList.toggle('controls-fading',complete);
  document.body.classList.toggle('neighbors-started',started);
  document.body.classList.toggle('neighbors-archived',puzzleNumber!==TODAY_PUZZLE);
  paint();$('start-overlay').hidden=started;$('result').hidden=true;
