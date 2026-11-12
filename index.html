@@ -1842,7 +1842,7 @@ body.neighbors-archived #game-screen #result #archive-finish-return:focus-visibl
    until the finish view is revealed, so the board does not shift mid-wave. */
 #game-screen #undo,
 #game-screen #key {
-  transition:opacity 380ms ease-out !important;
+  transition:opacity 250ms ease-out !important;
 }
 #game-screen.controls-fading #undo,
 #game-screen.controls-fading #key,
@@ -2028,8 +2028,12 @@ function clearWave(){
 function playWave(){
  clearWave();
  if(!complete)return;
- // Dismiss gameplay controls as the ripple starts, without removing their space.
- $('game-screen').classList.add('controls-fading');
+ // Let the final placement register, then quietly dismiss gameplay controls
+ // during the opening ripple without affecting board layout.
+ $('game-screen').classList.remove('controls-fading');
+ waveTimers.push(setTimeout(()=>{
+  if(complete)$('game-screen').classList.add('controls-fading');
+ },100));
  // Replay the results together only after both original Neighbors ripples finish.
  $('result').hidden=true;
  $('result').classList.remove('finish-reveal');
