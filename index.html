@@ -2011,28 +2011,28 @@ function clearWave(){
 function playWave(){
  clearWave();
  if(!complete)return;
- // Reset the result before each replay so its unified fade plays exactly once.
+ // Replay the results together only after both original Neighbors ripples finish.
  $('result').hidden=true;
  $('result').classList.remove('finish-reveal');
- // The placement feedback should not reappear after the victory ripple.
  for(const piece of board.querySelectorAll('.piece.just-placed')){
   piece.classList.remove('just-placed');
   piece.style.removeProperty('--placement-from');
  }
  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){showResult(false);return}
- // Dotsoku timing: 150 ms settle, one left-to-right wave,
- // unified 750 ms results fade beginning 1020 ms into the wave.
+ void board.offsetWidth;
+ board.classList.add('wave');
+ // Preserve Neighbors' original left-to-right and softer right-to-left passes.
  waveTimers.push(setTimeout(()=>{
-  if(!complete||document.hidden)return;
+  if(!complete)return;
+  board.classList.remove('wave');
   void board.offsetWidth;
-  board.classList.add('wave');
-  waveTimers.push(setTimeout(()=>{
-   board.classList.remove('wave');
-  },1190));
-  waveTimers.push(setTimeout(()=>{
-   if(complete&&!document.hidden)showResult(true);
-  },1020));
- },150));
+  board.classList.add('wave-return');
+ },1135));
+ waveTimers.push(setTimeout(()=>{
+  if(!complete)return;
+  clearWave();
+  showResult(true);
+ },2220));
 }
 function completeGame(){clearPending();pauseClock();complete=true;updateUndo();doneTime=formatTime(elapsed());recordResult();save();playWave()}
 function showResult(animated=false){
