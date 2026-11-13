@@ -1964,9 +1964,175 @@ body.neighbors-started #game-screen.controls-fading #key {
   outline: none !important;
 }
 </style>
+<style id="neighbors-bolder-original-grid-v2">
+/* Keep the approved continuous board and flat, square-cornered cells.
+   Only strengthen dividers, enlarge the pieces slightly, and deepen their retained bottom edge. */
+:root{--board-line:#b7b7af;--board-outline:#a9aaa2;}
+#game-screen .board-stage .board{
+  gap:0 !important;
+  padding:0 !important;
+  background:#fff !important;
+  border:1.8px solid var(--board-outline) !important;
+  border-radius:var(--board-corner) !important;
+  overflow:hidden !important;
+  box-shadow:none !important;
+}
+#game-screen .board .cell{
+  border-radius:0 !important;
+  border-right:1.5px solid var(--board-line) !important;
+  border-bottom:1.5px solid var(--board-line) !important;
+  background:#fff !important;
+}
+#game-screen .board .cell:nth-child(6n){border-right:0 !important;}
+#game-screen .board .cell:nth-last-child(-n + 6){border-bottom:0 !important;}
+#game-screen .board :is(.piece,.clue-ring){width:69% !important;height:69% !important;}
+#game-screen .board :is(.piece,.clue-ring).blue{
+  box-shadow:inset 0 -4px 0 rgba(45,76,99,.30) !important;
+}
+#game-screen .board :is(.piece,.clue-ring).yellow{
+  box-shadow:inset 0 -4px 0 rgba(124,94,25,.25) !important;
+}
+</style>
+
+<style id="neighbors-interface-fixes-v3">
+/* Bring the surrounding interface up to the board's new confidence level. */
+#game-screen .game-header{
+  margin-bottom:6px!important;
+  border-bottom:1px solid #e1e4df!important;
+}
+#game-screen .wrap{
+  padding-top:clamp(8px, calc(8px + (100dvh - 700px) * .14), 22px)!important;
+  padding-bottom:26px!important;
+}
+/* Keep the approved flat continuous board, but make the grid a touch softer. */
+:root{--board-line:#bdbdb4;--board-outline:#adada6;}
+#game-screen .board-stage .board{
+  border-color:var(--board-outline)!important;
+}
+#game-screen .board .cell{
+  border-right:1.5px solid var(--board-line)!important;
+  border-bottom:1.5px solid var(--board-line)!important;
+}
+/* Bigger, clearer Undo button with a more intentional disabled state. */
+#game-screen .neighbors-undo{
+  width:132px!important;
+  height:46px!important;
+  margin:14px auto 0!important;
+  padding:0 16px!important;
+  border-width:1.5px!important;
+  border-color:#d7dbd6!important;
+  background:#edf0eb!important;
+  color:#526168!important;
+  font:700 17px Outfit,system-ui,sans-serif!important;
+  letter-spacing:-.01em!important;
+}
+#game-screen .neighbors-undo:disabled{
+  background:#f2f4f1!important;
+  border-color:#dfe3de!important;
+  color:#b0b6b2!important;
+  opacity:1!important;
+}
+/* Give the below-board legend more width, stronger presence, and clearer alignment. */
+#game-screen #key{
+  width:min(100%, 420px)!important;
+  max-width:100%!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  align-items:center!important;
+  justify-items:center!important;
+  gap:8px!important;
+  margin:18px auto 0!important;
+  padding:0 6px!important;
+  color:#677479!important;
+  font-family:Outfit,ui-sans-serif,system-ui,sans-serif!important;
+  font-size:clamp(12px,3.7vw,15px)!important;
+  font-weight:600!important;
+  line-height:1.25!important;
+}
+#game-screen .key .key-item{
+  width:100%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+}
+#game-screen .key .mini{
+  width:28px!important;
+  height:28px!important;
+  flex:0 0 28px!important;
+}
+#game-screen .key .mini.circle{
+  box-shadow:inset 0 -3px 0 rgba(45,76,99,.30)!important;
+}
+#game-screen .key .mini.square{
+  box-shadow:inset 0 -3px 0 rgba(133,98,22,.24)!important;
+}
+#game-screen .key .key-clear{
+  white-space:nowrap!important;
+}
+@media (max-width:390px){
+  #game-screen #key{font-size:12px!important;gap:6px!important;padding:0 2px!important;}
+  #game-screen .key .key-item{gap:8px!important;}
+  #game-screen .key .mini{width:25px!important;height:25px!important;flex-basis:25px!important;}
+}
+@media (max-width:360px){
+  #game-screen #key{font-size:11.5px!important;}
+}
+</style>
+
+
+<style id="neighbors-tune-v4">
+/* Final tuning pass: lighter grid lines, slightly larger header icons, wider Undo. */
+:root{--board-line:#c6c6be!important;--board-outline:#b4b4ac!important;}
+#game-screen .board-stage .board{border-color:var(--board-outline)!important;}
+#game-screen .board .cell{
+  border-right:1.5px solid var(--board-line)!important;
+  border-bottom:1.5px solid var(--board-line)!important;
+}
+#game-screen .game-header #archive-toggle svg,
+#game-screen .game-header #sound svg,
+#game-screen .game-header #help svg{
+  width:23px!important;
+  height:23px!important;
+}
+#game-screen .game-header #archive-toggle,
+#game-screen .game-header .header-tools button.header-icon{
+  width:46px!important;
+  height:46px!important;
+  min-width:46px!important;
+  min-height:46px!important;
+  max-width:46px!important;
+  max-height:46px!important;
+}
+#game-screen .game-header .header-tools{gap:3px!important;}
+#game-screen .neighbors-undo{
+  width:154px!important;
+  height:46px!important;
+  padding:0 18px!important;
+  font-size:17px!important;
+}
+</style>
+
+<style id="neighbors-grid-light-undo-wide-v5">
+/* Preserve the continuous grid and existing 1.5px dividers; change only contrast and Undo width. */
+:root{--board-line:#deded8!important;--board-outline:#c9c9c3!important;}
+#game-screen .board-stage .board{border-color:var(--board-outline)!important;}
+#game-screen .board .cell{
+  border-right-color:var(--board-line)!important;
+  border-bottom-color:var(--board-line)!important;
+}
+#game-screen .neighbors-undo{width:200px!important;min-width:200px!important;max-width:200px!important;}
+</style>
+<style id="neighbors-grid-thickness-v6">
+/* Subtle thickness increase only; retain v5 light gray and continuous grid. */
+#game-screen .board .cell{
+  border-right-width:1.75px!important;
+  border-bottom-width:1.75px!important;
+}
+</style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #12</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #13</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
@@ -1977,9 +2143,9 @@ body.neighbors-started #game-screen.controls-fading #key {
   <rect x="134.5" y="28" width="93.5" height="93.5" rx="16" fill="#E8C75E"/>
   <rect x="28" y="134.5" width="93.5" height="93.5" rx="16" fill="#E8C75E"/>
   <circle cx="181.25" cy="181.25" r="46.75" fill="#86ABC8"/>
-</svg></div><h2 class="start-panel-brand">neighbors</h2><p class="start-panel-tagline">Every neighbor counts.</p><div class="start-panel-number" id="start-panel-number">No. 12</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
+</svg></div><h2 class="start-panel-brand">neighbors</h2><p class="start-panel-tagline">Every neighbor counts.</p><div class="start-panel-number" id="start-panel-number">No. 13</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
-<div class="puzzle-label" id="puzzle-label">Puzzle #12</div>
+<div class="puzzle-label" id="puzzle-label">Puzzle #13</div>
 <div class="inline-result" hidden="" id="result"><div class="completion-panel"><h2 class="neighbors-finish-heading">Nicely done!</h2><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button type="button" id="archive-finish-return">Back to Archive</button></div>
 
 
@@ -2021,16 +2187,23 @@ const medium10Clues=[4, 11, 13, 15, 19, 22, 25, 27, 31, 32];
 // Solvable via row/column balance and overlapping numbered-clue deductions.
 const medium11Solution=['101010', '011001', '011001', '100110', '000111', '110100'].join('').split('').map(Number);
 const medium11Clues=[1,10,12,14,16,17,19,21,26,30,32];
-// Puzzle #12: new Easy puzzle, with a distinct solution from previous boards.
+// Puzzle #13: new Easy puzzle, with a distinct solution from previous boards.
 // Verified unique under both 3-of-each row/column and numbered neighbor clues.
 // Solves by repeated deductions without trial and error (12 fixed clues).
 const easy12Solution=['110100','001101','101010','110001','000111','011010'].join('').split('').map(Number);
 const easy12Clues=[1,3,7,8,9,12,14,20,22,24,26,28];
-const TODAY_PUZZLE=12, ARCHIVE_DAYS=7;
+// Puzzle #13 (Friday, November 13): new Medium board.
+// Ten fixed clues; 6x6 row/column balance and overlapping neighbor counts.
+// Independently verified to have one solution and to resolve through constraint
+// propagation without guessing or search branches.
+const medium13Solution=['101001','100101','011100','001110','110010','010011'].join('').split('').map(Number);
+const medium13Clues=[6,14,15,16,18,21,23,28,29,32];
+const TODAY_PUZZLE=13, ARCHIVE_DAYS=7;
 let puzzleNumber=TODAY_PUZZLE;
-let solution=easy12Solution.slice(), clues=easy12Clues.slice();
+let solution=medium13Solution.slice(), clues=medium13Clues.slice();
 // Puzzles #2–#5 remain demo transformations of #6, not production puzzles.
 function puzzleLayout(n){
+ if(n===13)return {solution:medium13Solution.slice(),clues:medium13Clues.slice()};
  if(n===12)return {solution:easy12Solution.slice(),clues:easy12Clues.slice()};
  if(n===11)return {solution:medium11Solution.slice(),clues:medium11Clues.slice()};
  if(n===10)return {solution:medium10Solution.slice(),clues:medium10Clues.slice()};
