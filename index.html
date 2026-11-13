@@ -2132,13 +2132,14 @@ function playPlacementSound(value){
   if(placementAudioContext && placementBuffers[value] && placementAudioContext.state==='running'){
    const source=placementAudioContext.createBufferSource();
    source.buffer=placementBuffers[value];
-   // Muted placement clacks, 25% quieter than the previous 0.78 gain; preserve tile-hit timing.
+   // Both placement clacks are two semitones lower; keep the onset synchronous with tile placement.
+   source.playbackRate.value=Math.pow(2,-2/12);
    const softener=placementAudioContext.createBiquadFilter();
    softener.type='lowpass';
    softener.frequency.value=4300;
    softener.Q.value=0.5;
    const volume=placementAudioContext.createGain();
-   volume.gain.value=0.585;
+   volume.gain.value=0.4095;
    source.connect(softener);
    softener.connect(volume);
    volume.connect(placementAudioContext.destination);
@@ -2151,7 +2152,8 @@ function playPlacementSound(value){
    placementFallback[value].preload='auto';
   }
   const audio=placementFallback[value];
-  audio.volume=0.585;
+  audio.volume=0.4095;
+  audio.playbackRate=Math.pow(2,-2/12);
   audio.pause();audio.currentTime=0;
   const result=audio.play();
   if(result&&result.catch)result.catch(()=>{});
