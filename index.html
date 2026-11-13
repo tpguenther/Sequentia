@@ -1955,6 +1955,15 @@ body.neighbors-started #game-screen.controls-fading #key {
 }
 
 </style>
+<style id="neighbors-soft-conflict-cell-tint">
+/* Conflicting numbered clues: quiet cell-level feedback instead of a red ring. */
+#game-screen .board .cell.bad.clue {
+  background-color: #FBEDEB !important;
+}
+#game-screen .board .cell.bad.clue .clue-ring {
+  outline: none !important;
+}
+</style>
 </head><body>
 <main id="game-screen">
 <header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #12</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
@@ -2123,7 +2132,16 @@ function playPlacementSound(value){
   if(placementAudioContext && placementBuffers[value] && placementAudioContext.state==='running'){
    const source=placementAudioContext.createBufferSource();
    source.buffer=placementBuffers[value];
-   source.connect(placementAudioContext.destination);
+   // Slightly soften both clacks while preserving the immediate tile-hit timing.
+   const softener=placementAudioContext.createBiquadFilter();
+   softener.type='lowpass';
+   softener.frequency.value=4300;
+   softener.Q.value=0.5;
+   const volume=placementAudioContext.createGain();
+   volume.gain.value=0.78;
+   source.connect(softener);
+   softener.connect(volume);
+   volume.connect(placementAudioContext.destination);
    source.start(0);
    return;
   }
@@ -2133,6 +2151,7 @@ function playPlacementSound(value){
    placementFallback[value].preload='auto';
   }
   const audio=placementFallback[value];
+  audio.volume=0.78;
   audio.pause();audio.currentTime=0;
   const result=audio.play();
   if(result&&result.catch)result.catch(()=>{});
