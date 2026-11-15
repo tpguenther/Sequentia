@@ -2204,11 +2204,18 @@ const medium13Clues=[6,14,15,16,18,21,23,28,29,32];
 // constraint propagation without trial-and-error branches.
 const medium14Solution=['111000','110001','001110','000111','110100','001011'].join('').split('').map(Number);
 const medium14Clues=[3,6,7,11,16,23,26,27,33,34];
-const TODAY_PUZZLE=14, ARCHIVE_DAYS=7;
+// Puzzle #15 (Sunday, November 15): distinct Medium board.
+// Ten fixed clues, no corner clues. Uniqueness independently verified by
+// enumerating all row-balanced candidates with column and neighbor constraints.
+// Repeated row/column and clue propagation completes the solution without guessing.
+const medium15Solution=['101100','110010','110001','001110','010101','001011'].join('').split('').map(Number);
+const medium15Clues=[4,7,11,15,16,19,20,21,24,34];
+const TODAY_PUZZLE=15, ARCHIVE_DAYS=7;
 let puzzleNumber=TODAY_PUZZLE;
-let solution=medium14Solution.slice(), clues=medium14Clues.slice();
+let solution=medium15Solution.slice(), clues=medium15Clues.slice();
 // Puzzles #2–#5 remain demo transformations of #6, not production puzzles.
 function puzzleLayout(n){
+ if(n===15)return {solution:medium15Solution.slice(),clues:medium15Clues.slice()};
  if(n===14)return {solution:medium14Solution.slice(),clues:medium14Clues.slice()};
  if(n===13)return {solution:medium13Solution.slice(),clues:medium13Clues.slice()};
  if(n===12)return {solution:easy12Solution.slice(),clues:easy12Clues.slice()};
