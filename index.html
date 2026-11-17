@@ -2132,7 +2132,7 @@ body.neighbors-started #game-screen.controls-fading #key {
 </style>
 </head><body>
 <main id="game-screen">
-<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #16</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #17</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
@@ -2143,7 +2143,7 @@ body.neighbors-started #game-screen.controls-fading #key {
   <rect x="134.5" y="28" width="93.5" height="93.5" rx="16" fill="#E8C75E"/>
   <rect x="28" y="134.5" width="93.5" height="93.5" rx="16" fill="#E8C75E"/>
   <circle cx="181.25" cy="181.25" r="46.75" fill="#86ABC8"/>
-</svg></div><h2 class="start-panel-brand">neighbors</h2><p class="start-panel-tagline">Every neighbor counts.</p><div class="start-panel-number" id="start-panel-number">No. 16</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
+</svg></div><h2 class="start-panel-brand">neighbors</h2><p class="start-panel-tagline">Every neighbor counts.</p><div class="start-panel-number" id="start-panel-number">No. 17</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #14</div>
 <div class="inline-result" hidden="" id="result"><div class="completion-panel"><h2 class="neighbors-finish-heading">Nicely done!</h2><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button type="button" id="archive-finish-return">Back to Archive</button></div>
@@ -2216,11 +2216,17 @@ const medium15Clues=[4,7,11,15,16,19,20,21,24,34];
 // Repeated exact-count deductions solve the puzzle without branching.
 const medium16Solution=['010101','110010','100101','101001','011010','001110'].join('').split('').map(Number);
 const medium16Clues=[1,3,14,16,19,23,25,26,28,31,33];
-const TODAY_PUZZLE=16, ARCHIVE_DAYS=7;
+// Puzzle #17 (Tuesday, November 17): new Medium board.
+// Ten overlapping, non-corner clues. Unique solution verified by exhaustive
+// legal-state enumeration; exact-count propagation alone determines all cells.
+const medium17Solution=['110100','101001','010101','100110','011010','001011'].join('').split('').map(Number);
+const medium17Clues=[1,10,12,15,16,18,19,20,25,33];
+const TODAY_PUZZLE=17, ARCHIVE_DAYS=7;
 let puzzleNumber=TODAY_PUZZLE;
-let solution=medium16Solution.slice(), clues=medium16Clues.slice();
+let solution=medium17Solution.slice(), clues=medium17Clues.slice();
 // Puzzles #2–#5 remain demo transformations of #6, not production puzzles.
 function puzzleLayout(n){
+ if(n===17)return {solution:medium17Solution.slice(),clues:medium17Clues.slice()};
  if(n===16)return {solution:medium16Solution.slice(),clues:medium16Clues.slice()};
  if(n===15)return {solution:medium15Solution.slice(),clues:medium15Clues.slice()};
  if(n===14)return {solution:medium14Solution.slice(),clues:medium14Clues.slice()};
