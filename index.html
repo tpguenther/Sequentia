@@ -2462,7 +2462,7 @@ function renderUI(){
  updateUndo();
 }
 function play(){preparePlacementSounds();started=true;document.body.classList.add('neighbors-started');$('start-overlay').hidden=true;startClock();save()}
-async function share(){let msg=`Neighbors #${puzzleNumber}\nSolved in ${doneTime}\nYour turn, neighbor.\n${location.origin&&location.protocol.startsWith('http')?location.origin:''}`;try{if(navigator.share){await navigator.share({text:msg});return}if(navigator.clipboard){await navigator.clipboard.writeText(msg);$('share').querySelector('span:last-child').textContent='Copied!';setTimeout(()=>$('share').querySelector('span:last-child').textContent='Share',1400)}}catch{}}
+async function share(){const time=doneTime||formatTime(elapsed());const parts=time.split(':').map(Number);const underMinute=parts.length===2&&parts.every(Number.isFinite)&&parts[0]===0&&parts[1]<60;let msg=`Neighbors #${puzzleNumber} | ${time}${underMinute?' ⚡':''}\nYour turn, neighbor.`;try{if(navigator.share){await navigator.share({text:msg});return}if(navigator.clipboard){await navigator.clipboard.writeText(msg);$('share').querySelector('span:last-child').textContent='Copied!';setTimeout(()=>$('share').querySelector('span:last-child').textContent='Share',1400)}}catch{}}
 const dialog=$('rules-screen'),help=$('help'),closeHelp=$('rules-back');let shouldResume=false;
 function openHelp(){shouldResume=clockRunning;pauseClock();dialog.hidden=false;document.body.style.overflow='hidden';closeHelp.focus()}
 function hideHelp(){dialog.hidden=true;document.body.style.overflow='';help.focus();if(shouldResume)startClock();shouldResume=false;save();if(complete)playWave()}
