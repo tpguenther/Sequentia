@@ -2254,11 +2254,15 @@ const medium22Clues=[7,9,10,11,18,22,23,25,26,33];
 // Unique and solvable by row/column and adjacent-match propagation alone.
 const medium23Solution=['011010','101010','001101','010101','100101','110010'].join('').split('').map(Number);
 const medium23Clues=[2, 4, 11, 14, 15, 19, 25, 28, 31, 33];
-const TODAY_PUZZLE=23, ARCHIVE_DAYS=7;
+// Puzzle #24 (Tuesday, November 24): Medium; forced propagation verified.
+const medium24Solution=['010110', '100101', '100011', '011100', '101010', '011001'].join('').split('').map(Number);
+const medium24Clues=[2, 4, 5, 8, 11, 15, 16, 18, 23, 26];
+const TODAY_PUZZLE=24, ARCHIVE_DAYS=7;
 let puzzleNumber=TODAY_PUZZLE;
-let solution=medium23Solution.slice(), clues=medium23Clues.slice();
+let solution=medium24Solution.slice(), clues=medium24Clues.slice();
 // Puzzles #2–#5 remain demo transformations of #6, not production puzzles.
 function puzzleLayout(n){
+ if(n===24)return {solution:medium24Solution.slice(),clues:medium24Clues.slice()};
  if(n===23)return {solution:medium23Solution.slice(),clues:medium23Clues.slice()};
  if(n===22)return {solution:medium22Solution.slice(),clues:medium22Clues.slice()};
  if(n===21)return {solution:medium21Solution.slice(),clues:medium21Clues.slice()};
