@@ -2130,9 +2130,14 @@ body.neighbors-started #game-screen.controls-fading #key {
   border-bottom-width:1.75px!important;
 }
 </style>
-</head><body>
-<main id="game-screen">
-<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle #23</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
+</head><body class="daily-loading">
+<style>
+body.daily-loading #game-screen{display:none!important}
+#daily-status{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px;color:#303A40;font-family:Outfit,system-ui,sans-serif}
+#daily-status[hidden],#daily-retry[hidden]{display:none!important}
+#daily-retry{padding:10px 24px;border:1px solid #303A40;border-radius:8px;background:#fff;color:#303A40;font:inherit;cursor:pointer}
+</style><section id="daily-status" aria-live="polite"><h1 style="font-size:26px;margin:0">neighbors</h1><p id="daily-message">Loading today’s puzzle…</p><button id="daily-retry" type="button" hidden>Try again</button></section><main id="game-screen">
+<header class="game-header"><button id="archive-back" class="header-icon" type="button" aria-label="Back to Archive" title="Archive"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m5-5-5 5 5 5"/></svg></button><button aria-label="Archive" class="header-icon dotsoku-archive-trigger" id="archive-toggle" title="Archive" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M8 14h2M14 14h2M8 18h2"/></svg></button><div class="game-header-brand"><h1 class="NUM_TITLE">neighbors</h1><div class="game-puzzle-number" id="game-puzzle-number">Puzzle</div></div><div class="header-tools"><button aria-label="Mute sound" aria-pressed="true" class="header-icon" id="sound" title="Mute sound" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 5 6.5 9H3.5v6h3L11 19V5Z"/><path class="sound-waves" d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/><path class="sound-slash" d="M16 9l5 6m0-6-5 6"/></svg></button><button aria-label="How to Play" class="header-icon header-help" id="help" title="How to Play"><svg aria-hidden="true" viewBox="0 0 24 24"><circle class="help-ring" cx="12" cy="12" r="9"/><path d="M9.25 9.1a2.95 2.95 0 0 1 5.7 1c0 2.1-2.95 2.65-2.95 4.4"/><circle class="help-dot" cx="12" cy="17.65" r="1"/></svg></button></div></header>
 <div class="wrap">
 <div class="board-stage">
 <div aria-label="Six by six logic puzzle" class="board" id="board" role="group"></div>
@@ -2143,7 +2148,7 @@ body.neighbors-started #game-screen.controls-fading #key {
   <rect x="134.5" y="28" width="93.5" height="93.5" rx="16" fill="#E8C75E"/>
   <rect x="28" y="134.5" width="93.5" height="93.5" rx="16" fill="#E8C75E"/>
   <circle cx="181.25" cy="181.25" r="46.75" fill="#86ABC8"/>
-</svg></div><h2 class="start-panel-brand">neighbors</h2><p class="start-panel-tagline">Every neighbor counts.</p><div class="start-panel-number" id="start-panel-number">No. 23</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
+</svg></div><h2 class="start-panel-brand">neighbors</h2><p class="start-panel-tagline">Every neighbor counts.</p><div class="start-panel-number" id="start-panel-number">No.</div><button class="NUM_PRIMARY" id="play" type="button">Play</button><button class="start-how" id="start-help" type="button">How to Play</button></div></div>
 </div>
 <div class="puzzle-label" id="puzzle-label">Puzzle #14</div>
 <div class="inline-result" hidden="" id="result"><div class="completion-panel"><h2 class="neighbors-finish-heading">Nicely done!</h2><span class="inline-time-label">Solved in</span><strong id="finish-time">0:00</strong></div><button class="NUM_PRIMARY" id="share"><span aria-hidden="true" class="share-symbol"><svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 32 28"><path d="M9.5 12.2 22.5 5.7M9.5 15.8l13 6.5"></path><circle cx="6" cy="14" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="4" fill="#F2C65D" r="3.4"></circle><circle cx="26" cy="24" fill="#F2C65D" r="3.4"></circle></svg></span><span>Share</span></button><button type="button" id="archive-finish-return">Back to Archive</button></div>
@@ -2165,137 +2170,25 @@ body.neighbors-started #game-screen.controls-fading #key {
 </section>
 <section class="rules-screen" hidden="" id="rules-screen"><header class="rules-fixed-header"><h2 class="dotsoku-secondary-heading">How to Play</h2><button aria-label="Close How to Play" class="rules-close" id="rules-back" title="Close" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 5 19 19M19 5 5 19"></path></svg></button></header><div class="rules-scroll-content"><div class="rules-copy"><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">1</span><div><strong>Fill each cell with a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span> or a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</strong></div></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">2</span><div><strong>Each row and column must contain three of each shape.</strong></div></div><div aria-label="Three blue circles and three yellow squares in a row" class="sample-row"><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span><span class="sample-cell"><i class="sample-piece yellow"></i></span><span class="sample-cell"><i class="sample-piece blue"></i></span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">3</span><div><strong>Numbered shapes are fixed clues. The number tells you how many adjacent cells (up, down, left, or right) contain the same shape.</strong></div></div><div aria-label="A blue 2 clue has two blue circle neighbors and two yellow square neighbors" class="neighbors-rule-example"><div aria-hidden="true" class="neighbors-example-grid"><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece blue"></span></div><div class="example-cell"><span class="example-piece blue"><span class="clue-label">2</span></span></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div><div class="example-cell"><span class="example-piece yellow"></span></div><div class="example-cell"></div></div><span class="example-caption">This blue 2 has exactly two blue neighbors.</span></div></div><div class="rule-card NUM_RULE_CARD"><div class="rule-heading"><span class="rule-number">4</span><div><span class="gesture-list"><span class="gesture-instruction"><strong class="gesture-action">Swipe ↑</strong> to place a <span class="symbol-phrase">blue circle <span aria-label="blue circle" class="symbol blue" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Swipe ↓</strong> to place a <span class="symbol-phrase">yellow square <span aria-label="yellow square" class="symbol yellow" role="img"></span></span>.</span><span class="gesture-instruction"><strong class="gesture-action">Tap</strong> to clear a cell.</span></span></div></div></div><p class="dotsoku-deduction-promise">Every puzzle has a unique solution and can be solved through logic alone. <strong>No guessing required.</strong></p></div></div></section><script>
 (()=>{'use strict';
-const baseSolution=["001101","010110","010110","110010","101001","101001"].join('').split('').map(Number);
-const baseClues=[0,3,7,12,13,18,23,27,29,32];
-// Independently generated Medium playtest #7; #6 remains the preserved benchmark.
-const medium7Solution=["011010", "010110", "001101", "100110", "110001", "101001"].join('').split('').map(Number);
-const medium7Clues=[1, 3, 4, 12, 13, 18, 21, 26, 30, 35];
-// Independently generated Medium playtest #8; unique solution, solvable by
-// row/column balance and clue-neighbor deduction without branching.
-const medium8Solution=["011100", "100101", "101010", "110001", "001011", "010110"].join('').split('').map(Number);
-const medium8Clues=[0, 2, 10, 17, 19, 20, 22, 26, 27, 29];
-// New independently generated Medium playtest #9; validated unique and
-// fully resolved by iterative row/column and neighbor-clue deductions.
-const medium9Solution=["001110", "100011", "110100", "101010", "010101", "011001"].join('').split('').map(Number);
-const medium9Clues=[2, 4, 6, 7, 9, 14, 16, 18, 27, 29, 31];
-// Puzzle #10: independently generated and verified to have exactly one solution.
-// Constraint propagation across row/column balance and overlapping numbered clues
-// completes this board without trial-and-error branching. Medium playtest candidate.
-const medium10Solution=["010011", "101100", "101010", "001011", "010101", "110100"].join('').split('').map(Number);
-const medium10Clues=[4, 11, 13, 15, 19, 22, 25, 27, 31, 32];
-// Puzzle #11: independently generated Medium candidate; unique solution.
-// Solvable via row/column balance and overlapping numbered-clue deductions.
-const medium11Solution=['101010', '011001', '011001', '100110', '000111', '110100'].join('').split('').map(Number);
-const medium11Clues=[1,10,12,14,16,17,19,21,26,30,32];
-// Puzzle #13: new Easy puzzle, with a distinct solution from previous boards.
-// Verified unique under both 3-of-each row/column and numbered neighbor clues.
-// Solves by repeated deductions without trial and error (12 fixed clues).
-const easy12Solution=['110100','001101','101010','110001','000111','011010'].join('').split('').map(Number);
-const easy12Clues=[1,3,7,8,9,12,14,20,22,24,26,28];
-// Puzzle #13 (Friday, November 13): new Medium board.
-// Ten fixed clues; 6x6 row/column balance and overlapping neighbor counts.
-// Independently verified to have one solution and to resolve through constraint
-// propagation without guessing or search branches.
-const medium13Solution=['101001','100101','011100','001110','110010','010011'].join('').split('').map(Number);
-const medium13Clues=[6,14,15,16,18,21,23,28,29,32];
-// Puzzle #14 (Saturday, November 14): new independently generated Medium board.
-// Unique under both three-of-each row/column balance and numbered-neighbor clues.
-// Ten fixed clues, including overlapping deductions; solved by repeated
-// constraint propagation without trial-and-error branches.
-const medium14Solution=['111000','110001','001110','000111','110100','001011'].join('').split('').map(Number);
-const medium14Clues=[3,6,7,11,16,23,26,27,33,34];
-// Puzzle #15 (Sunday, November 15): distinct Medium board.
-// Ten fixed clues, no corner clues. Uniqueness independently verified by
-// enumerating all row-balanced candidates with column and neighbor constraints.
-// Repeated row/column and clue propagation completes the solution without guessing.
-const medium15Solution=['101100','110010','110001','001110','010101','001011'].join('').split('').map(Number);
-const medium15Clues=[4,7,11,15,16,19,20,21,24,34];
-// Puzzle #16 (Monday, November 16): independently generated Medium board.
-// 11 non-corner clues; row/column balance plus numbered orthogonal matches.
-// Exactly one solution, verified by exhaustive constraint search.
-// Repeated exact-count deductions solve the puzzle without branching.
-const medium16Solution=['010101','110010','100101','101001','011010','001110'].join('').split('').map(Number);
-const medium16Clues=[1,3,14,16,19,23,25,26,28,31,33];
-// Puzzle #17 (Tuesday, November 17): new Medium board.
-// Ten overlapping, non-corner clues. Unique solution verified by exhaustive
-// legal-state enumeration; exact-count propagation alone determines all cells.
-const medium17Solution=['110100','101001','010101','100110','011010','001011'].join('').split('').map(Number);
-const medium17Clues=[1,10,12,15,16,18,19,20,25,33];
-// Puzzle #19 (Wednesday, November 18): fresh Medium puzzle.
-// Ten numbered clues with overlapping constraints, no corner clues.
-// Exactly one solution verified by complete constraint search; iterative
-// row/column and orthogonal clue deductions resolve all 36 cells without guessing.
-const medium18Solution=['011100','010101','100011','111000','001110','100011'].join('').split('').map(Number);
-const medium18Clues=[3,12,14,15,16,19,28,29,32,34];
-// Puzzle #19 (Thursday, November 19): fresh Medium puzzle.
-// 10 non-corner clues, including overlapping clues and a late-stage zero clue.
-// Unique solution verified by exhaustive search; row/column and clue-domain
-// propagation determines every cell without branching or guessing.
-const medium19Solution=['100011','101001','101001','010110','011100','010110'].join('').split('').map(Number);
-const medium19Clues=[3,4,10,12,19,22,27,29,32,33];
-// Puzzle #20 (Friday, November 20): fresh Medium puzzle.
-// Ten non-corner, overlapping numbered clues. Exactly one balanced-grid solution;
-// exhaustive candidate search and iterative clue/row/column propagation verified.
-const medium20Solution=['101001','001101','110100','001110','010011','110010'].join('').split('').map(Number);
-const medium20Clues=[6,7,8,10,15,17,21,23,29,32];
-// Puzzle #21 (Saturday, November 21): new Medium board.
-// Ten interior/edge clues with interconnected deductions and no corner clues.
-// Unique solution verified by exhaustive constraint search, with deterministic
-// row/column and matching-neighbor deductions completing all 36 cells.
-const medium21Solution=['000111','110100','101100','100011','011010','011001'].join('').split('').map(Number);
-const medium21Clues=[11,13,14,15,17,20,22,25,28,31];
-// Puzzle #22 (Sunday, November 22): fresh Medium board.
-// Ten fixed, non-corner clues with overlapping neighboring constraints.
-// Verified unique by exhaustive binary constraint search; deterministic
-// row/column balance and exact neighboring-match propagation solve without guesses.
-const medium22Solution=['011100','101100','000111','101001','110010','010011'].join('').split('').map(Number);
-const medium22Clues=[7,9,10,11,18,22,23,25,26,33];
-// Puzzle #23 (Monday, November 23): Medium with interconnected clue deductions.
-// Unique and solvable by row/column and adjacent-match propagation alone.
-const medium23Solution=['011010','101010','001101','010101','100101','110010'].join('').split('').map(Number);
-const medium23Clues=[2, 4, 11, 14, 15, 19, 25, 28, 31, 33];
-// Puzzle #24 (Tuesday, November 24): Medium; forced propagation verified.
-const medium24Solution=['010110', '100101', '100011', '011100', '101010', '011001'].join('').split('').map(Number);
-const medium24Clues=[2, 4, 5, 8, 11, 15, 16, 18, 23, 26];
-const TODAY_PUZZLE=24, ARCHIVE_DAYS=7;
-let puzzleNumber=TODAY_PUZZLE;
-let solution=medium24Solution.slice(), clues=medium24Clues.slice();
-// Puzzles #2–#5 remain demo transformations of #6, not production puzzles.
-function puzzleLayout(n){
- if(n===24)return {solution:medium24Solution.slice(),clues:medium24Clues.slice()};
- if(n===23)return {solution:medium23Solution.slice(),clues:medium23Clues.slice()};
- if(n===22)return {solution:medium22Solution.slice(),clues:medium22Clues.slice()};
- if(n===21)return {solution:medium21Solution.slice(),clues:medium21Clues.slice()};
- if(n===20)return {solution:medium20Solution.slice(),clues:medium20Clues.slice()};
- if(n===19)return {solution:medium19Solution.slice(),clues:medium19Clues.slice()};
- if(n===18)return {solution:medium18Solution.slice(),clues:medium18Clues.slice()};
- if(n===17)return {solution:medium17Solution.slice(),clues:medium17Clues.slice()};
- if(n===16)return {solution:medium16Solution.slice(),clues:medium16Clues.slice()};
- if(n===15)return {solution:medium15Solution.slice(),clues:medium15Clues.slice()};
- if(n===14)return {solution:medium14Solution.slice(),clues:medium14Clues.slice()};
- if(n===13)return {solution:medium13Solution.slice(),clues:medium13Clues.slice()};
- if(n===12)return {solution:easy12Solution.slice(),clues:easy12Clues.slice()};
- if(n===11)return {solution:medium11Solution.slice(),clues:medium11Clues.slice()};
- if(n===10)return {solution:medium10Solution.slice(),clues:medium10Clues.slice()};
- if(n===9)return {solution:medium9Solution.slice(),clues:medium9Clues.slice()};
- if(n===8)return {solution:medium8Solution.slice(),clues:medium8Clues.slice()};
- if(n===7)return {solution:medium7Solution.slice(),clues:medium7Clues.slice()};
- if(n===6)return {solution:baseSolution.slice(),clues:baseClues.slice()};
- const mode=(n-1)%5;
- const toIndex=(index)=>{
-   let r=index/6|0,c=index%6;
-   if(mode===0)return r*6+(5-c);
-   if(mode===1)return (5-r)*6+c;
-   if(mode===2)return c*6+(5-r);
-   if(mode===3)return (5-c)*6+r;
-   return (5-r)*6+(5-c);
- };
- let result=Array(36);
- for(let i=0;i<36;i++)result[toIndex(i)]=baseSolution[i];
- return {solution:result,clues:baseClues.map(toIndex).sort((a,b)=>a-b)};
+// Publication dates are civil dates in each player's own time zone.
+// Keep the existing numbering: Nov 1, 2026 = No. 1.
+const NUMBER_EPOCH=Date.UTC(2026,10,1);
+const DAY_MS=86400000;
+const localDateKey=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function numberForDate(key){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(key))return NaN;
+ const [y,m,d]=key.split('-').map(Number), t=Date.UTC(y,m-1,d), check=new Date(t);
+ if(check.getUTCFullYear()!==y||check.getUTCMonth()!==m-1||check.getUTCDate()!==d)return NaN;
+ return (t-NUMBER_EPOCH)/DAY_MS+1;
 }
+function dayFor(n){const utc=new Date(NUMBER_EPOCH+(n-1)*DAY_MS);return new Date(utc.getUTCFullYear(),utc.getUTCMonth(),utc.getUTCDate(),12);}
+const published=new Map();
+let TODAY_PUZZLE=numberForDate(localDateKey()), puzzleNumber=TODAY_PUZZLE;
+let solution=[],clues=[],ready=false;
+function validLayout(p){return p&&Array.isArray(p.solution)&&p.solution.length===36&&p.solution.every(x=>x===0||x===1)&&Array.isArray(p.clues)&&p.clues.length>=3&&p.clues.length<=36&&p.clues.every(i=>Number.isInteger(i)&&i>=0&&i<36)&&new Set(p.clues).size===p.clues.length&&Array.from({length:6},(_,r)=>r).every(r=>Array.from({length:6},(_,c)=>p.solution[r*6+c]).reduce((a,b)=>a+b,0)===3&&Array.from({length:6},(_,c)=>p.solution[c*6+r]).reduce((a,b)=>a+b,0)===3);}
+function puzzleLayout(n){const p=published.get(n);if(!p)throw Error('Puzzle unavailable');return {solution:p.solution.slice(),clues:p.clues.slice()};}
 function selectLayout(n){puzzleNumber=n;const p=puzzleLayout(n);solution=p.solution;clues=p.clues;clueCounts=Object.fromEntries(clues.map(i=>[i,neighbors(i).filter(j=>solution[j]===solution[i]).length]));}
-function dayFor(n){return new Date(2026,10,n,12,0,0,0);}
+
 
 const neighbors=i=>[i-6,i+6,i-1,i+1].filter(j=>j>=0&&j<36&&Math.abs((j/6|0)-(i/6|0))+Math.abs(j%6-i%6)===1);
 let clueCounts=Object.fromEntries(clues.map(i=>[i,neighbors(i).filter(j=>solution[j]===solution[i]).length]));
@@ -2330,7 +2223,7 @@ function elapsed(){return clockMs+(clockRunning?performance.now()-clockStart:0)}
 function formatTime(ms){let s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function startClock(){if(started&&!complete&&!clockRunning&&!document.hidden){clockStart=performance.now();clockRunning=true}}
 function pauseClock(){if(clockRunning){clockMs+=performance.now()-clockStart;clockRunning=false}}
-function save(){if(replayMode)return;try{localStorage.setItem(STORAGE(),JSON.stringify({cells,started,complete,clockMs:elapsed(),placementOrder,doneTime,achievementNote}))}catch{}}
+function save(){if(!ready||replayMode)return;try{localStorage.setItem(STORAGE(),JSON.stringify({cells,started,complete,clockMs:elapsed(),placementOrder,doneTime,achievementNote}))}catch{}}
 function load(){initial();try{let v=JSON.parse(localStorage.getItem(STORAGE())||(puzzleNumber===6?localStorage.getItem(LEGACY_STORAGE):null)||'null');if(!v||!Array.isArray(v.cells)||v.cells.length!==36)return;for(let i=0;i<36;i++)if(clues.includes(i)&&v.cells[i]!==solution[i])return;cells=v.cells.map((x,i)=>clues.includes(i)?solution[i]:(x===0||x===1?x:null));started=!!v.started;complete=!!v.complete&&isGood();clockMs=Number.isFinite(v.clockMs)?Math.max(0,v.clockMs):0;doneTime=typeof v.doneTime==='string'?v.doneTime:'';achievementNote=typeof v.achievementNote==='string'?v.achievementNote:'';placementOrder=Array.isArray(v.placementOrder)?v.placementOrder.filter((i,p,a)=>Number.isInteger(i)&&i>=0&&i<36&&!clues.includes(i)&&cells[i]!==null&&a.lastIndexOf(i)===p):[];
   // Migrate previously saved games by recovering the last-changed order from historical snapshots.
   if(!placementOrder.length && Array.isArray(v.history)){
@@ -2504,9 +2397,9 @@ function openHelp(){shouldResume=clockRunning;pauseClock();dialog.hidden=false;d
 function hideHelp(){dialog.hidden=true;document.body.style.overflow='';help.focus();if(shouldResume)startClock();shouldResume=false;save();if(complete)playWave()}
 help.addEventListener('click',openHelp);$('start-help').addEventListener('click',openHelp);closeHelp.addEventListener('click',hideHelp);
 const archive=$('archive-modal');
-let collectionMonth=new Date(2026,10,1);
-const firstArchiveDate=new Date(2026,10,1);
-function openArchive(){pauseClock();collectionMonth=new Date(2026,10,1);renderArchive();archive.classList.add('open');archive.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+let collectionMonth=new Date(),firstArchiveDate=new Date();
+function monthFor(n){const d=dayFor(n);return new Date(d.getFullYear(),d.getMonth(),1);}
+function openArchive(){pauseClock();collectionMonth=monthFor(TODAY_PUZZLE);renderArchive();archive.classList.add('open');archive.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
 function closePanel({returnToday=true}={}){
  if(!archive.classList.contains('open'))return;
  archive.classList.remove('open');
@@ -2522,15 +2415,15 @@ function closePanel({returnToday=true}={}){
  }
 }
 function renderArchive(){
- const total=TODAY_PUZZLE,done=Array.from({length:total},(_,i)=>i+1).filter(n=>!!statsData.completed[n]).length;
+ const total=published.size,done=[...published.keys()].filter(n=>!!statsData.completed[n]).length;
  $('collection-progress-count').textContent=`${done} of ${total} completed`;
- $('collection-progress-percent').textContent=`${Math.round(100*done/total)}%`;
+ $('collection-progress-percent').textContent=`${Math.round(total?100*done/total:0)}%`;
  $('collection-progress-fill').style.width=`${100*done/total}%`;
  $('collection-month-label').textContent=collectionMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'});
  $('collection-prev').disabled=collectionMonth<=firstArchiveDate;
- $('collection-next').disabled=collectionMonth>=new Date(2026,10,1);
+ $('collection-next').disabled=collectionMonth>=monthFor(TODAY_PUZZLE);
  const list=$('archive-cards');list.replaceChildren();let count=0;
- for(let n=TODAY_PUZZLE;n>=1;n--){
+ for(const n of [...published.keys()].sort((a,b)=>b-a)){
    const d=dayFor(n);if(d.getMonth()!==collectionMonth.getMonth()||d.getFullYear()!==collectionMonth.getFullYear())continue;
    count++;
    const solved=!!statsData.completed[n];const current=n===puzzleNumber;
@@ -2551,7 +2444,7 @@ function renderArchive(){
 }
 function readPuzzleState(n){try{return JSON.parse(localStorage.getItem(STORE_PREFIX+n)||'null')}catch{return null}}
 function switchPuzzle(n,{fromCollection=false}={}){
- if(n<1||n>TODAY_PUZZLE)return;
+ if(!published.has(n)||n>TODAY_PUZZLE)return;
  pauseClock();save();clearWave();
  selectLayout(n);cells=Array(36).fill(null);complete=false;started=false;placementOrder=[];
  clockMs=0;clockRunning=false;doneTime='';achievementNote='';
@@ -2585,8 +2478,51 @@ $('share').addEventListener('click',share);
 $('archive-finish-return').addEventListener('click',openArchive);
 $('undo').addEventListener('click',undoPlacement);
 $('sound').addEventListener('click',()=>{soundEnabled=!soundEnabled;$('sound').setAttribute('aria-pressed',String(soundEnabled));$('sound').setAttribute('aria-label',soundEnabled?'Mute sound':'Unmute sound');});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(dialog.hidden&&!archive.classList.contains('open')){if(complete)playWave();else startClock()}});window.addEventListener('pagehide',()=>{pauseClock();save()});
-readStats();selectLayout(TODAY_PUZZLE);load();renderUI();if(started&&!complete)startClock();else if(complete)requestAnimationFrame(()=>playWave());
+// Reload only when the player's local date changes, saving the old day's game first.
+// A fresh request bypasses the browser HTTP cache. Future entries never enter the archive.
+let loadedDate=localDateKey(),rolloverTimer,refreshing=false;
+function checkRollover(){
+ if(localDateKey()===loadedDate||refreshing)return false;
+ refreshing=true;pauseClock();save();location.reload();return true;
+}
+function armMidnight(){
+ clearTimeout(rolloverTimer);
+ const next=new Date();next.setHours(24,0,0,0);
+ rolloverTimer=setTimeout(()=>{if(!checkRollover())armMidnight();},Math.max(50,next.getTime()-Date.now()+50));
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden){pauseClock();save()}else if(!checkRollover()&&ready&&dialog.hidden&&!archive.classList.contains('open')){if(complete)playWave();else startClock()}});
+window.addEventListener('focus',checkRollover);
+window.addEventListener('pageshow',checkRollover);
+window.addEventListener('pagehide',()=>{pauseClock();save()});
+setInterval(checkRollover,15000);armMidnight();
+async function initializeDaily(){
+ const status=$('daily-status'),message=$('daily-message'),retry=$('daily-retry');
+ retry.hidden=true;message.textContent='Loading today’s puzzle…';
+ try{
+   const response=await fetch(new URL('neighbors-puzzles.json',location.href),{cache:'no-store'});
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const data=await response.json();
+   if(data.version!==1||data.game!=='neighbors'||!data.schedule||typeof data.schedule!=='object'||Array.isArray(data.schedule))throw Error('Invalid studio export');
+   if(checkRollover())return;
+   published.clear();
+   for(const [date,p] of Object.entries(data.schedule)){
+     const n=numberForDate(date);
+     if(Number.isInteger(n)&&n>=1&&n<=TODAY_PUZZLE&&validLayout(p))published.set(n,p);
+   }
+   if(!published.has(TODAY_PUZZLE)){
+     message.textContent='Today’s puzzle is not available yet.';retry.hidden=false;return;
+   }
+   firstArchiveDate=monthFor(Math.min(...published.keys()));
+   readStats();selectLayout(TODAY_PUZZLE);load();renderUI();ready=true;
+   status.hidden=true;document.body.classList.remove('daily-loading');
+   if(started&&!complete)startClock();else if(complete)requestAnimationFrame(()=>playWave());
+ }catch(error){
+   console.error('Neighbors schedule:',error);
+   message.textContent='Unable to load the puzzle. Please try again.';retry.hidden=false;
+ }
+}
+$('daily-retry').addEventListener('click',initializeDaily);
+initializeDaily();
 })();
 </script>
 <script>document.getElementById('undo')?.addEventListener('dblclick',function(e){e.preventDefault();});</script></body></html>
